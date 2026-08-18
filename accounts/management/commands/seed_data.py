@@ -47,19 +47,22 @@ class Command(BaseCommand):
             classrooms.append(cr)
 
         subjects_data = [
-            ("الرياضيات", "MATH-101"),
-            ("اللغة العربية", "ARB-101"),
-            ("اللغة الإنجليزية", "ENG-101"),
-            ("العلوم", "SCI-101"),
-            ("التربية الإسلامية", "ISL-101"),
-            ("التاريخ", "HIS-101"),
+            {"name": "الرياضيات", "code": "MATH-101", "classroom_idx": 0},
+            {"name": "اللغة العربية", "code": "ARB-101", "classroom_idx": 0},
+            {"name": "اللغة الإنجليزية", "code": "ENG-101", "classroom_idx": 1},
+            {"name": "العلوم", "code": "SCI-101", "classroom_idx": 1},
+            {"name": "التربية الإسلامية", "code": "ISL-101", "classroom_idx": 2},
+            {"name": "التاريخ", "code": "HIS-101", "classroom_idx": 2},
         ]
         subjects = []
-        for sname, scode in subjects_data:
+        for sd in subjects_data:
             s, _ = Subject.objects.get_or_create(
                 institution=institution,
-                code=scode,
-                defaults={"name": sname},
+                code=sd["code"],
+                defaults={
+                    "name": sd["name"],
+                    "classroom": classrooms[sd["classroom_idx"]],
+                },
             )
             subjects.append(s)
 
