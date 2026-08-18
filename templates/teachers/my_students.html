@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "My Students" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+
+    <div class="card-header d-flex justify-content-between align-items-center">
+
+        <h3 class="mb-0">
+            <i class="bi bi-people-fill"></i>
+            {% trans "My Students" %}
+        </h3>
+
+        <span class="badge bg-primary">
+            {{ students.paginator.count }}
+            {% trans "Students" %}
+        </span>
+
+    </div>
+
+    <div class="card-body">
+
+        <form method="get">
+          {% csrf_token %}
+
+           <div class="row mb-4">
+
+            <div class="col-md-6">
+
+                <input
+                    type="text"
+                    class="form-control"
+                    name="q"
+                    value="{{ request.GET.q }}"
+                    placeholder="{% trans 'Search student...' %}">
+
+            </div>
+
+            <div class="col-md-2">
+
+                <button class="btn btn-primary w-100">
+
+                    <i class="bi bi-search"></i>
+                    {% trans "Search" %}
+
+                </button>
+
+            </div>
+
+           </div>
+
+        </form>
+
+        <table class="table table-hover align-middle">
+
+            <thead>
+
+                <tr>
+
+                    <th>{% trans "Code" %}</th>
+                    <th>{% trans "Student" %}</th>
+                    <th>{% trans "Class" %}</th>
+                    <th class="text-center">{% trans "Attendance" %}</th>
+                    <th class="text-center">{% trans "Grades" %}</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for student in students %}
+
+                <tr>
+
+                    <td>{{ student.student_code }}</td>
+
+                    <td>
+
+                        <div class="d-flex align-items-center gap-2">
+                        {% if student.user.profile_image %}
+                        <img src="{{ student.user.profile_image.url }}"
+                             class="rounded-circle"
+                             style="width:36px; height:36px; object-fit:cover;"
+                             alt="">
+                        {% else %}
+                        <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center"
+                             style="width:36px; height:36px;">
+                            <i class="bi bi-person text-primary"></i>
+                        </div>
+                        {% endif %}
+                        <div>
+                            <strong>{{ student.user.get_full_name }}</strong><br>
+                            <small class="text-muted">{{ student.user.username }}</small>
+                        </div>
+                        </div>
+
+                    </td>
+
+                    <td>{{ student.classroom }}</td>
+
+                    <td class="text-center">
+
+                        <a href="{% url 'teachers:take_attendance' %}"
+                           class="btn btn-success btn-sm"
+                           title="{% trans 'Attendance' %}">
+
+                            <i class="bi bi-check2-square"></i>
+
+                        </a>
+
+                    </td>
+
+                    <td class="text-center">
+
+                        <a href="{% url 'teachers:enter_grades' %}"
+                           class="btn btn-primary btn-sm"
+                           title="{% trans 'Grades' %}">
+
+                            <i class="bi bi-pencil-square"></i>
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="5" class="text-center py-4">
+
+                        <i class="bi bi-people display-6"></i>
+
+                        <br><br>
+
+                        {% trans "No students found." %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% if students.has_other_pages %}
+
+        <nav>
+
+            <ul class="pagination justify-content-center">
+
+                {% if students.has_previous %}
+
+                <li class="page-item">
+
+                    <a class="page-link"
+                       href="?page={{ students.previous_page_number }}&q={{ request.GET.q }}">
+
+                        &laquo;
+
+                    </a>
+
+                </li>
+
+                {% endif %}
+
+                <li class="page-item active">
+
+                    <span class="page-link">
+
+                        {{ students.number }}
+
+                        /
+
+                        {{ students.paginator.num_pages }}
+
+                    </span>
+
+                </li>
+
+                {% if students.has_next %}
+
+                <li class="page-item">
+
+                    <a class="page-link"
+                       href="?page={{ students.next_page_number }}&q={{ request.GET.q }}">
+
+                        &raquo;
+
+                    </a>
+
+                </li>
+
+                {% endif %}
+
+            </ul>
+
+        </nav>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

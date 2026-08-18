@@ -1,0 +1,84 @@
+
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    background:var(--background);
+
+    color:var(--text);
+
+    font-family:
+        "Cairo",
+        "Inter",
+        sans-serif;
+
+    font-size:15px;
+
+    line-height:1.6;
+
+    -webkit-font-smoothing:antialiased;
+
+    -moz-osx-font-smoothing:grayscale;
+
+    text-rendering:optimizeLegibility;
+
+}
+
+
+
+a{
+
+    text-decoration:none;
+
+    color:inherit;
+
+    transition:var(--transition);
+
+}
+
+
+
+img{
+
+    max-width:100%;
+
+    display:block;
+
+}
+
+
+
+.main-content{
+
+    min-height:100vh;
+
+    padding:32px 0;
+
+}
+
+
+
+h1,h2,h3,h4,h5,h6{
+
+    font-weight:700;
+
+    color:var(--text);
+
+    letter-spacing:-.01em;
+
+}
+
+p{
+
+    color:var(--text-light);
+
+}

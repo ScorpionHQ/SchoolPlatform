@@ -1,0 +1,302 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Parent Dashboard" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-hero mb-4">
+
+    <div class="row align-items-center g-3">
+
+        <div class="col-lg-7">
+
+            <div class="d-flex align-items-center gap-3 position-relative" style="z-index:1;">
+
+                <span class="avatar-circle" style="width:60px;height:60px;font-size:1.4rem;">
+
+                    {{ request.user.get_full_name|default:request.user.username|slice:":1"|upper }}
+
+                </span>
+
+                <div>
+
+                    <h1 class="hero-title mb-1">
+
+                        {% trans "Parent Dashboard" %}
+
+                    </h1>
+
+                    <p class="hero-subtitle mb-0">
+
+                        {% trans "Welcome" %}
+
+                        {{ request.user.get_full_name|default:request.user.username }}
+
+                        &middot;
+
+                        {{ children|length }}
+
+                        {% if children|length == 1 %}{% trans "child" %}{% else %}{% trans "children" %}{% endif %}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-5">
+
+            <div class="hero-actions justify-content-lg-end">
+
+                <a href="{% url 'parent_grades' %}" class="btn">
+                    <i class="bi bi-bar-chart me-1"></i>
+                    {% trans "Grades" %}
+                </a>
+
+                <a href="{% url 'parent_attendance' %}" class="btn">
+                    <i class="bi bi-calendar-check me-1"></i>
+                    {% trans "Attendance" %}
+                </a>
+
+                <a href="{% url 'notifications:list' %}" class="btn position-relative">
+                    <i class="bi bi-bell me-1"></i>
+                    {% trans "Notifications" %}
+                    {% if unread_notifications_count %}
+                    <span class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle">
+                        {{ unread_notifications_count }}
+                    </span>
+                    {% endif %}
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% for child in children %}
+
+<div class="card mb-4">
+
+    <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+
+        <div class="d-flex align-items-center gap-3">
+
+            <span class="avatar-circle {% if forloop.counter0|divisibleby:4 %}is-emerald{% elif forloop.counter0|divisibleby:2 %}is-amber{% else %}is-info{% endif %}">
+
+                {{ child.student.user.get_full_name|default:child.student.user.username|slice:":1"|upper }}
+
+            </span>
+
+            <div>
+
+                <h5 class="mb-0">{{ child.student.user.get_full_name|default:child.student.user.username }}</h5>
+
+                <small class="text-muted">{{ child.student.student_code }}</small>
+
+            </div>
+
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+
+            <span class="badge-soft badge-soft-primary">{{ child.student.classroom|default:"—" }}</span>
+
+            <a href="{% url 'parent_grades' %}" class="btn btn-sm btn-outline-primary">
+                {% trans "All Grades" %}
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row g-4">
+
+            <div class="col-lg-3">
+
+                <div class="d-flex flex-column align-items-center justify-content-center h-100">
+
+                    <div class="progress-donut mb-2"
+                         style="--value:{{ child.attendance_percentage }};--donut-color:#10B981;">
+
+                        <span class="donut-value">{{ child.attendance_percentage }}%</span>
+
+                        <span class="donut-label">{% trans "Present" %}</span>
+
+                    </div>
+
+                    <small class="text-muted">{% trans "Attendance rate" %}</small>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-9">
+
+                <div class="row g-3 mb-3">
+
+                    <div class="col-sm-4">
+
+                        <div class="insight-card">
+
+                            <div class="insight-icon is-emerald">
+                                <i class="bi bi-award"></i>
+                            </div>
+
+                            <div>
+
+                                <div class="insight-label">{% trans "Average" %}</div>
+
+                                <div class="insight-value">{{ child.average_grade_percentage }}%</div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-4">
+
+                        <div class="insight-card">
+
+                            <div class="insight-icon is-info">
+                                <i class="bi bi-book"></i>
+                            </div>
+
+                            <div>
+
+                                <div class="insight-label">{% trans "Subjects" %}</div>
+
+                                <div class="insight-value">{{ child.subject_count }}</div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-4">
+
+                        <div class="insight-card">
+
+                            <div class="insight-icon is-amber">
+                                <i class="bi bi-journal-check"></i>
+                            </div>
+
+                            <div>
+
+                                <div class="insight-label">{% trans "Exams" %}</div>
+
+                                <div class="insight-value">{{ child.grade_count }}</div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <h6 class="mb-2">
+                    <i class="bi bi-bar-chart me-1"></i>
+                    {% trans "Latest Grades" %}
+                </h6>
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle mb-0">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>{% trans "Subject" %}</th>
+
+                                <th>{% trans "Exam" %}</th>
+
+                                <th>{% trans "Score" %}</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for item in child.grades %}
+
+                            <tr>
+
+                                <td>{{ item.grade.subject.name }}</td>
+
+                                <td>{{ item.grade.exam_name }}</td>
+
+                                <td>
+
+                                    <span class="badge-soft {% if item.percentage and item.percentage >= 50 %}badge-soft-success{% else %}badge-soft-danger{% endif %}">
+
+                                        {{ item.grade.score }}/{{ item.grade.max_score }}
+
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                            {% empty %}
+
+                            <tr>
+
+                                <td colspan="3" class="text-center text-muted py-3">
+
+                                    {% trans "No grades available." %}
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% empty %}
+
+<div class="card">
+
+    <div class="card-body">
+
+        <div class="empty-state">
+
+            <div class="empty-icon"><i class="bi bi-person-hearts"></i></div>
+
+            <p>{% trans "No students are linked to this parent account." %}</p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+{% endblock %}

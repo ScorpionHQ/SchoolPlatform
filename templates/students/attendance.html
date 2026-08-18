@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Attendance" %}
+{% endblock %}
+
+{% block content %}
+
+<h1 class="section-title">
+    {% trans "Attendance" %}
+</h1>
+
+<p class="section-subtitle">
+    {% trans "Your attendance records." %}
+</p>
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>{% trans "Date" %}</th>
+                        <th>{% trans "Subject" %}</th>
+                        <th>{% trans "Status" %}</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for item in attendance %}
+
+                    <tr>
+
+                        <td>{{ item.date }}</td>
+
+                        <td>{{ item.subject.name }}</td>
+
+                        <td>
+
+                            {% if item.status == "present" %}
+
+                                <span class="badge bg-success">
+
+                                    {{ item.get_status_display }}
+
+                                </span>
+
+                            {% elif item.status == "late" %}
+
+                                <span class="badge bg-warning text-dark">
+
+                                    {{ item.get_status_display }}
+
+                                </span>
+
+                            {% elif item.status == "absent" %}
+
+                                <span class="badge bg-danger">
+
+                                    {{ item.get_status_display }}
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-info">
+
+                                    {{ item.get_status_display }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="3" class="text-center text-muted">
+
+                            {% trans "No attendance records." %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "My Profile" %}
+{% endblock %}
+
+{% block content %}
+
+<h1 class="section-title">
+    {% trans "My Profile" %}
+</h1>
+
+<p class="section-subtitle">
+    {% trans "Personal information." %}
+</p>
+
+<div class="row">
+
+    <div class="col-lg-6">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h5 class="mb-4">
+
+                    <i class="bi bi-person-circle me-2"></i>
+
+                    {% trans "Student Information" %}
+
+                </h5>
+
+                <table class="table">
+
+                    <tr>
+                        <th>{% trans "Full Name" %}</th>
+                        <td>{{ student.user.get_full_name }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>{% trans "Student Code" %}</th>
+                        <td>{{ student.student_code }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>{% trans "Class" %}</th>
+                        <td>{{ student.classroom }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>{% trans "Institution" %}</th>
+                        <td>{{ student.institution }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>{% trans "Parent Phone" %}</th>
+                        <td>{{ student.parent_phone|default:"-" }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>{% trans "Address" %}</th>
+                        <td>{{ student.address|default:"-" }}</td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

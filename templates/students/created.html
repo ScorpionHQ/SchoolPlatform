@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Student Created" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-8">
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-body text-center p-5">
+
+                <div class="mb-3">
+                    <i class="bi bi-check-circle-fill text-success"
+                       style="font-size: 3rem;"></i>
+                </div>
+
+                <h2 class="fw-bold mb-2">
+                    {% trans "Student created successfully." %}
+                </h2>
+
+                <p class="text-muted mb-0">
+                    {% trans "A unique secure password was generated automatically." %}
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                    <h5 class="mb-0">
+                        <i class="bi bi-key-fill text-warning"></i>
+                        {% trans "Login Credentials" %}
+                    </h5>
+
+                    <a href="{% url 'students:credentials_pdf' %}"
+                       class="btn btn-outline-success btn-sm">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                        {% trans "Download PDF" %}
+                    </a>
+
+                </div>
+
+                <div class="alert alert-info py-2">
+                    {% trans "Save these credentials and hand them to the student. The password must be changed after the first login." %}
+                </div>
+
+                {% for cred in data.credentials %}
+
+                    <div class="row g-3 text-center">
+
+                        <div class="col-md-4">
+                            <div class="border rounded p-3 h-100">
+                                <div class="text-muted small">
+                                    {% trans "Student Name" %}
+                                </div>
+                                <strong>{{ cred.name }}</strong>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="border rounded p-3 h-100">
+                                <div class="text-muted small">
+                                    {% trans "Login Code" %}
+                                </div>
+                                <strong><code>{{ cred.code }}</code></strong>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="border rounded p-3 h-100">
+                                <div class="text-muted small">
+                                    {% trans "Temporary Password" %}
+                                </div>
+                                <strong><code>{{ cred.password }}</code></strong>
+                            </div>
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        <div class="text-center">
+
+            <a href="{% url 'students:create' %}"
+               class="btn btn-outline-primary">
+                <i class="bi bi-person-plus"></i>
+                {% trans "Add Another Student" %}
+            </a>
+
+            <a href="{% url 'students:list' %}"
+               class="btn btn-primary">
+                {% trans "Back to Students" %}
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

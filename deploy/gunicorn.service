@@ -1,0 +1,25 @@
+[Unit]
+Description=SchoolPlatform gunicorn daemon
+Requires=network.target
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/schoolplatform
+
+EnvironmentFile=/etc/schoolplatform/.env
+
+ExecStart=/opt/schoolplatform/venv/bin/gunicorn config.wsgi:application \
+    --bind 127.0.0.1:8000 \
+    --workers 3 \
+    --timeout 120 \
+    --access-logfile /var/log/schoolplatform/access.log \
+    --error-logfile /var/log/schoolplatform/error.log
+
+Restart=on-failure
+RestartSec=5
+KillSignal=SIGQUIT
+
+[Install]
+WantedBy=multi-user.target

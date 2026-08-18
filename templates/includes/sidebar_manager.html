@@ -1,0 +1,171 @@
+{% load i18n %}
+
+<aside class="sidebar">
+
+    <div class="sidebar-header">
+
+        <i class="bi bi-mortarboard-fill"></i>
+
+        <h4>{% trans "SchoolPlatform" %}</h4>
+
+        <small>{% trans "Manager Panel" %}</small>
+
+        {% if current_institution %}
+            <div class="current-institution">
+                <i class="bi bi-building"></i>
+                <span>{{ current_institution.name }}</span>
+            </div>
+        {% endif %}
+
+    </div>
+
+    <div class="sidebar-menu">
+
+        <a href="{% url 'manager_dashboard' %}"
+           class="{% if request.resolver_match.url_name == 'manager_dashboard' %}active{% endif %}">
+
+            <i class="bi bi-grid-1x2-fill"></i>
+
+            <span>{% trans "Dashboard" %}</span>
+
+        </a>
+
+        <hr>
+
+        <a href="{% url 'classes:list' %}"
+           class="{% if request.resolver_match.namespace == 'classes' %}active{% endif %}">
+
+            <i class="bi bi-door-open"></i>
+
+            <span>{% trans "Classes" %}</span>
+
+        </a>
+
+        <a href="{% url 'subjects:list' %}"
+           class="{% if request.resolver_match.namespace == 'subjects' %}active{% endif %}">
+
+            <i class="bi bi-book"></i>
+
+            <span>{% trans "Subjects" %}</span>
+
+        </a>
+
+        <hr>
+
+        <a href="{% url 'students:list' %}"
+           class="{% if request.resolver_match.namespace == 'students' and request.resolver_match.url_name != 'list' %}active{% endif %}">
+
+            <i class="bi bi-mortarboard"></i>
+
+            <span>{% trans "Students" %}</span>
+
+        </a>
+
+        <a href="{% url 'students:import' %}"
+           class="{% if request.resolver_match.url_name == 'import' %}active{% endif %}">
+
+            <i class="bi bi-file-earmark-excel"></i>
+
+            <span>{% trans "Import Excel" %}</span>
+
+        </a>
+
+        <a href="{% url 'teachers:list' %}"
+           class="{% if request.resolver_match.namespace == 'teachers' and request.resolver_match.url_name != 'list' %}active{% endif %}">
+
+            <i class="bi bi-person-workspace"></i>
+
+            <span>{% trans "Teachers" %}</span>
+
+        </a>
+
+        <a href="{% url 'parents:list' %}"
+           class="{% if request.resolver_match.namespace == 'parents' %}active{% endif %}">
+
+            <i class="bi bi-people"></i>
+
+            <span>{% trans "Parents" %}</span>
+
+        </a>
+
+        <hr>
+
+        <a href="{% url 'attendance:calendar' %}"
+           class="{% if request.resolver_match.namespace == 'attendance' %}active{% endif %}">
+
+            <i class="bi bi-calendar-check"></i>
+
+            <span>{% trans "Attendance" %}</span>
+
+        </a>
+
+        <a href="{% url 'grades:list' %}"
+           class="{% if request.resolver_match.namespace == 'grades' %}active{% endif %}">
+
+            <i class="bi bi-bar-chart"></i>
+
+            <span>{% trans "Grades" %}</span>
+
+        </a>
+
+        <hr>
+
+        <a href="{% url 'billing:charges' %}"
+           class="{% if request.resolver_match.namespace == 'billing' %}active{% endif %}">
+
+            <i class="bi bi-cash-coin"></i>
+
+            <span>{% trans "Fees & Payments" %}</span>
+
+        </a>
+
+        <hr>
+
+        <a href="{% url 'manager_teachers' %}"
+           class="{% if request.resolver_match.url_name == 'manager_teachers' %}active{% endif %}">
+
+            <i class="bi bi-activity"></i>
+
+            <span>{% trans "Teacher Activity" %}</span>
+
+        </a>
+
+        <a href="{% url 'manager_students' %}"
+           class="{% if request.resolver_match.url_name == 'manager_students' %}active{% endif %}">
+
+            <i class="bi bi-clipboard-data"></i>
+
+            <span>{% trans "Student Activity" %}</span>
+
+        </a>
+
+        <hr>
+
+        <a href="{% url 'assistant:chat' %}"
+           class="{% if request.resolver_match.namespace == 'assistant' %}active{% endif %}">
+
+            <i class="bi bi-robot"></i>
+
+            <span>{% if LANGUAGE_CODE == 'ar' %}المساعد الذكي{% else %}AI Assistant{% endif %}</span>
+
+        </a>
+
+        <hr>
+
+        <form action="{% url 'logout' %}" method="post">
+
+            {% csrf_token %}
+
+            <button type="submit" class="sidebar-link-btn">
+
+                <i class="bi bi-box-arrow-right"></i>
+
+                <span>{% trans "Logout" %}</span>
+
+            </button>
+
+        </form>
+
+    </div>
+
+</aside>

@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عقد اشتراك منصة إدارة المدرّسات</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Amiri:wght@400;700&display=swap');
+
+        :root {
+            --gold: #B8860B;
+            --gold-light: #DAA520;
+            --gold-dark: #8B6914;
+            --black: #1a1a1a;
+            --gray-dark: #333333;
+            --gray: #666666;
+            --gray-light: #999999;
+            --white: #ffffff;
+            --cream: #FAFAF5;
+            --border: #E8E8E8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+
+        body {
+            font-family: 'Cairo', 'Amiri', sans-serif;
+            background: var(--cream);
+            color: var(--black);
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        .contract {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: var(--white);
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .contract {
+                box-shadow: none;
+                max-width: 100%;
+            }
+        }
+
+        /* Header */
+        .contract-header {
+            background: linear-gradient(135deg, var(--black) 0%, #2d2d2d 100%);
+            color: var(--white);
+            padding: 40px 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contract-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-light), var(--gold), var(--gold-dark));
+        }
+
+        .contract-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-light), var(--gold), var(--gold-dark));
+        }
+
+        .contract-header .ornament {
+            color: var(--gold);
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .contract-header h1 {
+            font-family: 'Amiri', serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            color: var(--gold-light);
+        }
+
+        .contract-header h2 {
+            font-family: 'Cairo', sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            opacity: 0.9;
+            color: var(--white);
+        }
+
+        .contract-header .line {
+            width: 100px;
+            height: 2px;
+            background: var(--gold);
+            margin: 20px auto;
+        }
+
+        /* Parties Section */
+        .parties {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 35px 50px;
+            background: var(--cream);
+            border-bottom: 2px solid var(--border);
+        }
+
+        .party {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .party h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .party-field {
+            margin-bottom: 15px;
+        }
+
+        .party-field label {
+            display: block;
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .party-field .field-line {
+            border-bottom: 1px solid var(--gray-light);
+            min-height: 25px;
+            padding: 5px 0;
+        }
+
+        /* Content Sections */
+        .section {
+            padding: 25px 50px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .section-number {
+            background: var(--gold);
+            color: var(--white);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .section-title h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--black);
+        }
+
+        .section-content {
+            padding-right: 45px;
+        }
+
+        .section-content ol {
+            padding-right: 20px;
+        }
+
+        .section-content ol li {
+            margin-bottom: 12px;
+            line-height: 1.9;
+        }
+
+        /* Tables */
+        .contract-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 13px;
+        }
+
+        .contract-table thead th {
+            background: var(--black);
+            color: var(--gold-light);
+            padding: 14px 15px;
+            text-align: right;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .contract-table thead th:first-child {
+            border-radius: 0 8px 0 0;
+        }
+
+        .contract-table thead th:last-child {
+            border-radius: 8px 0 0 0;
+        }
+
+        .contract-table tbody td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .contract-table tbody tr:nth-child(even) {
+            background: var(--cream);
+        }
+
+        .contract-table tbody tr:last-child td:first-child {
+            border-radius: 0 0 0 8px;
+        }
+
+        .contract-table tbody tr:last-child td:last-child {
+            border-radius: 0 0 8px 0;
+        }
+
+        .contract-table .total-row td {
+            background: var(--black) !important;
+            color: var(--gold-light);
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f6f0 0%, #faf8f2 100%);
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: '★';
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: var(--gold);
+            color: var(--white);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .highlight-box h4 {
+            color: var(--gold-dark);
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .highlight-box .amount {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--black);
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .highlight-box .amount span {
+            color: var(--gold);
+        }
+
+        /* Signature Section */
+        .signature-section {
+            padding: 40px 50px;
+            background: var(--cream);
+            border-top: 2px solid var(--gold);
+        }
+
+        .signature-section h3 {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--black);
+            margin-bottom: 30px;
+        }
+
+        .signatures {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+
+        .signature-box {
+            text-align: center;
+        }
+
+        .signature-box h4 {
+            font-size: 14px;
+            color: var(--gold);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .signature-line {
+            height: 80px;
+            border-bottom: 2px solid var(--black);
+            margin-bottom: 10px;
+        }
+
+        .signature-label {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        /* Footer */
+        .contract-footer {
+            text-align: center;
+            padding: 20px 50px;
+            background: var(--black);
+            color: var(--gray-light);
+            font-size: 12px;
+        }
+
+        .contract-footer .gold-text {
+            color: var(--gold);
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .text-gold { color: var(--gold); }
+        .text-bold { font-weight: 700; }
+        .mt-20 { margin-top: 20px; }
+        .mb-20 { margin-bottom: 20px; }
+        .p-20 { padding: 20px; }
+
+        /* Gold Divider */
+        .gold-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 25px 0;
+        }
+
+        /* Notes Box */
+        .notes-box {
+            background: var(--cream);
+            border-right: 4px solid var(--gold);
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .notes-box h5 {
+            color: var(--gold-dark);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .notes-box ul {
+            padding-right: 20px;
+        }
+
+        .notes-box ul li {
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="contract">
+        <!-- Header -->
+        <div class="contract-header">
+            <div class="ornament">✦ ✦ ✦</div>
+            <h1>عقد اشتراك منصة إدارة المدرّسات</h1>
+            <div class="line"></div>
+            <h2>School Platform Subscription Agreement</h2>
+        </div>
+
+        <!-- Parties -->
+        <div class="parties">
+            <div class="party">
+                <h3>الطرف الأول (مزوّد الخدمة)</h3>
+                <div class="party-field">
+                    <label>الاسم:</label>
+                    <div class="field-line"></div>
+                </div>
+                <div class="party-field">
+                    <label>العنوان:</label>
+                    <div class="field-line"></div>
+                </div>
+                <div class="party-field">
+                    <label>الهاتف:</label>
+                    <div class="field-line"></div>
+                </div>
+                <div class="party-field">
+                    <label>البريد الإلكتروني:</label>
+                    <div class="field-line"></div>
+                </div>
+            </div>
+            <div class="party">
+                <h3>الطرف الثاني (المؤسسة التعليمية)</h3>
+                <div class="party-field">
+                    <label>اسم المؤسسة:</label>
+                    <div class="field-line"></div>
+                </div>
+                <div class="party-field">
+                    <label>العنوان:</label>
+                    <div class="field-line"></div>
+                </div>
+                <div class="party-field">
+                    <label>هاتف المسؤول:</label>
+                    <div class="field-line"></div>
+                </div>
+                <div class="party-field">
+                    <label>البريد الإلكتروني:</label>
+                    <div class="field-line"></div>
+                </div>
+                <div class="party-field">
+                    <label>كود مدير المؤسسة:</label>
+                    <div class="field-line"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Article 1 -->
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">1</div>
+                <h3>موضوع العقد</h3>
+            </div>
+            <div class="section-content">
+                <p>يتعهد الطرف الأول بتقديم منصة إلكترونية لإدارة المدرّسات تشمل:</p>
+                <ol>
+                    <li>نظام إدارة المستخدمين (مدير / معلم / طالب / ولي أمر)</li>
+                    <li>نظام تسجيل الحضور والغياب</li>
+                    <li>نظام إدخال الدرجات والتقارير الأكاديمية</li>
+                    <li>نظام الفواتير والمدفوعات</li>
+                    <li>نظام الاستيراد الجماعي للطلاب</li>
+                    <li>المساعد الذكي للاستفسارات</li>
+                    <li>تطبيق ويب قابل للتثبيت (PWA)</li>
+                    <li>دعم كامل للغة العربية واجهة من اليمين لليسار</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Article 2 -->
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">2</div>
+                <h3>مدة العقد</h3>
+            </div>
+            <div class="section-content">
+                <ol>
+                    <li>مدة العقد: <strong>سنة واحدة (12 شهراً)</strong> تبدأ من تاريخ التفعيل</li>
+                    <li>يتجدد العقد تلقائياً لمدة مماثلة ما لم يُبلغ أحد الطرفين الآخر برغبته في الإلغاء قبل <strong>30 يوماً</strong> من انتهاء المدة</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Article 3 -->
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">3</div>
+                <h3>الباقة والسعر</h3>
+            </div>
+            <div class="section-content">
+                <div class="highlight-box">
+                    <h4>الباقة الشاملة</h4>
+                    <table class="contract-table">
+                        <thead>
+                            <tr>
+                                <th>البند</th>
+                                <th>الحد</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>عدد الطلاب</td>
+                                <td>غير محدود</td>
+                            </tr>
+                            <tr>
+                                <td>عدد المعلمين</td>
+                                <td>غير محدود</td>
+                            </tr>
+                            <tr>
+                                <td>عدد الصفوف</td>
+                                <td>غير محدود</td>
+                            </tr>
+                            <tr>
+                                <td>التخزين</td>
+                                <td>50 GB</td>
+                            </tr>
+                            <tr>
+                                <td>الدعم الفني</td>
+                                <td>هاتف + واتساب + بريد</td>
+                            </tr>
+                            <tr>
+                                <td>المساعد الذكي</td>
+                                <td>مشمول</td>
+                            </tr>
+                            <tr>
+                                <td>التقارير المتقدمة</td>
+                                <td>مشمولة</td>
+                            </tr>
+                            <tr>
+                                <td>تحليلات الذكاء الاصطناعي</td>
+                                <td>مشمولة</td>
+                            </tr>
+                            <tr>
+                                <td>نسخ احتياطي يومي</td>
+                                <td>مشمول</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="amount">
+                        السعر السنوي: <span>7,000,000</span> دينار عراقي
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Article 4 -->
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">4</div>
+                <h3>الأموال التشغيلية</h3>
+            </div>
+            <div class="section-content">
+                <p>تُضاف إلى سعر الاشتراك سنوياً مبلغ <strong>1,500,000 دينار عراقي</strong> كأجر تشغيلي يغطي التكاليف التالية:</p>
+                
+                <table class="contract-table">
+                    <thead>
+                        <tr>
+                            <th>البند</th>
+                            <th>التكلفة السنوية</th>
+                            <th>التفاصيل</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>الاستضافة والخادم</td>
+                            <td>500,000 دينار</td>
+                            <td>خادم افتراضي (4GB ذاكرة، 2 معالج، 100GB تخزين) مع نسخ احتياطي تلقائي</td>
+                        </tr>
+                        <tr>
+                            <td>النطاق والشهادة الأمنية</td>
+                            <td>100,000 دينار</td>
+                            <td>تسجيل اسم النطاق + شهادة التشفير لمدة سنة كاملة</td>
+                        </tr>
+                        <tr>
+                            <td>الصيانة والتحديثات</td>
+                            <td>400,000 دينار</td>
+                            <td>تطوير مستمر للمنصة + إصلاح الأخطاء البرمجية + إضافة ميزات جديدة</td>
+                        </tr>
+                        <tr>
+                            <td>الدعم الفني</td>
+                            <td>300,000 دينار</td>
+                            <td>فريق دعم فني بدوام جزئي (8 ساعات / أسبوع)</td>
+                        </tr>
+                        <tr>
+                            <td>الأمان والحماية</td>
+                            <td>100,000 دينار</td>
+                            <td>جدار حماية + مراقبة أمنية مستمرة + حماية من الاختراق</td>
+                        </tr>
+                        <tr>
+                            <td>النسخ الاحتياطي والاستعادة</td>
+                            <td>100,000 دينار</td>
+                            <td>نسخ احتياطي يومي للبيانات + استعادة في حالات الكوارث</td>
+                        </tr>
+                        <tr>
+                            <td>الكهرباء والاتصالات</td>
+                            <td>100,000 دينار</td>
+                            <td>استهلاك الكهرباء + اتصال الإنترنت</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>الإجمالي</td>
+                            <td colspan="2">1,500,000 دينار عراقي</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="notes-box">
+                    <h5>ملاحظات:</h5>
+                    <ul>
+                        <li>تُدفع هذه الرسوم <strong>سنوياً</strong> مع اشتراك الباقة</li>
+                        <li>تُذكر في فاتورة منفصلة أو كجزء من الفاتورة الرئيسية</li>
+                        <li>لا تُسترجع في حال إلغاء العقد</li>
+                        <li>قد تتغير حسب معدل التضخم وتغيرات السوق</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Article 5 -->
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">5</div>
+                <h3>التكاليف الإضافية</h3>
+            </div>
+            <div class="section-content">
+                <table class="contract-table">
+                    <thead>
+                        <tr>
+                            <th>البند</th>
+                            <th>السعر</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>طالب إضافي</td>
+                            <td>10,000 دينار / شهر</td>
+                        </tr>
+                        <tr>
+                            <td>معلم إضافي</td>
+                            <td>25,000 دينار / شهر</td>
+                        </tr>
+                        <tr>
+                            <td>تدريب إضافي (يوم واحد)</td>
+                            <td>100,000 دينار</td>
+                        </tr>
+                        <tr>
+                            <td>تخصيص واجهة (شعار + ألوان)</td>
+                            <td>500,000 دينار (مرة واحدة)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Article 6 -->
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">6</div>
+                <h3>شروط الدفع</h3>
+            </div>
+            <div class="section-content">
+                <div class="highlight-box">
+                    <h4>ملخص المبالغ</h4>
+                    <table class="contract-table">
+                        <thead>
+                            <tr>
+                                <th>البند</th>
+                                <th>المبلغ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>اشتراك الباقة الشاملة (سنوياً)</td>
+                                <td>7,000,000 دينار عراقي</td>
+                            </tr>
+                            <tr>
+                                <td>الأموال التشغيلية (سنوياً)</td>
+                                <td>1,500,000 دينار عراقي</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td>الإجمالي السنوي</td>
+                                <td>8,500,000 دينار عراقي</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="gold-divider"></div>
+                    
+                    <table class="contract-table">
+                        <thead>
+                            <tr>
+                                <th>مرحلة الدفع</th>
+                                <th>النسبة</th>
+                                <th>المبلغ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>الدفعة المقدمة (قبل التوقيع)</td>
+                                <td>30%</td>
+                                <td>2,550,000 دينار عراقي</td>
+                            </tr>
+                            <tr>
+                                <td>الدفعة المتبقية (بعد التوقيع)</td>
+                                <td>70%</td>
+                                <td>5,950,000 دينار عراقي</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <ol>
+                    <li><strong>الدفع السنوي فقط</strong></li>
+                    <li>تُقبل الطرق التالية: نقدي / تحويل بنكي / شيك</li>
+                    <li>تُصدر الفواتير رسمياً بتاريخ الاستحقاق</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Article 7 -->
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">7</div>
+                <h3>الملكية والبيانات</h3>
+            </div>
+            <div class="section-content">
+                <ol>
+                    <li>جميع بيانات المؤسسة ملكيتها الحصرية</li>
+                    <li>يلتزم الطرف الأول بحماية البيانات وخصوصيتها</li>
+                    <li>تصدير جميع البيانات عند انتهاء العقد مجاناً</li>
+                    <li>حذف البيانات من خوادم الطرف الأول خلال <strong>30 يوماً</strong> من انتهاء العقد</li>
+                    <li>لا يحق للطرف الأول استخدام البيانات لأي غرض آخر</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Article 8 -->
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">8</div>
+                <h3>الدعم الفني والصيانة</h3>
+            </div>
+            <div class="section-content">
+                <ol>
+                    <li>تحديثات مستمرة مجاناً طوال مدة العقد</li>
+                    <li>إصلاح الأخطاء البرمجية مجاناً</li>
+                    <li>الدعم الفني:
+                        <table class="contract-table" style="margin-top: 10px;">
+                            <thead>
+                                <tr>
+                                    <th>ساعات الدعم</th>
+                                    <th>وقت الاستجابة</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>8 ساعات / أسبوع</td>
+                                    <td>48 ساعة كحد أقصى</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </li>
+                    <li>التدريب الأولي: <strong>يوم واحد مجاني</strong> (4 ساعات)</li>
+                    <li>التدريب الإضافي: <strong>100,000 دينار / يوم</strong></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Article 9 -->
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">9</div>
+                <h3>الإلغاء والاسترداد</h3>
+            </div>
+            <div class="section-content">
+                <ol>
+                    <li>يحق للطرف الثاني الإلغاء مع إشعار كتابي قبل <strong>30 يوماً</strong></li>
+                    <li>في حال الإلغاء قبل 6 أشهر: استرداد <strong>50%</strong> من المبلغ المدفوع</li>
+                    <li>في حال الإلغاء بعد 6 أشهر: لا يستحق استرداد</li>
+                    <li>يحق للطرف الأول تعليق الخدمة في حال عدم الدفع لمدة <strong>15 يوماً</strong> بعد موعد الاستحقاق</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Article 10 -->
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">10</div>
+                <h3>المسؤولية</h3>
+            </div>
+            <div class="section-content">
+                <ol>
+                    <li>يلتزم الطرف الأول بتوفير الخدمة بنسبة <strong>99%</strong> وقت التشغيل شهرياً</li>
+                    <li>في حال تجاوز الت停工 عن العمل <strong>ساعتين</strong> متتاليتين، يُخصم من الفاتورة التالية</li>
+                    <li>لا يتحمل الطرف الأول المسؤولية عن الأخطاء الناتجة عن سوء الاستخدام</li>
+                    <li>تُحل النزاعات ودياً أولاً، ثم عبر الجهات القضائية المختصة</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Article 11 -->
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">11</div>
+                <h3>السرية</h3>
+            </div>
+            <div class="section-content">
+                <ol>
+                    <li>يلتزم كل طرف بالحفاظ على سرية المعلومات الخاصة بالطرف الآخر</li>
+                    <li>لا يُفصح عن أي معلومات دون موافقة كتابية مسبقة</li>
+                    <li>تستمر التزامات السرية لمدة <strong>سنتين</strong> بعد انتهاء العقد</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Article 12 -->
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">12</div>
+                <h3>القوة القاهرة</h3>
+            </div>
+            <div class="section-content">
+                <p>لا يُعتبر أي طرف مخلاً بالعقد إذا كان عدم التنفيذ ناتجاً عن قوة قاهرة كالأوبئة، الكوارث الطبيعية، الحروب، أو التعطل الشبكي كبير الحجم.</p>
+            </div>
+        </div>
+
+        <!-- Article 13 -->
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">13</div>
+                <h3>التعديلات</h3>
+            </div>
+            <div class="section-content">
+                <ol>
+                    <li>يُستثنى من هذا العقد أي تعديلات يتم الاتفاق عليها كتابياً بين الطرفين</li>
+                    <li>أي تعديلات يجب أن يوقعها الطرفان</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Article 14 -->
+        <div class="section">
+            <div class="section-title">
+                <div class="section-number">14</div>
+                <h3>القانون الحاكم والاختصاص القضائي</h3>
+            </div>
+            <div class="section-content">
+                <ol>
+                    <li>يخضع هذا العقد لقوانين الجمهورية العراقية</li>
+                    <li>أي نزاع يُحل عبر المحاكم المختصة في محافظة نينوى</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Signatures -->
+        <div class="signature-section">
+            <h3>التوقيعات</h3>
+            <div class="signatures">
+                <div class="signature-box">
+                    <h4>الطرف الأول (مزوّد الخدمة)</h4>
+                    <div class="signature-line"></div>
+                    <div class="signature-label">الاسم والتوقيع</div>
+                    <div class="signature-line" style="height: 40px;"></div>
+                    <div class="signature-label">التاريخ: ___/___/______</div>
+                    <div class="signature-line" style="height: 40px;"></div>
+                    <div class="signature-label">الختم</div>
+                </div>
+                <div class="signature-box">
+                    <h4>الطرف الثاني (المؤسسة التعليمية)</h4>
+                    <div class="signature-line"></div>
+                    <div class="signature-label">الاسم والتوقيع</div>
+                    <div class="signature-line" style="height: 40px;"></div>
+                    <div class="signature-label">التاريخ: ___/___/______</div>
+                    <div class="signature-line" style="height: 40px;"></div>
+                    <div class="signature-label">الختم</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="contract-footer">
+            <p>تم إعداد هذا العقد بتاريخ: <span class="gold-text">___/___/______</span></p>
+            <p style="margin-top: 10px;">✦ منصة إدارة المدرّسات ✦</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "My Children" %} — {% trans "Attendance" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h4 class="mb-0">
+        <i class="bi bi-calendar-check-fill"></i>
+        {% trans "Attendance" %}
+    </h4>
+</div>
+
+<div class="card shadow-sm">
+
+    <div class="card-body table-responsive">
+
+        <table class="table table-hover align-middle">
+
+            <thead>
+
+                <tr>
+
+                    <th>{% trans "Student" %}</th>
+                    <th>{% trans "Subject" %}</th>
+                    <th>{% trans "Status" %}</th>
+                    <th>{% trans "Date" %}</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for record in attendance %}
+
+                <tr>
+
+                    <td>
+                        <i class="bi bi-person-circle text-primary me-1"></i>
+                        {{ record.student.user.get_full_name }}
+                    </td>
+
+                    <td>{{ record.subject.name }}</td>
+
+                    <td>
+
+                        {% if record.status == "present" %}
+
+                        <span class="badge bg-success">
+                            <i class="bi bi-check-circle"></i>
+                            {% trans "Present" %}
+                        </span>
+
+                        {% else %}
+
+                        <span class="badge bg-danger">
+                            <i class="bi bi-x-circle"></i>
+                            {% trans "Absent" %}
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>{{ record.date }}</td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="4" class="text-center text-muted py-4">
+
+                        {% trans "No attendance records found." %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,117 @@
+:root{
+
+    --theme-primary:#6C5CE7;
+    --theme-primary-strong:#4737BF;
+    --theme-hover:#5B4BD6;
+    --theme-soft:#EFEDFC;
+
+    --theme-sidebar:
+        radial-gradient(700px 320px at 100% 0%,rgba(255,255,255,.14),transparent 60%),
+        linear-gradient(180deg,#3A2BAA 0%,#5542D6 100%);
+    --theme-navbar:rgba(255,255,255,.86);
+
+    --theme-background:#F7F6F3;
+    --theme-card:#FFFFFF;
+    --theme-text:#2B2833;
+    --theme-border:#ECE9E3;
+
+}
+
+body{
+
+    color:var(--theme-text);
+
+    background-color:var(--theme-background);
+
+    background-image:
+        radial-gradient(1100px 520px at 88% -12%,rgba(140,122,246,.08),transparent 62%),
+        radial-gradient(900px 460px at -8% 4%,rgba(16,185,129,.045),transparent 55%),
+        radial-gradient(760px 380px at 55% 118%,rgba(142,120,244,.05),transparent 60%);
+
+    background-attachment:fixed;
+
+}
+
+.navbar{
+
+    background:var(--theme-navbar)!important;
+
+    border-bottom:1px solid var(--theme-border);
+
+    box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 8px 28px -16px rgba(76,64,160,.18);
+
+    backdrop-filter:blur(14px);
+
+    -webkit-backdrop-filter:blur(14px);
+
+}
+
+.sidebar{
+
+    background:var(--theme-sidebar)!important;
+
+    box-shadow:6px 0 30px -12px rgba(71,55,191,.35);
+
+}
+
+.card,
+.card-custom{
+
+    background:var(--theme-card);
+
+    border:1px solid var(--theme-border);
+
+}
+
+.btn-primary{
+
+    background:var(--theme-primary);
+    border-color:var(--theme-primary);
+
+    box-shadow:0 10px 22px -10px rgba(108,92,231,.65),inset 0 1px 0 rgba(255,255,255,.18);
+
+}
+
+.btn-primary:hover,
+.btn-primary:focus{
+
+    background:var(--theme-hover);
+    border-color:var(--theme-hover);
+
+}
+
+.btn-outline-primary{
+
+    border-color:var(--theme-primary);
+    color:var(--theme-primary);
+
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus{
+
+    background:var(--theme-primary);
+    border-color:var(--theme-primary);
+    color:#fff;
+
+}
+
+.text-primary{
+
+    color:var(--theme-primary)!important;
+
+}
+
+.bg-primary{
+
+    background:var(--theme-primary)!important;
+
+}
+
+::selection{
+
+    background:rgba(108,92,231,.22);
+
+    color:var(--theme-text);
+
+}

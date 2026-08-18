@@ -1,0 +1,704 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Manager Dashboard" %}
+{% endblock %}
+
+{% block content %}
+
+{{ attendance_trend|json_script:"attendance-trend" }}
+{{ subject_names|json_script:"subject-names" }}
+{{ subject_averages|json_script:"subject-averages" }}
+
+<div class="dashboard-hero mb-4">
+
+    <div class="row align-items-center g-3">
+
+        <div class="col-lg-7">
+
+            <div class="hero-date mb-1">
+
+                <i class="bi bi-calendar3 me-1"></i>
+
+                {{ today|date:"l, j F Y" }}
+
+            </div>
+
+            <h1 class="hero-title mb-1">
+                {% trans "Welcome back" %}
+            </h1>
+
+            <p class="hero-subtitle">
+                {{ institution.name }}
+                &middot;
+                {% trans "Full academic overview and control panel." %}
+            </p>
+
+        </div>
+
+        <div class="col-lg-5">
+
+            <div class="hero-actions justify-content-lg-end">
+
+                <a href="{% url 'students:create' %}" class="btn">
+                    <i class="bi bi-person-plus-fill me-1"></i>
+                    {% trans "Add Student" %}
+                </a>
+
+                <a href="{% url 'attendance:session' %}" class="btn">
+                    <i class="bi bi-calendar-check me-1"></i>
+                    {% trans "Attendance" %}
+                </a>
+
+                <a href="{% url 'notifications:list' %}" class="btn position-relative">
+                    <i class="bi bi-bell me-1"></i>
+                    {% trans "Notifications" %}
+                    {% if unread_notifications_count %}
+                    <span class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle">
+                        {{ unread_notifications_count }}
+                    </span>
+                    {% endif %}
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row g-4 mb-4">
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="stat-card">
+
+            <div>
+
+                <div class="stat-title">{% trans "Students" %}</div>
+
+                <div class="stat-number">{{ student_count }}</div>
+
+            </div>
+
+            <div class="stat-icon is-emerald">
+                <i class="bi bi-mortarboard-fill"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="stat-card">
+
+            <div>
+
+                <div class="stat-title">{% trans "Teachers" %}</div>
+
+                <div class="stat-number">{{ teacher_count }}</div>
+
+            </div>
+
+            <div class="stat-icon is-info">
+                <i class="bi bi-person-workspace"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="stat-card">
+
+            <div>
+
+                <div class="stat-title">{% trans "Classes" %}</div>
+
+                <div class="stat-number">{{ classroom_count }}</div>
+
+            </div>
+
+            <div class="stat-icon is-amber">
+                <i class="bi bi-door-open-fill"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="stat-card">
+
+            <div>
+
+                <div class="stat-title">{% trans "Subjects" %}</div>
+
+                <div class="stat-number">{{ subject_count }}</div>
+
+            </div>
+
+            <div class="stat-icon is-rose">
+                <i class="bi bi-book-fill"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row g-4 mb-4">
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="insight-card">
+
+            <div class="insight-icon is-teal">
+                <i class="bi bi-calendar2-check"></i>
+            </div>
+
+            <div>
+
+                <div class="insight-label">{% trans "Attendance Today" %}</div>
+
+                <div class="insight-value">{{ attendance_percentage }}%</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="insight-card">
+
+            <div class="insight-icon is-emerald">
+                <i class="bi bi-award"></i>
+            </div>
+
+            <div>
+
+                <div class="insight-label">{% trans "Average Grade" %}</div>
+
+                <div class="insight-value">{{ average_grade_percentage }}%</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="insight-card">
+
+            <div class="insight-icon is-amber">
+                <i class="bi bi-cash-coin"></i>
+            </div>
+
+            <div>
+
+                <div class="insight-label">{% trans "Fees Collected" %}</div>
+
+                <div class="insight-value">{{ fee_paid|floatformat:0 }}</div>
+
+                <small class="text-muted">{% trans "Pending" %}: {{ fee_pending|floatformat:0 }}</small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="insight-card">
+
+            <div class="insight-icon is-rose">
+                <i class="bi bi-people"></i>
+            </div>
+
+            <div>
+
+                <div class="insight-label">{% trans "Students With Parents" %}</div>
+
+                <div class="insight-value">{{ students_with_parents }}</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row g-4 mb-4">
+
+    <div class="col-lg-8">
+
+        <div class="card h-100">
+
+            <div class="card-header d-flex justify-content-between align-items-center">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-graph-up me-2"></i>
+
+                    {% trans "Attendance Trend" %}
+
+                    <span class="text-muted fw-normal small">({% trans "Last 7 days" %})</span>
+
+                </h5>
+
+                <a href="{% url 'attendance:list' %}" class="btn btn-sm btn-outline-primary">
+                    {% trans "View All" %}
+                </a>
+
+            </div>
+
+            <div class="card-body">
+
+                <canvas id="attendanceTrendChart" height="120"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-4">
+
+        <div class="card h-100">
+
+            <div class="card-header">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-pie-chart-fill me-2"></i>
+
+                    {% trans "Today's Status" %}
+
+                </h5>
+
+            </div>
+
+            <div class="card-body d-flex flex-column align-items-center justify-content-center">
+
+                <div class="progress-donut mb-3"
+                     style="--value:{{ attendance_percentage }};--donut-color:#10B981;">
+
+                    <span class="donut-value">{{ attendance_percentage }}%</span>
+
+                    <span class="donut-label">{% trans "Present" %}</span>
+
+                </div>
+
+                <div class="row text-center w-100 g-2">
+
+                    <div class="col-4">
+
+                        <div class="fw-bold text-success fs-5">{{ present_today }}</div>
+
+                        <div class="text-muted small">{% trans "Present" %}</div>
+
+                    </div>
+
+                    <div class="col-4">
+
+                        <div class="fw-bold text-warning fs-5">{{ late_today }}</div>
+
+                        <div class="text-muted small">{% trans "Late" %}</div>
+
+                    </div>
+
+                    <div class="col-4">
+
+                        <div class="fw-bold text-danger fs-5">{{ absent_today }}</div>
+
+                        <div class="text-muted small">{% trans "Absent" %}</div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row g-4 mb-4">
+
+    <div class="col-lg-6">
+
+        <div class="card h-100">
+
+            <div class="card-header d-flex justify-content-between align-items-center">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-bar-chart-fill me-2"></i>
+
+                    {% trans "Average by Subject" %}
+
+                </h5>
+
+                <a href="{% url 'grades:list' %}" class="btn btn-sm btn-outline-primary">
+                    {% trans "View All" %}
+                </a>
+
+            </div>
+
+            <div class="card-body">
+
+                {% if subject_names %}
+
+                <canvas id="subjectChart" height="140"></canvas>
+
+                {% else %}
+
+                <div class="empty-state">
+                    <div class="empty-icon"><i class="bi bi-bar-chart"></i></div>
+                    <p>{% trans "No grades recorded yet." %}</p>
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-6">
+
+        <div class="card h-100">
+
+            <div class="card-header d-flex justify-content-between align-items-center">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+
+                    {% trans "Students At Risk" %}
+
+                    <span class="badge-soft badge-soft-danger ms-1">{{ at_risk_count }}</span>
+
+                </h5>
+
+                <a href="{% url 'attendance:list' %}" class="btn btn-sm btn-outline-primary">
+                    {% trans "View All" %}
+                </a>
+
+            </div>
+
+            <div class="card-body">
+
+                {% if at_risk_students %}
+
+                <ul class="list-group list-group-flush">
+
+                    {% for student in at_risk_students %}
+
+                    <li class="list-group-item d-flex align-items-center gap-3 border-0 px-0">
+
+                        <span class="avatar-circle is-rose">
+                            {{ student.user.get_full_name|default:student.user.username|slice:":1"|upper }}
+                        </span>
+
+                        <div class="flex-grow-1">
+
+                            <div class="fw-semibold">
+                                {{ student.user.get_full_name|default:student.user.username }}
+                            </div>
+
+                            <small class="text-muted">
+                                {{ student.classroom|default:"—" }}
+                                &middot;
+                                {{ student.student_code }}
+                            </small>
+
+                        </div>
+
+                        <span class="badge-soft badge-soft-danger">{% trans "Absent today" %}</span>
+
+                    </li>
+
+                    {% endfor %}
+
+                </ul>
+
+                {% else %}
+
+                <div class="empty-state">
+                    <div class="empty-icon"><i class="bi bi-check-circle"></i></div>
+                    <p>{% trans "No absences recorded today." %}</p>
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card">
+
+    <div class="card-header d-flex justify-content-between align-items-center">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-clipboard-check me-2"></i>
+
+            {% trans "Recent Grades" %}
+
+        </h5>
+
+        <a href="{% url 'grades:list' %}" class="btn btn-sm btn-outline-primary">
+            {% trans "View All" %}
+        </a>
+
+    </div>
+
+    <div class="card-body p-0">
+
+        {% if recent_grades %}
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead>
+
+                    <tr>
+
+                        <th>{% trans "Student" %}</th>
+
+                        <th>{% trans "Subject" %}</th>
+
+                        <th>{% trans "Exam" %}</th>
+
+                        <th>{% trans "Score" %}</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for grade in recent_grades %}
+
+                    <tr>
+
+                        <td>{{ grade.student.user.get_full_name|default:grade.student.user.username }}</td>
+
+                        <td>{{ grade.subject.name }}</td>
+
+                        <td>{{ grade.exam_name }}</td>
+
+                        <td>
+
+                            <span class="badge-soft badge-soft-primary">
+
+                                {{ grade.score }}/{{ grade.max_score }}
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+            <div class="empty-icon"><i class="bi bi-clipboard-data"></i></div>
+            <p>{% trans "No grades recorded yet." %}</p>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+
+(function(){
+
+    var trend = JSON.parse(document.getElementById('attendance-trend').textContent);
+
+    var gridColor = 'rgba(120,130,155,.14)';
+
+    var tickColor = '#6B7280';
+
+    new Chart(document.getElementById('attendanceTrendChart'), {
+
+        type: 'line',
+
+        data: {
+
+            labels: trend.map(function(t){ return t.label; }),
+
+            datasets: [
+
+                {
+
+                    label: 'Present',
+
+                    data: trend.map(function(t){ return t.present; }),
+
+                    borderColor: '#10B981',
+
+                    backgroundColor: 'rgba(16,185,129,.12)',
+
+                    fill: true,
+
+                    tension: .35,
+
+                    borderWidth: 2.5,
+
+                    pointRadius: 4,
+
+                    pointBackgroundColor: '#10B981'
+
+                },
+
+                {
+
+                    label: 'Absent',
+
+                    data: trend.map(function(t){ return t.absent; }),
+
+                    borderColor: '#EF4444',
+
+                    backgroundColor: 'rgba(239,68,68,.08)',
+
+                    fill: false,
+
+                    tension: .35,
+
+                    borderWidth: 2.5,
+
+                    pointRadius: 4,
+
+                    pointBackgroundColor: '#EF4444'
+
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: { position: 'bottom', labels: { color: tickColor, usePointStyle: true } }
+
+            },
+
+            scales: {
+
+                x: { ticks: { color: tickColor }, grid: { display: false } },
+
+                y: { beginAtZero: true, ticks: { color: tickColor, precision: 0 }, grid: { color: gridColor } }
+
+            }
+
+        }
+
+    });
+
+    var subjectEl = document.getElementById('subjectChart');
+
+    if (subjectEl) {
+
+        var names = JSON.parse(document.getElementById('subject-names').textContent);
+
+        var avgs = JSON.parse(document.getElementById('subject-averages').textContent);
+
+        new Chart(subjectEl, {
+
+            type: 'bar',
+
+            data: {
+
+                labels: names,
+
+                datasets: [
+
+                    {
+
+                        label: 'Average',
+
+                        data: avgs,
+
+                        backgroundColor: 'rgba(79,70,229,.75)',
+
+                        hoverBackgroundColor: 'rgba(124,58,237,.9)',
+
+                        borderRadius: 8,
+
+                        maxBarThickness: 46
+
+                    }
+
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: { legend: { display: false } },
+
+                scales: {
+
+                    x: { ticks: { color: tickColor }, grid: { display: false } },
+
+                    y: { beginAtZero: true, ticks: { color: tickColor, precision: 0 }, grid: { color: gridColor } }
+
+                }
+
+            }
+
+        });
+
+    }
+
+})();
+
+</script>
+
+{% endblock %}

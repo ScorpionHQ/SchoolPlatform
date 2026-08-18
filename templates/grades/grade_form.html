@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Grade" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+
+    <div class="card-header">
+
+        <h4 class="mb-0">
+
+            {% if form.instance.pk %}
+                {% trans "Edit Grade" %}
+            {% else %}
+                {% trans "Add Grade" %}
+            {% endif %}
+
+        </h4>
+
+    </div>
+
+    <div class="card-body">
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+
+                <div class="alert alert-danger">
+
+                    {{ form.non_field_errors }}
+
+                </div>
+
+            {% endif %}
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        {{ form.student.label }}
+                    </label>
+
+                    {{ form.student }}
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        {{ form.subject.label }}
+                    </label>
+
+                    {{ form.subject }}
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        {{ form.teacher.label }}
+                    </label>
+
+                    {{ form.teacher }}
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        {{ form.exam_name.label }}
+                    </label>
+
+                    {{ form.exam_name }}
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        {{ form.score.label }}
+                    </label>
+
+                    {{ form.score }}
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        {{ form.max_score.label }}
+                    </label>
+
+                    {{ form.max_score }}
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        {{ form.exam_date.label }}
+                    </label>
+
+                    {{ form.exam_date }}
+
+                </div>
+
+                <div class="col-12 mb-3">
+
+                    <label class="form-label">
+                        {{ form.note.label }}
+                    </label>
+
+                    {{ form.note }}
+
+                </div>
+
+            </div>
+
+            <div class="text-end">
+
+                <button
+                    type="submit"
+                    class="btn btn-primary">
+
+                    <i class="bi bi-save"></i>
+
+                    {% trans "Save Grade" %}
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

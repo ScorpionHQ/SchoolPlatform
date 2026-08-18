@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+{% if LANGUAGE_CODE == 'ar' %}المساعد الذكي{% else %}AI Assistant{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/assistant.css' %}?v=7">
+{% endblock %}
+
+{% block content %}
+
+<div id="assistant-chat-root"
+     class="assistant-page"
+     data-endpoint="{% url 'assistant:api_chat' %}"
+     data-upload-endpoint="{% url 'assistant:api_files_upload' %}"
+     data-analyze-endpoint="{% url 'assistant:api_files_analyze' %}"
+     data-report-endpoint="{% url 'assistant:api_files_report' %}"
+     data-csrf="{{ csrf_token }}"
+     data-max-files="{{ max_files }}"
+     data-max-size-mb="{{ max_file_size_mb }}">
+
+    <aside class="assistant-sidebar" id="assistant-sidebar">
+        <div class="assistant-sidebar-header">
+            <h3>{% if LANGUAGE_CODE == 'ar' %}المحادثات{% else %}Conversations{% endif %}</h3>
+            <button type="button"
+                    class="assistant-new-chat-btn"
+                    id="assistant-new-chat-btn"
+                    title="{% if LANGUAGE_CODE == 'ar' %}محادثة جديدة{% else %}New chat{% endif %}">
+                <i class="bi bi-plus-lg"></i>
+            </button>
+        </div>
+        <div class="assistant-sidebar-list" id="assistant-sidebar-list">
+            <div class="assistant-sidebar-empty">
+                <i class="bi bi-chat-dots"></i>
+                <span>{% if LANGUAGE_CODE == 'ar' %}لا توجد محادثات بعد{% else %}No conversations yet{% endif %}</span>
+            </div>
+        </div>
+    </aside>
+
+    <main class="assistant-chat-main">
+        <div class="assistant-chat-card">
+
+            <div class="assistant-chat-head">
+                <button type="button"
+                        class="assistant-sidebar-toggle"
+                        id="assistant-sidebar-toggle"
+                        title="{% if LANGUAGE_CODE == 'ar' %}إظهار/إخفاء القائمة{% else %}Toggle sidebar{% endif %}">
+                    <i class="bi bi-list"></i>
+                </button>
+
+                {% if assistant_config.emotions.calm %}
+                    <span class="assistant-chat-avatar"
+                          data-character>
+                        <img src="{{ assistant_config.emotions.calm }}"
+                             alt="{{ assistant_config.name }}"
+                             id="assistant-chat-character-img">
+                    </span>
+                {% elif assistant_config.avatar_exists %}
+                    <span class="assistant-chat-avatar">
+                        <img src="{{ assistant_config.avatar_url }}"
+                             alt="{{ assistant_config.name }}">
+                    </span>
+                {% else %}
+                    <span class="assistant-chat-avatar assistant-chat-avatar-emoji">🤖</span>
+                {% endif %}
+
+                <div class="assistant-chat-head-info">
+                    <h2 class="assistant-chat-title">
+                        {% if LANGUAGE_CODE == 'ar' %}المساعد الذكي{% else %}AI Assistant{% endif %}
+                    </h2>
+                    <div class="assistant-chat-online">
+                        <span class="assistant-status-dot"></span>
+                        {{ assistant_config.name }}
+                        &middot;
+                        {% if LANGUAGE_CODE == 'ar' %}متصل{% else %}Online{% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="assistant-chat-messages"
+                 id="assistant-chat-messages">
+
+                {% for message in messages %}
+                    <div class="assistant-msg-row assistant-row-{{ message.role }}">
+                        {% if message.role != "system" %}
+                            {% if message.role == "assistant" and assistant_config.emotions.calm %}
+                                <span class="assistant-avatar is-bot">
+                                    <img src="{{ assistant_config.emotions.calm }}" alt="">
+                                </span>
+                            {% elif message.role == "assistant" and assistant_config.avatar_exists %}
+                                <span class="assistant-avatar is-bot">
+                                    <img src="{{ assistant_config.avatar_url }}" alt="">
+                                </span>
+                            {% elif message.role == "assistant" %}
+                                <span class="assistant-avatar is-bot">
+                                    <i class="bi bi-robot-fill"></i>
+                                </span>
+                            {% else %}
+                                <span class="assistant-avatar is-user">
+                                    <i class="bi bi-person-fill"></i>
+                                </span>
+                            {% endif %}
+                        {% endif %}
+
+                        <div class="assistant-msg {{ message.role }}">
+                            <div class="assistant-msg-text">
+                                {% if message.role == "system" %}
+                                    <em>{{ message.content }}</em>
+                                {% else %}
+                                    {{ message.content }}
+                                {% endif %}
+                            </div>
+                            {% if message.sources %}
+                                <div class="assistant-msg-sources">
+                                    <div class="assistant-msg-sources-title">
+                                        <i class="bi bi-link-45deg"></i>
+                                        {% if LANGUAGE_CODE == 'ar' %}المصادر{% else %}Sources{% endif %}
+                                    </div>
+                                    <ul>
+                                        {% for source in message.sources %}
+                                            <li>
+                                                <a href="{{ source.url }}" target="_blank" rel="noopener noreferrer">
+                                                    {{ source.title }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="assistant-chat-empty">
+                        <div class="assistant-empty-avatar">
+                            {% if assistant_config.emotions.calm %}
+                                <img src="{{ assistant_config.emotions.calm }}" alt="">
+                            {% elif assistant_config.avatar_exists %}
+                                <img src="{{ assistant_config.avatar_url }}" alt="">
+                            {% else %}
+                                <i class="bi bi-robot"></i>
+                            {% endif %}
+                        </div>
+                        <h3 class="assistant-empty-title">
+                            {% if LANGUAGE_CODE == 'ar' %}مرحباً! كيف يمكنني مساعدتك؟{% else %}Hello! How can I help you?{% endif %}
+                        </h3>
+                        <p class="assistant-empty-desc">
+                            {% if LANGUAGE_CODE == 'ar' %}
+                                اسألني عن الدرجات، الحضور، الإحصائيات، أو أي خطأ تواجهه في المنصة. يمكنك أيضًا رفع ملفات PDF أو Word أو Excel أو صور وسأقوم بتلخيصها وتحليلها وإنشاء تقرير PDF لك.
+                            {% else %}
+                                Ask me about grades, attendance, statistics, or any error you face. You can also upload PDF, Word, Excel or image files and I will summarize, analyze and export a PDF report for you.
+                            {% endif %}
+                        </p>
+                        <div class="assistant-empty-chips">
+                            <button type="button" class="assistant-chip" data-q="{% if LANGUAGE_CODE == 'ar' %}عرض إحصائيات الحضور{% else %}Show attendance statistics{% endif %}">
+                                <i class="bi bi-bar-chart-line chip-ico"></i>
+                                {% if LANGUAGE_CODE == 'ar' %}إحصائيات الحضور{% else %}Attendance stats{% endif %}
+                            </button>
+                            <button type="button" class="assistant-chip" data-q="{% if LANGUAGE_CODE == 'ar' %}ما هي الدرجات المتاحة؟{% else %}What grades are available?{% endif %}">
+                                <i class="bi bi-journal-text chip-ico"></i>
+                                {% if LANGUAGE_CODE == 'ar' %}الدرجات{% else %}Grades{% endif %}
+                            </button>
+                            <button type="button" class="assistant-chip" data-q="{% if LANGUAGE_CODE == 'ar' %}حل مشكلة في تسجيل الدخول{% else %}Help me fix a login issue{% endif %}">
+                                <i class="bi bi-tools chip-ico"></i>
+                                {% if LANGUAGE_CODE == 'ar' %}حل مشاكل{% else %}Fix issues{% endif %}
+                            </button>
+                            <button type="button" class="assistant-chip" data-q="{% if LANGUAGE_CODE == 'ar' %}تقرير عن الطلاب{% else %}Generate a student report{% endif %}">
+                                <i class="bi bi-file-earmark-pdf chip-ico"></i>
+                                {% if LANGUAGE_CODE == 'ar' %}تقرير طلاب{% else %}Student report{% endif %}
+                            </button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="assistant-drop-zone"
+                 id="assistant-drop-zone"
+                 hidden>
+                <div class="assistant-drop-zone-inner">
+                    <i class="bi bi-cloud-arrow-up"></i>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}أفلت الملفات هنا{% else %}Drop files here{% endif %}</p>
+                </div>
+            </div>
+
+            <div class="assistant-attachments"
+                 id="assistant-attachments"
+                 hidden>
+                <div class="assistant-attachments-label">
+                    <i class="bi bi-paperclip"></i>
+                    {% if LANGUAGE_CODE == 'ar' %}الملفات المرفقة{% else %}Attached files{% endif %}
+                </div>
+                <div class="assistant-attachments-list"
+                     id="assistant-attachments-list"></div>
+                <div class="assistant-attachments-actions">
+                    <button type="button"
+                            class="btn btn-sm btn-outline-primary"
+                            id="assistant-btn-summarize"
+                            disabled>
+                        <i class="bi bi-card-text"></i>
+                        {% if LANGUAGE_CODE == 'ar' %}تلخيص{% else %}Summarize{% endif %}
+                    </button>
+                    <button type="button"
+                            class="btn btn-sm btn-outline-primary"
+                            id="assistant-btn-analyze"
+                            disabled>
+                        <i class="bi bi-search"></i>
+                        {% if LANGUAGE_CODE == 'ar' %}تحليل{% else %}Analyze{% endif %}
+                    </button>
+                    <button type="button"
+                            class="btn btn-sm btn-outline-secondary"
+                            id="assistant-btn-report"
+                            disabled
+                            title="{% if LANGUAGE_CODE == 'ar' %}إنشاء تقرير PDF من الملفات والتحليل{% else %}Generate a PDF report from the files and analysis{% endif %}">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                        {% if LANGUAGE_CODE == 'ar' %}تقرير PDF{% else %}PDF report{% endif %}
+                    </button>
+                </div>
+            </div>
+
+            <div class="assistant-chat-input">
+                <input type="file"
+                       id="assistant-file-input"
+                       accept=".pdf,.docx,.xlsx,.txt,.md,.csv,.png,.jpg,.jpeg,.webp"
+                       multiple
+                       hidden>
+
+                <button type="button"
+                        id="assistant-attach-btn"
+                        class="assistant-input-icon-btn"
+                        title="{% if LANGUAGE_CODE == 'ar' %}إرفاق ملفات{% else %}Attach files{% endif %}">
+                    <i class="bi bi-paperclip"></i>
+                </button>
+
+                <input type="text"
+                       id="assistant-chat-input"
+                       class="assistant-chat-input-field"
+                       placeholder="{% if LANGUAGE_CODE == 'ar' %}اكتب رسالتك...{% else %}Type your message...{% endif %}"
+                       autocomplete="off"
+                       aria-label="{% if LANGUAGE_CODE == 'ar' %}اكتب رسالتك{% else %}Type your message{% endif %}">
+
+                <button type="button"
+                        id="assistant-chat-send"
+                        class="assistant-send-btn">
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </div>
+
+        </div>
+
+        {{ assistant_config.emotions|json_script:"assistant-chat-emotions" }}
+
+    </main>
+
+</div>
+
+<script>
+    window.__assistantStrings = {
+        sources: "{% if LANGUAGE_CODE == 'ar' %}المصادر{% else %}Sources{% endif %}",
+        summarize: "{% if LANGUAGE_CODE == 'ar' %}تلخيص{% else %}Summarize{% endif %}",
+        analyze: "{% if LANGUAGE_CODE == 'ar' %}تحليل{% else %}Analyze{% endif %}",
+        report: "{% if LANGUAGE_CODE == 'ar' %}تقرير PDF{% else %}PDF report{% endif %}",
+        uploadError: "{% if LANGUAGE_CODE == 'ar' %}تعذر رفع الملفات. حاول مرة أخرى.{% else %}Could not upload files. Please try again.{% endif %}",
+        analyzeError: "{% if LANGUAGE_CODE == 'ar' %}تعذر تحليل الملفات. حاول مرة أخرى.{% else %}Could not analyze the files. Please try again.{% endif %}"
+    };
+</script>
+
+<script src="{% static 'js/assistant.js' %}?v=6"></script>
+
+{% endblock %}

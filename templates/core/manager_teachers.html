@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Teacher Activity" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h1 class="section-title mb-1">
+            {% trans "Teacher Activity" %}
+        </h1>
+
+        <p class="section-subtitle mb-0">
+            {{ institution.name }}
+            &middot;
+            {% trans "Overview of teachers and their activity on the platform." %}
+        </p>
+
+    </div>
+
+    <a href="{% url 'teachers:list' %}"
+       class="btn btn-outline-primary">
+
+        <i class="bi bi-person-workspace me-2"></i>
+
+        {% trans "Manage Teachers" %}
+
+    </a>
+
+</div>
+
+{% if teachers %}
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>{% trans "Teacher" %}</th>
+
+                        <th>{% trans "Code" %}</th>
+
+                        <th>{% trans "Subjects" %}</th>
+
+                        <th>{% trans "Students" %}</th>
+
+                        <th>{% trans "Grades Recorded" %}</th>
+
+                        <th>{% trans "Attendance Sessions" %}</th>
+
+                        <th>{% trans "Today" %}</th>
+
+                        <th>{% trans "Last Login" %}</th>
+
+                        <th>{% trans "Status" %}</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for item in teachers %}
+
+                    <tr>
+
+                        <td>
+
+                            <div class="fw-semibold">
+
+                                {{ item.teacher.user.get_full_name|default:item.teacher.employee_code }}
+
+                            </div>
+
+                            <small class="text-muted">
+
+                                {{ item.teacher.specialization|default:"-" }}
+
+                            </small>
+
+                        </td>
+
+                        <td>{{ item.teacher.employee_code }}</td>
+
+                        <td>
+
+                            <span class="badge bg-info text-dark">
+
+                                {{ item.subjects_count }}
+
+                            </span>
+
+                        </td>
+
+                        <td>{{ item.students_count }}</td>
+
+                        <td>
+
+                            <span class="badge bg-primary">
+
+                                {{ item.grades_count }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-success">
+
+                                {{ item.attendance_count }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            {% if item.attendance_today %}
+
+                                <span class="badge bg-success">
+
+                                    {{ item.attendance_today }}
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-light text-muted">0</span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {% if item.last_login %}
+
+                                {{ item.last_login|date:"d/m/Y H:i" }}
+
+                            {% else %}
+
+                                <span class="text-muted">{% trans "Never" %}</span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {% if item.is_active %}
+
+                                <span class="badge bg-success">
+
+                                    {% trans "Active" %}
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-secondary">
+
+                                    {% trans "Inactive" %}
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% else %}
+
+<div class="alert alert-info">
+
+    <i class="bi bi-info-circle me-2"></i>
+
+    {% trans "No teachers found in this institution yet." %}
+
+</div>
+
+{% endif %}
+
+{% endblock %}

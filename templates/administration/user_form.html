@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2>{{ title }}</h2>
+
+        <p class="text-muted">
+
+            {% if form.instance.pk %}
+                {% trans "Update the user information below." %}
+            {% else %}
+                {% trans "Fill in the user information below." %}
+            {% endif %}
+
+        </p>
+
+    </div>
+
+    <a href="{% url 'administration:user_list' %}" class="btn btn-light">
+
+        <i class="bi bi-arrow-left"></i>
+
+        {% trans "Back" %}
+
+    </a>
+
+</div>
+
+{% if form.instance.pk %}
+
+<div class="alert alert-light border d-flex justify-content-between align-items-center">
+
+    <div>
+
+        <span class="text-muted">{% trans "Login Code" %}:</span>
+
+        <code>{{ form.instance.login_code }}</code>
+
+    </div>
+
+    {% if not form.instance.is_active %}
+
+    <span class="badge bg-secondary">{% trans "Inactive" %}</span>
+
+    {% endif %}
+
+</div>
+
+{% endif %}
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+
+    <div class="alert alert-danger">
+
+        {{ form.non_field_errors }}
+
+    </div>
+
+    {% endif %}
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body p-4">
+
+            <div class="row g-4">
+
+                <div class="col-md-6">
+
+                    <label class="form-label">{% trans "Username" %}</label>
+
+                    {{ form.username }}
+
+                    {% for error in form.username.errors %}
+
+                    <div class="text-danger small">{{ error }}</div>
+
+                    {% endfor %}
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <label class="form-label">{% trans "Password" %}</label>
+
+                    {{ form.password }}
+
+                    {% if form.password.help_text %}
+
+                    <div class="form-text">{{ form.password.help_text }}</div>
+
+                    {% endif %}
+
+                    {% for error in form.password.errors %}
+
+                    <div class="text-danger small">{{ error }}</div>
+
+                    {% endfor %}
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <label class="form-label">{% trans "First Name" %}</label>
+
+                    {{ form.first_name }}
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <label class="form-label">{% trans "Last Name" %}</label>
+
+                    {{ form.last_name }}
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <label class="form-label">{% trans "Role" %}</label>
+
+                    {{ form.role }}
+
+                    {% for error in form.role.errors %}
+
+                    <div class="text-danger small">{{ error }}</div>
+
+                    {% endfor %}
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <label class="form-label">{% trans "Gender" %}</label>
+
+                    {{ form.gender }}
+
+                    {% if form.gender.help_text %}
+
+                    <div class="form-text">{{ form.gender.help_text }}</div>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <label class="form-label">{% trans "Phone Number" %}</label>
+
+                    {{ form.phone_number }}
+
+                </div>
+
+                <div class="col-md-6 d-flex align-items-center">
+
+                    <div class="d-flex flex-column gap-2">
+
+                        <div class="form-check form-switch">
+
+                            {{ form.is_active }}
+
+                            <label class="form-check-label">
+
+                                {% trans "Active" %}
+
+                            </label>
+
+                        </div>
+
+                        <div class="form-check form-switch">
+
+                            {{ form.must_change_password }}
+
+                            <label class="form-check-label">
+
+                                {% trans "Must change password on next login" %}
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card-footer bg-white d-flex justify-content-end gap-2">
+
+            <a href="{% url 'administration:user_list' %}" class="btn btn-light">
+
+                {% trans "Cancel" %}
+
+            </a>
+
+            <button class="btn btn-primary">
+
+                <i class="bi bi-check-lg"></i>
+
+                {% trans "Save User" %}
+
+            </button>
+
+        </div>
+
+    </div>
+
+</form>
+
+{% endblock %}

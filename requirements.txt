@@ -1,0 +1,18 @@
+Django>=6.0,<6.1
+openpyxl>=3.1
+Pillow>=10.0
+python-dotenv>=1.0
+pypdf>=6.0
+python-docx>=1.1
+reportlab>=4.2
+arabic-reshaper>=3.0
+python-bidi>=0.6
+
+# Production
+gunicorn>=21.2
+whitenoise>=6.8
+dj-database-url>=2.3
+
+# Database (PostgreSQL in production)
+psycopg[binary]>=3.1; sys_platform != "win32"
+psycopg2-binary>=2.9; sys_platform != "win32"

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Class Rooms" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h2>{% trans "Class Rooms" %}</h2>
+        <p class="text-muted">
+            {% trans "Manage all class rooms." %}
+        </p>
+    </div>
+
+    <a href="{% url 'classes:create' %}" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i>
+        {% trans "Add Class" %}
+    </a>
+
+</div>
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <table class="table table-hover">
+
+            <thead>
+
+                <tr>
+
+                    <th>{% trans "Institution" %}</th>
+                    <th>{% trans "Class" %}</th>
+                    <th>{% trans "Level" %}</th>
+                    <th>{% trans "Academic Year" %}</th>
+                    <th class="text-end">{% trans "Actions" %}</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for classroom in classrooms %}
+
+                <tr>
+
+                    <td>{{ classroom.institution.name }}</td>
+                    <td>{{ classroom.name }}</td>
+                    <td>{{ classroom.level }}</td>
+                    <td>{{ classroom.academic_year }}</td>
+
+                    <td class="text-end">
+
+                        <a href="{% url 'classes:update' classroom.pk %}"
+                           class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+
+                        <a href="{% url 'classes:delete' classroom.pk %}"
+                           class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+
+                    </td>
+
+                </tr>
+
+            {% empty %}
+
+                <tr>
+
+                    <td colspan="5" class="text-center text-muted">
+
+                        {% trans "No class rooms found." %}
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

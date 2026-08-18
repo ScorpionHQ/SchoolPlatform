@@ -1,0 +1,56 @@
+
+
+[dir="rtl"] .sidebar{
+
+    left:auto;
+    right:0;
+
+}
+
+[dir="rtl"] .content-area{
+
+    margin-left:0;
+    margin-right:270px;
+
+}
+
+[dir="rtl"] .sidebar-menu a:hover{
+
+    transform:translateX(-6px);
+
+}
+
+[dir="rtl"] .sidebar-menu a.active::before{
+
+    left:auto;
+    right:0;
+
+    border-radius:8px 0 0 8px;
+
+}
+
+[dir="rtl"] .navbar-brand{
+
+    margin-left:1rem;
+    margin-right:0;
+
+}
+
+[dir="rtl"] .dropdown-menu-end{
+
+    right:auto;
+    left:0;
+
+}
+
+
+
+@media(max-width:992px){
+
+    [dir="rtl"] .content-area{
+
+        margin-right:88px;
+
+    }
+
+}

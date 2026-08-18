@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Notifications" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h2>{% trans "Notifications" %}</h2>
+        <p class="text-muted">
+            {% trans "All platform updates and changes." %}
+        </p>
+    </div>
+
+    <form method="post" action="{% url 'notifications:mark_all_read' %}">
+
+        {% csrf_token %}
+
+        <button type="submit" class="btn btn-outline-primary">
+            <i class="bi bi-check2-all"></i>
+            {% trans "Mark all as read" %}
+        </button>
+
+    </form>
+
+</div>
+
+<div class="card shadow-sm">
+
+    <div class="card-body p-0">
+
+        {% if notifications %}
+
+            <ul class="list-group list-group-flush">
+
+                {% for notification in notifications %}
+
+                    <li class="list-group-item {% if not notification.is_read %}list-group-item-light{% endif %}">
+
+                        <div class="d-flex justify-content-between align-items-start gap-3">
+
+                            <div class="d-flex align-items-start gap-3">
+
+                                <span class="mt-1">
+
+                                    {% if not notification.is_read %}
+                                        <span class="badge rounded-pill bg-primary">1</span>
+                                    {% endif %}
+
+                                </span>
+
+                                <div>
+
+                                    <div class="fw-semibold">
+                                        {{ notification.title }}
+                                    </div>
+
+                                    {% if notification.message %}
+                                        <div class="text-muted small">
+                                            {{ notification.message }}
+                                        </div>
+                                    {% endif %}
+
+                                    <div class="text-muted small mt-1">
+                                        {{ notification.get_type_display }}
+                                        &middot;
+                                        {{ notification.created_at|date:"d/m/Y H:i" }}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            {% if notification.link or not notification.is_read %}
+
+                                <div class="d-flex gap-2">
+
+                                    {% if not notification.is_read %}
+
+                                        <form method="post"
+                                              action="{% url 'notifications:mark_read' notification.pk %}">
+
+                                            {% csrf_token %}
+
+                                            <button type="submit" class="btn btn-sm btn-outline-primary"
+                                                    title="{% trans 'Mark as read' %}">
+
+                                                <i class="bi bi-check2"></i>
+
+                                            </button>
+
+                                        </form>
+
+                                    {% endif %}
+
+                                    {% if notification.link %}
+
+                                        <form method="post"
+                                              action="{% url 'notifications:mark_read' notification.pk %}">
+
+                                            {% csrf_token %}
+
+                                            <button type="submit" class="btn btn-sm btn-primary">
+
+                                                {% trans "View" %}
+
+                                            </button>
+
+                                        </form>
+
+                                    {% endif %}
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+
+        {% else %}
+
+            <div class="text-center text-muted py-5">
+
+                <i class="bi bi-bell-slash display-4 d-block mb-3"></i>
+
+                <p>{% trans "You have no notifications yet." %}</p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+    {% if notifications.has_other_pages %}
+
+        <nav class="mt-4">
+
+            <ul class="pagination justify-content-center">
+
+                {% if notifications.has_previous %}
+
+                    <li class="page-item">
+
+                        <a class="page-link"
+                           href="?page={{ notifications.previous_page_number }}">
+
+                            {% trans "Previous" %}
+
+                        </a>
+
+                    </li>
+
+                {% endif %}
+
+                <li class="page-item active">
+
+                    <span class="page-link">
+                        {{ notifications.number }}
+                    </span>
+
+                </li>
+
+                {% if notifications.has_next %}
+
+                    <li class="page-item">
+
+                        <a class="page-link"
+                           href="?page={{ notifications.next_page_number }}">
+
+                            {% trans "Next" %}
+
+                        </a>
+
+                    </li>
+
+                {% endif %}
+
+            </ul>
+
+        </nav>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

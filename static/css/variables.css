@@ -1,0 +1,55 @@
+:root{
+
+    --primary:#6C5CE7;
+    --primary-hover:#5B4BD6;
+    --primary-strong:#4737BF;
+    --primary-light:#EFEDFC;
+
+    --accent:#8E78F4;
+    --accent-soft:#B9A8FB;
+
+    --elementary:#F59E0B;
+    --elementary-hover:#D97706;
+    --elementary-light:#FEF4E6;
+
+    --middle:#6C5CE7;
+    --middle-hover:#5B4BD6;
+    --middle-light:#EFEDFC;
+
+    --high:#2B2833;
+    --high-hover:#1B1822;
+    --high-light:#F6F4F0;
+
+    --background:#F7F6F3;
+    --surface:#FFFFFF;
+
+    --border:#ECE9E3;
+    --border-strong:#DED9D0;
+
+    --text:#2B2833;
+    --text-light:#6F6B78;
+
+    --success:#10B981;
+    --success-light:#E8F7F1;
+    --danger:#EF4444;
+    --danger-light:#FDECEC;
+    --warning:#F59E0B;
+    --warning-light:#FEF4E6;
+    --info:#3B82F6;
+    --info-light:#EAF2FE;
+
+    --grad-brand:linear-gradient(135deg,#4737BF 0%,#6C5CE7 55%,#8E78F4 100%);
+    --grad-soft:linear-gradient(135deg,#EFEDFC 0%,#F5F2FE 55%,#FBF9FF 100%);
+
+    --radius-sm:10px;
+    --radius-md:14px;
+    --radius-lg:18px;
+    --radius-xl:24px;
+
+    --shadow-sm:0 1px 2px rgba(76,64,160,.04),0 2px 10px rgba(76,64,160,.05);
+    --shadow-md:0 6px 18px rgba(76,64,160,.08),0 16px 40px -12px rgba(76,64,160,.12);
+    --shadow-lg:0 12px 32px rgba(76,64,160,.12),0 30px 70px -16px rgba(76,64,160,.22);
+
+    --transition:.25s ease;
+
+}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Class Room" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="card-custom">
+
+    <div class="mb-4">
+
+        <h2>
+            {% if form.instance.pk %}
+                {% trans "Edit Class Room" %}
+            {% else %}
+                {% trans "Add Class Room" %}
+            {% endif %}
+        </h2>
+
+        <p class="text-muted">
+            {% trans "Create or edit a class room." %}
+        </p>
+
+    </div>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">{% trans "Institution" %}</label>
+                {{ form.institution }}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">{% trans "Class Name" %}</label>
+                {{ form.name }}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">{% trans "Level" %}</label>
+                {{ form.level }}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">{% trans "Academic Year" %}</label>
+                {{ form.academic_year }}
+            </div>
+
+        </div>
+
+        <div class="mt-4">
+
+            <button type="submit" class="btn btn-primary">
+
+                <i class="bi bi-check-circle"></i>
+
+                {% trans "Save" %}
+
+            </button>
+
+            <a href="{% url 'classes:list' %}"
+               class="btn btn-secondary">
+
+                {% trans "Cancel" %}
+
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

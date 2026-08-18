@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+403
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body text-center p-5">
+
+            <h1 class="display-1 text-danger">
+                🚫
+            </h1>
+
+            <h2 class="fw-bold mb-3">
+                {% trans "Access Denied" %}
+            </h2>
+
+            <p class="text-muted mb-4">
+                {% trans "You do not have permission to access this page." %}
+            </p>
+
+            <a href="{% url 'dashboard' %}" class="btn btn-primary">
+                {% trans "Back to Dashboard" %}
+            </a>
+
+            <button type="button"
+                    class="btn btn-outline-primary"
+                    onclick="window.AssistantApp && window.AssistantApp.send('{% if LANGUAGE_CODE == 'ar' %}واجهت خطأ 403 (لا أملك صلاحية الوصول). ساعدني ماذا أفعل؟{% else %}I got a 403 error (access denied). Help me what to do?{% endif %}')">
+
+                <i class="bi bi-robot"></i>
+                {% trans "Ask the assistant" %}
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    window.assistantError = "403";
+</script>
+
+{% endblock %}

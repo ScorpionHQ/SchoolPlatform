@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Payment Receipt" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2>{% trans "Payment Receipt" %}</h2>
+
+        <p class="text-muted">#{{ payment.pk }}</p>
+
+    </div>
+
+    <div class="d-flex gap-2">
+
+        <button class="btn btn-primary" onclick="window.print()">
+            <i class="bi bi-printer"></i>
+            {% trans "Print" %}
+        </button>
+
+        <a href="{% url 'billing:charges' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i>
+            {% trans "Back" %}
+        </a>
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm mx-auto" style="max-width: 520px;">
+
+    <div class="card-body p-4">
+
+        <div class="text-center border-bottom pb-3 mb-3">
+
+            <h4 class="mb-1">{{ payment.institution.name }}</h4>
+
+            <p class="text-muted mb-0">{% trans "Payment Receipt" %}</p>
+
+        </div>
+
+        <table class="table table-sm">
+
+            <tr>
+                <th class="text-muted fw-normal">{% trans "Receipt no." %}</th>
+                <td class="text-end">#{{ payment.pk }}</td>
+            </tr>
+
+            <tr>
+                <th class="text-muted fw-normal">{% trans "Date" %}</th>
+                <td class="text-end">{{ payment.created_at|date:"d/m/Y H:i" }}</td>
+            </tr>
+
+            <tr>
+                <th class="text-muted fw-normal">{% trans "Student" %}</th>
+                <td class="text-end">{{ payment.student.user.get_full_name }}</td>
+            </tr>
+
+            <tr>
+                <th class="text-muted fw-normal">{% trans "Fee" %}</th>
+                <td class="text-end">{{ payment.student_fee.fee_type.name }}</td>
+            </tr>
+
+            <tr>
+                <th class="text-muted fw-normal">{% trans "Year" %}</th>
+                <td class="text-end">{{ payment.student_fee.academic_year|default:"-" }}</td>
+            </tr>
+
+            <tr>
+                <th class="text-muted fw-normal">{% trans "Method" %}</th>
+                <td class="text-end">{{ payment.get_method_display }}</td>
+            </tr>
+
+            <tr class="border-top">
+
+                <th>{% trans "Amount" %}</th>
+
+                <td class="text-end fs-5 fw-bold">{{ payment.amount }} {% trans "IQD" %}</td>
+
+            </tr>
+
+            <tr>
+                <th class="text-muted fw-normal">{% trans "Recorded by" %}</th>
+                <td class="text-end">{{ payment.created_by.get_full_name|default:"-" }}</td>
+            </tr>
+
+        </table>
+
+        {% if payment.note %}
+
+            <p class="text-muted small mb-0">
+                <strong>{% trans "Note:" %}</strong>
+
+                {{ payment.note }}
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

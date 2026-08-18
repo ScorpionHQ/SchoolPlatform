@@ -1,0 +1,189 @@
+{% load static %}
+{% load i18n %}
+
+{% if assistant_config %}
+
+    <link rel="stylesheet" href="{% static 'css/assistant.css' %}?v=7">
+
+<div id="assistant-root"
+     data-endpoint="{% url 'assistant:api_chat' %}"
+     data-name="{{ assistant_config.name }}"
+     data-csrf="{{ csrf_token }}"
+     data-default-emotion="calm"
+     data-welcome="{% if LANGUAGE_CODE == 'ar' %}مرحبًا! أنا {{ assistant_config.name }} 🤖 مساعدك الذكي. اسألني عن درجاتك، حضورك، أو أي مشكلة تواجهها في المنصة.{% else %}Hi! I'm {{ assistant_config.name }} 🤖 your AI assistant. Ask me about grades, attendance, or any problem you face in the platform.{% endif %}">
+
+    <button type="button"
+            class="assistant-hint"
+            id="assistant-hint"
+            aria-label="{% if LANGUAGE_CODE == 'ar' %}تلميح المساعد{% else %}Assistant hint{% endif %}"></button>
+
+    <div class="assistant-panel"
+         id="assistant-panel"
+         role="dialog"
+         aria-label="{{ assistant_config.name }}">
+
+        <div class="assistant-header">
+
+            <span class="assistant-character"
+                  id="assistant-character"
+                  data-character>
+
+                {% if assistant_config.emotions.calm %}
+
+                    <img src="{{ assistant_config.emotions.calm }}"
+                         alt="{{ assistant_config.name }}"
+                         id="assistant-character-img">
+
+                {% elif assistant_config.avatar_exists %}
+
+                    <img src="{{ assistant_config.avatar_url }}"
+                         alt="{{ assistant_config.name }}"
+                         id="assistant-character-img">
+
+                {% else %}
+
+                    <span class="assistant-header-emoji">🤖</span>
+
+                {% endif %}
+
+            </span>
+
+            <div>
+
+                <div class="assistant-header-name">
+                    {{ assistant_config.name }}
+                </div>
+
+                <div class="assistant-header-status">
+                    {% if LANGUAGE_CODE == 'ar' %}
+                        متصل - مساعد ذكي
+                    {% else %}
+                        Online - AI Assistant
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <button type="button"
+                    class="assistant-close"
+                    id="assistant-close"
+                    aria-label="{% if LANGUAGE_CODE == 'ar' %}إغلاق{% else %}Close{% endif %}">✕</button>
+
+        </div>
+
+        <div class="assistant-messages"
+             id="assistant-messages"></div>
+
+        <div class="assistant-suggestions"
+             id="assistant-suggestions"
+             aria-hidden="true">
+
+            <div class="assistant-suggestions-label">
+                {% if LANGUAGE_CODE == 'ar' %}
+                    جرّب أن تسأل
+                {% else %}
+                    Try asking
+                {% endif %}
+            </div>
+
+            <div class="assistant-suggestions-list">
+
+                <button type="button"
+                        class="assistant-chip"
+                        data-q="{% if LANGUAGE_CODE == 'ar' %}أرني درجاتي{% else %}Show my grades{% endif %}">
+                    <span class="chip-ico">📊</span>
+                    {% if LANGUAGE_CODE == 'ar' %}الدرجات{% else %}Grades{% endif %}
+                </button>
+
+                <button type="button"
+                        class="assistant-chip"
+                        data-q="{% if LANGUAGE_CODE == 'ar' %}أرني سجل الحضور{% else %}Show my attendance{% endif %}">
+                    <span class="chip-ico">📅</span>
+                    {% if LANGUAGE_CODE == 'ar' %}الحضور{% else %}Attendance{% endif %}
+                </button>
+
+                <button type="button"
+                        class="assistant-chip"
+                        data-q="{% if LANGUAGE_CODE == 'ar' %}أرني إحصائيات مدرستي{% else %}Show my school statistics{% endif %}">
+                    <span class="chip-ico">📈</span>
+                    {% if LANGUAGE_CODE == 'ar' %}الإحصائيات{% else %}Statistics{% endif %}
+                </button>
+
+                <button type="button"
+                        class="assistant-chip"
+                        data-q="{% if LANGUAGE_CODE == 'ar' %}ساعدني في حل مشكلة{% else %}Help me fix a problem{% endif %}">
+                    <span class="chip-ico">🛟</span>
+                    {% if LANGUAGE_CODE == 'ar' %}مساعدة{% else %}Help{% endif %}
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="assistant-inputbar">
+
+            <input type="text"
+                   id="assistant-input"
+                   placeholder="{% if LANGUAGE_CODE == 'ar' %}اسألني عن أي شيء...{% else %}Ask me anything...{% endif %}"
+                   autocomplete="off"
+                   aria-label="{% if LANGUAGE_CODE == 'ar' %}اكتب رسالتك{% else %}Type your message{% endif %}">
+
+            <button type="button"
+                    class="assistant-send"
+                    id="assistant-send"
+                    aria-label="{% if LANGUAGE_CODE == 'ar' %}إرسال{% else %}Send{% endif %}">
+                <i class="bi bi-send-fill"></i>
+            </button>
+
+        </div>
+
+    </div>
+
+    <button type="button"
+            class="assistant-launcher"
+            id="assistant-launcher"
+            aria-label="{{ assistant_config.name }}">
+
+        {% if assistant_config.emotions.calm %}
+
+            <img src="{{ assistant_config.emotions.calm }}"
+                 alt="{{ assistant_config.name }}"
+                 id="assistant-launcher-img">
+
+        {% elif assistant_config.avatar_exists %}
+
+            <img src="{{ assistant_config.avatar_url }}"
+                 alt="{{ assistant_config.name }}"
+                 id="assistant-launcher-img">
+
+        {% else %}
+
+            <span class="assistant-launcher-emoji">🤖</span>
+
+        {% endif %}
+
+        <span class="assistant-launcher-badge"></span>
+
+    </button>
+
+    {{ assistant_config.emotions|json_script:"assistant-emotions" }}
+
+</div>
+
+<script>
+    window.__assistantErrors = {
+        network: "{% if LANGUAGE_CODE == 'ar' %}خطأ في الشبكة. حاول مرة أخرى.{% else %}Network error. Please try again.{% endif %}",
+        form: "{% if LANGUAGE_CODE == 'ar' %}يبدو أن هناك خطأ في النموذج. يمكنني مساعدتك في إصلاحه.{% else %}There seems to be a form error. I can help you fix it.{% endif %}",
+        page404: "{% if LANGUAGE_CODE == 'ar' %}هذه الصفحة غير موجودة. يمكنني المساعدة.{% else %}This page does not exist. I can help.{% endif %}",
+        page403: "{% if LANGUAGE_CODE == 'ar' %}تم رفض الوصول. يمكنني المساعدة.{% else %}Access denied. I can help.{% endif %}",
+        page500: "{% if LANGUAGE_CODE == 'ar' %}حدث خطأ ما. يمكنني المساعدة.{% else %}Something went wrong. I can help.{% endif %}"
+    };
+
+    window.__assistantStrings = {
+        sources: "{% if LANGUAGE_CODE == 'ar' %}المصادر{% else %}Sources{% endif %}"
+    };
+</script>
+
+    <script src="{% static 'js/assistant.js' %}?v=5"></script>
+
+{% endif %}

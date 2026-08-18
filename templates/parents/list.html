@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Parents" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2>{% trans "Parents" %}</h2>
+
+        <p class="text-muted">
+
+            {% trans "Manage all parents." %}
+
+        </p>
+
+    </div>
+
+    <a href="{% url 'parents:create' %}" class="btn btn-primary">
+
+        <i class="bi bi-plus-lg"></i>
+
+        {% trans "Add Parent" %}
+
+    </a>
+
+</div>
+
+<div class="card mb-4">
+
+    <div class="card-body">
+
+        <form method="get">
+
+            <div class="row g-3">
+
+                <div class="col-md-5">
+
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" name="q" class="form-control"
+                               placeholder="{% trans 'Search by name...' %}"
+                               value="{{ q }}">
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <select name="classroom" class="form-select">
+                        <option value="">{% trans "All Classes" %}</option>
+                        {% for cls in classrooms %}
+                        <option value="{{ cls.id }}" {% if selected_classroom == cls.id|stringformat:"d" %}selected{% endif %}>
+                            {{ cls.name }} - {{ cls.level }}
+                        </option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <button class="btn btn-primary w-100">
+
+                        <i class="bi bi-funnel"></i>
+
+                        {% trans "Filter" %}
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <table class="table table-hover align-middle">
+
+            <thead>
+
+                <tr>
+
+                    <th></th>
+                    <th>{% trans "Full Name" %}</th>
+
+                    <th>{% trans "Relationship" %}</th>
+
+                    <th>{% trans "Students" %}</th>
+
+                    <th class="text-end">
+
+                        {% trans "Actions" %}
+
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for parent in parents %}
+
+                <tr>
+
+                    <td>
+                        {% if parent.user.profile_image %}
+                        <img src="{{ parent.user.profile_image.url }}"
+                             class="rounded-circle"
+                             style="width:40px; height:40px; object-fit:cover;"
+                             alt="">
+                        {% else %}
+                        <div class="rounded-circle bg-info bg-opacity-10 d-inline-flex align-items-center justify-content-center"
+                             style="width:40px; height:40px;">
+                            <i class="bi bi-person text-info"></i>
+                        </div>
+                        {% endif %}
+                    </td>
+
+                    <td>
+
+                        {{ parent.user.get_full_name }}
+
+                    </td>
+
+                    <td>
+
+                        {{ parent.relationship|default:"-" }}
+
+                    </td>
+
+                    <td>
+
+                        {% for student in parent.students.all %}
+
+                            <span class="badge bg-primary">
+
+                                {{ student.user.get_full_name }}
+
+                            </span>
+
+                        {% empty %}
+
+                            -
+
+                        {% endfor %}
+
+                    </td>
+
+                    <td class="text-end">
+
+                        <a
+                            href="{% url 'parents:update' parent.id %}"
+                            class="btn btn-sm btn-outline-primary">
+
+                            <i class="bi bi-pencil"></i>
+
+                        </a>
+
+                        <a
+                            href="{% url 'parents:delete' parent.id %}"
+                            class="btn btn-sm btn-outline-danger">
+
+                            <i class="bi bi-trash"></i>
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="5" class="text-center text-muted py-5">
+
+                        {% trans "No parents found." %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% if parents.has_other_pages %}
+    <nav class="mt-3">
+        <ul class="pagination justify-content-center">
+            {% if parents.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ parents.previous_page_number }}&q={{ q }}{% if selected_classroom %}&classroom={{ selected_classroom }}{% endif %}">{% trans "Previous" %}</a>
+            </li>
+            {% endif %}
+            <li class="page-item active"><span class="page-link">{{ parents.number }}</span></li>
+            {% if parents.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ parents.next_page_number }}&q={{ q }}{% if selected_classroom %}&classroom={{ selected_classroom }}{% endif %}">{% trans "Next" %}</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+
+</div>
+
+{% endblock %}

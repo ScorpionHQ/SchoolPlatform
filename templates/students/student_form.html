@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Add Student" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="card-custom">
+
+    <div class="mb-4">
+        <h2>{% trans "Add Student" %}</h2>
+        <p class="text-muted mb-0">
+            {% trans "Create a new student account." %}
+        </p>
+    </div>
+
+    <form method="post">
+      {% if form.errors %}
+      <div class="alert alert-danger">
+
+         {{ form.non_field_errors }}
+
+         {% for field in form %}
+             {% for error in field.errors %}
+                 <div>
+                     <strong>{{ field.label }}:</strong>
+                     {{ error }}
+                  </div>
+             {% endfor %}
+         {% endfor %}
+
+        </div>
+       {% endif %}
+        {% csrf_token %}
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">{% trans "First Name" %}</label>
+                {{ form.first_name }}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">{% trans "Last Name" %}</label>
+                {{ form.last_name }}
+            </div>
+            <div class="col-md-6 mb-3">
+             <label class="form-label">{% trans "Username" %}</label>
+             {{ form.username }}
+           </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">{% trans "Student Code" %}</label>
+                {{ form.student_code }}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">{% trans "Gender" %}</label>
+                {{ form.gender }}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">{% trans "Institution" %}</label>
+                {{ form.institution }}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">{% trans "Class Room" %}</label>
+                {{ form.classroom }}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">{% trans "Date of Birth" %}</label>
+                {{ form.date_of_birth }}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">{% trans "Parent Phone" %}</label>
+                {{ form.parent_phone }}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">{% trans "Password" %} ({% trans "optional" %})</label>
+                {{ form.password }}
+                {% if not is_update %}
+                    <small class="text-muted">
+                        {% trans "Leave empty to generate a secure random password automatically." %}
+                    </small>
+                {% endif %}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">{% trans "Confirm Password" %}</label>
+                {{ form.confirm_password }}
+            </div>
+
+            <div class="col-12 mb-3">
+                <label class="form-label">{% trans "Address" %}</label>
+                {{ form.address }}
+            </div>
+
+        </div>
+
+        <div class="mt-4">
+
+            <button class="btn btn-primary">
+                {% trans "Create Student" %}
+            </button>
+
+            <a href="{% url 'students:list' %}" class="btn btn-secondary">
+                {% trans "Cancel" %}
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

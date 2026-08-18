@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Fee Types" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2>{% trans "Fee Types" %}</h2>
+
+        <p class="text-muted">
+            {% trans "Define the fees your school charges (registration, books, transport...)." %}
+        </p>
+
+    </div>
+
+    <a href="{% url 'billing:charges' %}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i>
+        {% trans "Charges" %}
+    </a>
+
+    <a href="{% url 'billing:prices_pdf' %}" class="btn btn-outline-primary">
+        <i class="bi bi-file-earmark-pdf"></i>
+        {% trans "Price List PDF" %}
+    </a>
+
+</div>
+
+<div class="row g-4">
+
+    <div class="col-lg-4">
+
+        <div class="card shadow-sm">
+
+            <div class="card-header bg-white">
+                <h5 class="mb-0">{% trans "Add Fee Type" %}</h5>
+            </div>
+
+            <div class="card-body">
+
+                <form method="post">
+
+                    {% csrf_token %}
+
+                    {% for field in form %}
+
+                        <div class="mb-3">
+
+                            <label class="form-label">{{ field.label }}</label>
+
+                            {{ field }}
+
+                            {% if field.errors %}
+
+                                <div class="text-danger small mt-1">
+                                    {{ field.errors|striptags }}
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endfor %}
+
+                    <button class="btn btn-primary w-100">
+                        <i class="bi bi-plus-lg"></i>
+                        {% trans "Add Fee Type" %}
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-8">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>{% trans "Name" %}</th>
+                                <th>{% trans "Amount" %}</th>
+                                <th>{% trans "Required" %}</th>
+                                <th>{% trans "Status" %}</th>
+                                <th class="text-end">{% trans "Actions" %}</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for fee_type in fee_types %}
+
+                                <tr>
+
+                                    <td>{{ fee_type.name }}</td>
+
+                                    <td>{{ fee_type.amount }} {% trans "IQD" %}</td>
+
+                                    <td>
+                                        {% if fee_type.is_required %}
+                                            <span class="badge text-bg-success">{% trans "Required" %}</span>
+                                        {% else %}
+                                            <span class="badge text-bg-secondary">{% trans "Optional" %}</span>
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+                                        {% if fee_type.is_active %}
+                                            <span class="badge text-bg-success">{% trans "Active" %}</span>
+                                        {% else %}
+                                            <span class="badge text-bg-danger">{% trans "Inactive" %}</span>
+                                        {% endif %}
+                                    </td>
+
+                                    <td class="text-end">
+
+                                        <form method="post"
+                                              action="{% url 'billing:fee_toggle' fee_type.pk %}"
+                                              class="d-inline">
+                                            {% csrf_token %}
+                                            <button class="btn btn-sm btn-outline-secondary"
+                                                    title="{% trans 'Toggle' %}">
+                                                <i class="bi bi-toggle-on"></i>
+                                            </button>
+                                        </form>
+
+                                        <form method="post"
+                                              action="{% url 'billing:fee_delete' fee_type.pk %}"
+                                              class="d-inline"
+                                              onsubmit="return confirm('{% trans 'Delete this fee type?' %}');">
+                                            {% csrf_token %}
+                                            <button class="btn btn-sm btn-outline-danger"
+                                                    title="{% trans 'Delete' %}">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+
+                                    </td>
+
+                                </tr>
+
+                            {% empty %}
+
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-5">
+                                        <i class="bi bi-coin display-5 d-block mb-3"></i>
+                                        {% trans "No fee types yet. Add your first one." %}
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

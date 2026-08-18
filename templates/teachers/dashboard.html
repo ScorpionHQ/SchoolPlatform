@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Teacher Dashboard" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-hero mb-4">
+
+    <div class="row align-items-center g-3">
+
+        <div class="col-lg-7">
+
+            <div class="d-flex align-items-center gap-3 position-relative" style="z-index:1;">
+
+                <span class="avatar-circle is-emerald" style="width:60px;height:60px;font-size:1.4rem;">
+
+                    {{ teacher.user.get_full_name|default:teacher.user.username|slice:":1"|upper }}
+
+                </span>
+
+                <div>
+
+                    <h1 class="hero-title mb-1">
+
+                        {% trans "Teacher Dashboard" %}
+
+                    </h1>
+
+                    <p class="hero-subtitle mb-0">
+
+                        {% trans "Welcome" %}
+
+                        {{ teacher.user.get_full_name|default:teacher.user.username }}
+
+                        &middot;
+
+                        {% trans "Teacher Control Panel" %}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-5">
+
+            <div class="hero-actions justify-content-lg-end">
+
+                <a href="{% url 'notifications:list' %}" class="btn position-relative">
+                    <i class="bi bi-bell me-1"></i>
+                    {% trans "Notifications" %}
+                    {% if unread_notifications_count %}
+                    <span class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle">
+                        {{ unread_notifications_count }}
+                    </span>
+                    {% endif %}
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row g-4 mb-4">
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="stat-card">
+
+            <div>
+
+                <div class="stat-title">{% trans "Subjects" %}</div>
+
+                <div class="stat-number">{{ subjects.count }}</div>
+
+            </div>
+
+            <div class="stat-icon is-amber">
+                <i class="bi bi-book-fill"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="stat-card">
+
+            <div>
+
+                <div class="stat-title">{% trans "Classes" %}</div>
+
+                <div class="stat-number">{{ classrooms|length }}</div>
+
+            </div>
+
+            <div class="stat-icon is-info">
+                <i class="bi bi-door-open-fill"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="stat-card">
+
+            <div>
+
+                <div class="stat-title">{% trans "Students" %}</div>
+
+                <div class="stat-number">{{ students_count }}</div>
+
+            </div>
+
+            <div class="stat-icon is-emerald">
+                <i class="bi bi-mortarboard-fill"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="stat-card">
+
+            <div>
+
+                <div class="stat-title">{% trans "Grades" %}</div>
+
+                <div class="stat-number">{{ grades_count }}</div>
+
+            </div>
+
+            <div class="stat-icon is-rose">
+                <i class="bi bi-clipboard-check"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row g-4">
+
+    <div class="col-lg-8">
+
+        <div class="card h-100">
+
+            <div class="card-header">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-journal-bookmark-fill me-2"></i>
+
+                    {% trans "My Subjects" %}
+
+                </h5>
+
+            </div>
+
+            <div class="card-body p-0">
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle mb-0">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>{% trans "Subject" %}</th>
+
+                                <th>{% trans "Class" %}</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for subject in subjects %}
+
+                            <tr>
+
+                                <td class="fw-semibold">{{ subject.name }}</td>
+
+                                <td>{{ subject.classroom|default:"—" }}</td>
+
+                            </tr>
+
+                            {% empty %}
+
+                            <tr>
+
+                                <td colspan="2" class="text-center text-muted py-4">
+
+                                    {% trans "No subjects assigned." %}
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-4">
+
+        <div class="card h-100">
+
+            <div class="card-header">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-lightning-charge-fill me-2"></i>
+
+                    {% trans "Quick Actions" %}
+
+                </h5>
+
+            </div>
+
+            <div class="card-body d-grid gap-3">
+
+                <a href="{% url 'attendance:session' %}" class="btn btn-primary">
+                    <i class="bi bi-calendar-check me-1"></i>
+                    {% trans "Take Attendance" %}
+                </a>
+
+                <a href="{% url 'teachers:enter_grades' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-pencil-square me-1"></i>
+                    {% trans "Enter Grades" %}
+                </a>
+
+                <a href="{% url 'grades:list' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-bar-chart me-1"></i>
+                    {% trans "View Grades" %}
+                </a>
+
+                <a href="{% url 'teachers:my_students' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-people me-1"></i>
+                    {% trans "My Students" %}
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "My Children" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h4 class="mb-0">
+        <i class="bi bi-person-hearts"></i>
+        {% trans "My Children" %}
+    </h4>
+</div>
+
+{% for child in children %}
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-person-circle text-primary me-2"></i>
+
+            {{ child.user.get_full_name }}
+
+        </h5>
+
+        <div>
+
+            {% if child.student_code %}
+
+            <span class="badge bg-primary-subtle text-primary me-1">
+
+                {% trans "Student Code" %}: {{ child.student_code }}
+
+            </span>
+
+            {% endif %}
+
+            <span class="badge bg-success-subtle text-success">
+
+                {{ child.classroom }}
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row g-3">
+
+            <div class="col-sm-6 col-lg-3">
+
+                <div class="border rounded p-3 text-center">
+
+                    <div class="text-muted small">{% trans "Institution" %}</div>
+
+                    <div class="fw-semibold">{{ child.institution }}</div>
+
+                </div>
+
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+
+                <div class="border rounded p-3 text-center">
+
+                    <div class="text-muted small">{% trans "Username" %}</div>
+
+                    <div class="fw-semibold">{{ child.user.username }}</div>
+
+                </div>
+
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+
+                <div class="border rounded p-3 text-center">
+
+                    <div class="text-muted small">{% trans "Date of Birth" %}</div>
+
+                    <div class="fw-semibold">{{ child.date_of_birth|default:"—" }}</div>
+
+                </div>
+
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+
+                <div class="border rounded p-3 text-center">
+
+                    <div class="text-muted small">{% trans "Address" %}</div>
+
+                    <div class="fw-semibold">{{ child.address|default:"—" }}</div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% empty %}
+
+<div class="alert alert-info">
+
+    {% trans "No students are linked to this parent account." %}
+
+</div>
+
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,1915 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: SchoolPlatform 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: SchoolPlatform Team\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+msgid "ACADEMIC"
+msgstr "الأكاديمي"
+
+msgid "Access Denied"
+msgstr "تم رفض الوصول"
+
+msgid "Actions"
+msgstr "إجراءات"
+
+msgid "Active"
+msgstr "نشط"
+
+msgid "Add Class"
+msgstr "إضافة صف"
+
+msgid "Add Grade"
+msgstr "إضافة درجة"
+
+msgid "Add Grades"
+msgstr "إضافة درجات"
+
+msgid "Add Institution"
+msgstr "إضافة مؤسسة"
+
+msgid "Add Parent"
+msgstr "إضافة ولي أمر"
+
+msgid "Add Student"
+msgstr "إضافة طالب"
+
+msgid "Add Subject"
+msgstr "إضافة مادة"
+
+msgid "Add Teacher"
+msgstr "إضافة معلم"
+
+msgid "Address"
+msgstr "العنوان"
+
+msgid "Administration Panel"
+msgstr "لوحة الإدارة"
+
+msgid "All subjects assigned to your class."
+msgstr "جميع المواد المخصصة لصفك."
+
+msgid "Are you sure you want to delete"
+msgstr "هل أنت متأكد أنك تريد حذف"
+
+msgid "Are you sure you want to delete:"
+msgstr "هل أنت متأكد أنك تريد حذف:"
+
+msgid "Attendance"
+msgstr "الحضور"
+
+msgid "Attendance Records"
+msgstr "سجلات الحضور"
+
+msgid "Attendance Session"
+msgstr "جلسة الحضور"
+
+msgid "Average Grade"
+msgstr "متوسط الدرجات"
+
+msgid "Back"
+msgstr "رجوع"
+
+msgid "Back to Dashboard"
+msgstr "العودة إلى لوحة التحكم"
+
+msgid "Back to Students"
+msgstr "العودة إلى الطلاب"
+
+msgid "Cancel"
+msgstr "إلغاء"
+
+msgid "Change Password"
+msgstr "تغيير كلمة المرور"
+
+msgid "Choose Subject"
+msgstr "اختر المادة"
+
+msgid "Class"
+msgstr "الصف"
+
+msgid "Classes"
+msgstr "الصفوف"
+
+msgid "Code"
+msgstr "الكود"
+
+msgid "Confirm New Password"
+msgstr "تأكيد كلمة المرور الجديدة"
+
+msgid "Create Institution"
+msgstr "إنشاء مؤسسة"
+
+msgid "Current Password"
+msgstr "كلمة المرور الحالية"
+
+msgid "Dashboard"
+msgstr "لوحة التحكم"
+
+msgid "Date"
+msgstr "التاريخ"
+
+msgid "Date of Birth"
+msgstr "تاريخ الميلاد"
+
+msgid "Default Class (optional)"
+msgstr "الصف الافتراضي (اختياري)"
+
+msgid "Default Password"
+msgstr "كلمة المرور الافتراضية"
+
+msgid "Delete"
+msgstr "حذف"
+
+msgid "Delete Attendance"
+msgstr "حذف الحضور"
+
+msgid "Delete Class"
+msgstr "حذف الصف"
+
+msgid "Delete Grade"
+msgstr "حذف الدرجة"
+
+msgid "Delete Institution"
+msgstr "حذف المؤسسة"
+
+msgid "Delete Parent"
+msgstr "حذف ولي الأمر"
+
+msgid "Delete Student"
+msgstr "حذف الطالب"
+
+msgid "Delete Subject"
+msgstr "حذف المادة"
+
+msgid "Delete Teacher"
+msgstr "حذف المعلم"
+
+msgid ""
+"Each student will get a unique login code and a temporary password. They "
+"will be required to change it after their first login."
+msgstr ""
+"سيحصل كل طالب على كود دخول فريد وكلمة مرور مؤقتة، وسيكون ملزماً بتغييرها بعد"
+" أول تسجيل دخول."
+
+msgid "Edit"
+msgstr "تعديل"
+
+msgid "Edit Attendance"
+msgstr "تعديل الحضور"
+
+msgid "Edit Grade"
+msgstr "تعديل الدرجة"
+
+msgid "Edit Institution"
+msgstr "تعديل المؤسسة"
+
+msgid "Edit Parent"
+msgstr "تعديل ولي الأمر"
+
+msgid "Edit Subject"
+msgstr "تعديل المادة"
+
+msgid "Edit Teacher"
+msgstr "تعديل المعلم"
+
+msgid "Email"
+msgstr "البريد الإلكتروني"
+
+msgid "Enter Grades"
+msgstr "إدخال الدرجات"
+
+msgid "Error"
+msgstr "خطأ"
+
+msgid "Exam"
+msgstr "الامتحان"
+
+msgid "Excel File"
+msgstr "ملف Excel"
+
+msgid "File Requirements"
+msgstr "متطلبات الملف"
+
+msgid "Fill in the institution information below."
+msgstr "املأ معلومات المؤسسة أدناه."
+
+msgid "First Name"
+msgstr "الاسم الأول"
+
+msgid "Full Name"
+msgstr "الاسم الكامل"
+
+msgid "Grade"
+msgstr "الدرجة"
+
+msgid "Grades"
+msgstr "الدرجات"
+
+msgid "Import Excel"
+msgstr "استيراد من Excel"
+
+msgid "Import Results"
+msgstr "نتائج الاستيراد"
+
+msgid "Import Students"
+msgstr "استيراد الطلاب"
+
+msgid "Imported"
+msgstr "تم الاستيراد"
+
+msgid "Inactive"
+msgstr "غير نشط"
+
+msgid "Institution"
+msgstr "المؤسسة"
+
+msgid "Institution Active"
+msgstr "المؤسسة نشطة"
+
+msgid "Institution Name"
+msgstr "اسم المؤسسة"
+
+msgid "Institutions"
+msgstr "المؤسسات"
+
+msgid "Last Name"
+msgstr "الاسم الأخير"
+
+msgid "Latest Grades"
+msgstr "أحدث الدرجات"
+
+msgid "Leave empty to keep the current password."
+msgstr "اتركه فارغاً للإبقاء على كلمة المرور الحالية."
+
+msgid "Load Students"
+msgstr "تحميل الطلاب"
+
+msgid "Login"
+msgstr "تسجيل الدخول"
+
+msgid "Login Code"
+msgstr "كود الدخول"
+
+msgid "Logo"
+msgstr "الشعار"
+
+msgid "Logout"
+msgstr "تسجيل الخروج"
+
+msgid "MAIN"
+msgstr "الرئيسية"
+
+msgid "Manage all parents."
+msgstr "إدارة جميع أولياء الأمور."
+
+msgid "Manage all schools and institutions."
+msgstr "إدارة جميع المدارس والمؤسسات."
+
+msgid "Manage all students."
+msgstr "إدارة جميع الطلاب."
+
+msgid "Manage students grades."
+msgstr "إدارة درجات الطلاب."
+
+msgid "Mark All Present"
+msgstr "تحديد الجميع حاضر"
+
+msgid "Messages"
+msgstr "الرسائل"
+
+msgid "My Children"
+msgstr "أبنائي"
+
+msgid "My Grades"
+msgstr "درجاتي"
+
+msgid "My Profile"
+msgstr "ملفي الشخصي"
+
+msgid "My Students"
+msgstr "طلابي"
+
+msgid "My Subjects"
+msgstr "موادي"
+
+msgid "Name"
+msgstr "الاسم"
+
+msgid "New Password"
+msgstr "كلمة المرور الجديدة"
+
+msgid "Next"
+msgstr "التالي"
+
+msgid "No attendance records found."
+msgstr "لا توجد سجلات حضور."
+
+msgid "No attendance records."
+msgstr "لا توجد سجلات حضور."
+
+msgid "No grades available."
+msgstr "لا توجد درجات متاحة."
+
+msgid "No grades found."
+msgstr "لا توجد درجات."
+
+msgid "No grades yet."
+msgstr "لا توجد درجات بعد."
+
+msgid "No institutions found."
+msgstr "لا توجد مؤسسات."
+
+msgid "No parents found."
+msgstr "لا يوجد أولياء أمور."
+
+msgid "No recent activities."
+msgstr "لا توجد نشاطات حديثة."
+
+msgid "No students are linked to this parent account."
+msgstr "لا يوجد طلاب مرتبطون بهذا الحساب."
+
+msgid "No students found."
+msgstr "لا يوجد طلاب."
+
+msgid "No subjects assigned yet."
+msgstr "لا توجد مواد مخصصة بعد."
+
+msgid "No subjects assigned."
+msgstr "لا توجد مواد مخصصة."
+
+msgid "No subjects found."
+msgstr "لا توجد مواد."
+
+msgid "No teachers found."
+msgstr "لا يوجد معلمون."
+
+msgid "Note"
+msgstr "ملاحظة"
+
+msgid "Optional columns:"
+msgstr "الأعمدة الاختيارية:"
+
+msgid "PEOPLE"
+msgstr "الأشخاص"
+
+msgid "Parent Dashboard"
+msgstr "لوحة ولي الأمر"
+
+msgid "Parent Phone"
+msgstr "هاتف ولي الأمر"
+
+msgid "Parents"
+msgstr "أولياء الأمور"
+
+msgid "Password"
+msgstr "كلمة المرور"
+
+msgid "Percentage"
+msgstr "النسبة المئوية"
+
+msgid "Personal information."
+msgstr "المعلومات الشخصية."
+
+msgid "Phone"
+msgstr "الهاتف"
+
+msgid "Phone Number"
+msgstr "رقم الهاتف"
+
+msgid "Previous"
+msgstr "السابق"
+
+msgid "Profile"
+msgstr "الملف الشخصي"
+
+msgid "Quick Action"
+msgstr "إجراء سريع"
+
+msgid "Quick Actions"
+msgstr "إجراءات سريعة"
+
+msgid "Recent Activities"
+msgstr "أحدث الأنشطة"
+
+msgid "Recent Attendance"
+msgstr "أحدث الحضور"
+
+msgid "Recent Students"
+msgstr "أحدث الطلاب"
+
+msgid "Record Attendance"
+msgstr "تسجيل الحضور"
+
+msgid "Relationship"
+msgstr "صلة القرابة"
+
+msgid "Required columns:"
+msgstr "الأعمدة المطلوبة:"
+
+msgid "Row"
+msgstr "الصف"
+
+msgid "SCHOOL"
+msgstr "المدرسة"
+
+msgid "Save"
+msgstr "حفظ"
+
+msgid "Save Attendance"
+msgstr "حفظ الحضور"
+
+msgid "Save Grade"
+msgstr "حفظ الدرجة"
+
+msgid "Save Institution"
+msgstr "حفظ المؤسسة"
+
+msgid "Save Parent"
+msgstr "حفظ ولي الأمر"
+
+msgid "School Platform"
+msgstr "المنصة المدرسية"
+
+msgid "School Platform Administration Dashboard"
+msgstr "لوحة تحكم إدارة المنصة المدرسية"
+
+msgid "SchoolPlatform"
+msgstr "المنصة المدرسية"
+
+msgid "Score"
+msgstr "الدرجة"
+
+msgid "Search"
+msgstr "بحث"
+
+msgid "Search anything..."
+msgstr "ابحث عن أي شيء..."
+
+msgid "Search parent..."
+msgstr "ابحث عن ولي أمر..."
+
+msgid "Search student..."
+msgstr "ابحث عن طالب..."
+
+msgid "Search students, teachers..."
+msgstr "ابحث عن طلاب، معلمين..."
+
+msgid "Search subject..."
+msgstr "ابحث عن مادة..."
+
+msgid "Search teacher..."
+msgstr "ابحث عن معلم..."
+
+msgid "Settings"
+msgstr "الإعدادات"
+
+msgid "Short Name"
+msgstr "الاسم المختصر"
+
+msgid "Sign in to your account"
+msgstr "سجل الدخول إلى حسابك"
+
+msgid "Skipped"
+msgstr "تم تخطيه"
+
+msgid "Specialization"
+msgstr "التخصص"
+
+msgid "Start Attendance Session"
+msgstr "بدء جلسة الحضور"
+
+msgid "Start Session"
+msgstr "بدء الجلسة"
+
+msgid "Status"
+msgstr "الحالة"
+
+msgid "Student"
+msgstr "طالب"
+
+msgid "Student Code"
+msgstr "كود الطالب"
+
+msgid "Student Dashboard"
+msgstr "لوحة الطالب"
+
+msgid "Student Information"
+msgstr "معلومات الطالب"
+
+msgid "Students"
+msgstr "الطلاب"
+
+msgid "Subject"
+msgstr "المادة"
+
+msgid "Subjects"
+msgstr "المواد"
+
+msgid "Supported headers (English or Arabic):"
+msgstr "العناوين المدعومة (بالإنجليزية أو العربية):"
+
+msgid "Take Attendance"
+msgstr "تسجيل الحضور"
+
+msgid "Teacher"
+msgstr "المعلم"
+
+msgid "Teacher Control Panel"
+msgstr "لوحة تحكم المعلم"
+
+msgid "Teacher Dashboard"
+msgstr "لوحة المعلم"
+
+msgid "Teachers"
+msgstr "المعلمون"
+
+msgid "The first row must contain the column headers."
+msgstr "يجب أن يحتوي الصف الأول على عناوين الأعمدة."
+
+msgid "Update Grade"
+msgstr "تحديث الدرجة"
+
+msgid "Upload an Excel file to create student accounts in bulk."
+msgstr "ارفع ملف Excel لإنشاء حسابات طلاب بشكل جماعي."
+
+msgid "Used for all imported students as their temporary password."
+msgstr "تُستخدم لجميع الطلاب المستوردين ككلمة مرور مؤقتة."
+
+msgid "Username"
+msgstr "اسم المستخدم"
+
+msgid "View All"
+msgstr "عرض الكل"
+
+msgid "View Grades"
+msgstr "عرض الدرجات"
+
+msgid "View all your exam results."
+msgstr "عرض جميع نتائج امتحاناتك."
+
+msgid "Welcome"
+msgstr "مرحباً"
+
+msgid "Welcome Back"
+msgstr "مرحباً بعودتك"
+
+msgid "Welcome back, here is your academic overview."
+msgstr "مرحباً بعودتك، هذه هي نظرة عامة على أدائك الأكاديمي."
+
+msgid "You do not have permission to access this page."
+msgstr "ليس لديك صلاحية للوصول إلى هذه الصفحة."
+
+msgid "You must set a new password to secure your account."
+msgstr "يجب عليك تعيين كلمة مرور جديدة لتأمين حسابك."
+
+msgid "Your attendance records."
+msgstr "سجلات الحضور الخاصة بك."
+
+msgid "Page not found"
+msgstr "الصفحة غير موجودة"
+
+msgid "The page you are looking for does not exist."
+msgstr "الصفحة التي تبحث عنها غير موجودة."
+
+msgid "Something went wrong"
+msgstr "حدث خطأ ما"
+
+msgid "An unexpected error occurred. Please try again later."
+msgstr "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى لاحقاً."
+
+msgid "Invalid login code or password."
+msgstr "كود الدخول أو كلمة المرور غير صحيحة."
+
+msgid "You must change your password before continuing."
+msgstr "يجب عليك تغيير كلمة المرور قبل المتابعة."
+
+msgid "Your password has been changed successfully."
+msgstr "تم تغيير كلمة المرور بنجاح."
+
+msgid "Student created successfully."
+msgstr "تم إنشاء الطالب بنجاح."
+
+msgid "{count} students imported successfully."
+msgstr "تم استيراد {count} طالباً بنجاح."
+
+msgid "{count} rows were skipped."
+msgstr "تم تخطي {count} صفاً."
+
+msgid "An unexpected error occurred while importing students."
+msgstr "حدث خطأ غير متوقع أثناء استيراد الطلاب."
+
+msgid "Username already exists."
+msgstr "اسم المستخدم موجود بالفعل."
+
+msgid "Present"
+msgstr "حاضر"
+
+msgid "Absent"
+msgstr "غائب"
+
+msgid "Parent Panel"
+msgstr "لوحة ولي الأمر"
+
+msgid "Student Panel"
+msgstr "لوحة الطالب"
+
+msgid "Teacher Panel"
+msgstr "لوحة المعلم"
+
+msgid "School Management System"
+msgstr "نظام إدارة المدارس"
+
+msgid "Only Excel files (.xlsx or .xls) are allowed."
+msgstr "يُسمح فقط بملفات Excel بصيغة .xlsx أو .xls."
+
+msgid ""
+"Could not read the Excel file. Please make sure it is a valid Excel file."
+msgstr "تعذّر قراءة ملف Excel. يرجى التأكد من أن الملف صالح."
+
+msgid ""
+"Could not find the column headers in the file. Found columns: {columns}. "
+"Make sure the first row contains the column headers."
+msgstr ""
+"تعذّر العثور على ترويسات الأعمدة في الملف. الأعمدة الموجودة: {columns}. تأكد"
+" من أن الصف الأول يحتوي على ترويسات الأعمدة."
+
+msgid ""
+"Required column 'First Name' was not found in the file. Found columns: "
+"{columns}. Make sure the first row contains the column headers."
+msgstr ""
+"العمود المطلوب 'الاسم الأول' غير موجود في الملف. الأعمدة الموجودة: "
+"{columns}. تأكد من أن الصف الأول يحتوي على ترويسات الأعمدة."
+
+msgid "Student code already exists for {name}."
+msgstr "رقم الطالب موجود بالفعل للطالب {name}."
+
+msgid "Username '{username}' already exists for {name}."
+msgstr "اسم المستخدم '{username}' موجود بالفعل للطالب {name}."
+
+msgid "Student code already exists."
+msgstr "رقم الطالب موجود بالفعل."
+
+msgid "no columns found"
+msgstr "لم يتم العثور على أي أعمدة"
+
+msgid "Student with the name '{name}' already exists."
+msgstr "يوجد طالب بنفس الاسم '{name}' بالفعل."
+
+msgid "Toggle theme"
+msgstr "تبديل الوضع الليلي"
+
+msgid ""
+"%(name)s is already assigned to another institution. Each manager can manage"
+" only one institution."
+msgstr ""
+"%(name)s مخصص بالفعل لمؤسسة أخرى. يمكن لكل مدير إدارة مؤسسة واحدة فقط."
+
+msgid "A grade for subject {subject} has been removed."
+msgstr "تم حذف درجة مادة {subject}."
+
+msgid ""
+"A payment of {amount} IQD was recorded for {fee_type} (remaining: "
+"{remaining})."
+msgstr ""
+"تم تسجيل دفعة بقيمة {amount} د.ع مقابل {fee_type} (المتبقي: {remaining})."
+
+msgid "A user with this username already exists."
+msgstr "يوجد مستخدم بنفس اسم المستخدم بالفعل."
+
+msgid "AI Assistant Document Report"
+msgstr "تقرير مستند المساعد الذكي"
+
+msgid "Absences"
+msgstr "الغيابات"
+
+msgid "Absent today"
+msgstr "الغائبون اليوم"
+
+msgid "Academic Year"
+msgstr "السنة الدراسية"
+
+msgid "Academic year"
+msgstr "السنة الدراسية"
+
+msgid "Active Users"
+msgstr "المستخدمون النشطون"
+
+msgid "Add Class Room"
+msgstr "إضافة صف دراسي"
+
+msgid "Add Fee Type"
+msgstr "إضافة نوع رسوم"
+
+msgid "Add User"
+msgstr "إضافة مستخدم"
+
+msgid "Administration"
+msgstr "الإدارة"
+
+msgid "Administrators"
+msgstr "المسؤولون"
+
+msgid "All Grades"
+msgstr "جميع الدرجات"
+
+msgid "All Institutions"
+msgstr "جميع المؤسسات"
+
+msgid "All Roles"
+msgstr "جميع الأدوار"
+
+msgid "All Status"
+msgstr "جميع الحالات"
+
+msgid "All Statuses"
+msgstr "جميع الحالات"
+
+msgid "All classes"
+msgstr "جميع الصفوف"
+
+msgid "All notifications marked as read."
+msgstr "تم تحديد جميع الإشعارات كمقروءة."
+
+msgid "All platform updates and changes."
+msgstr "جميع تحديثات وتغييرات المنصة."
+
+msgid "Amount"
+msgstr "المبلغ"
+
+msgid "Amount (IQD)"
+msgstr "المبلغ (د.ع)"
+
+msgid "Amount must be greater than zero."
+msgstr "يجب أن يكون المبلغ أكبر من صفر."
+
+msgid "An attendance record for {date} has been removed."
+msgstr "تم حذف سجل الحضور ليوم {date}."
+
+msgid "Announcement"
+msgstr "إعلان"
+
+msgid "Applied to all rows that do not have a gender column."
+msgstr "يُطبَّق على جميع الصفوف التي لا تحتوي على عمود الجنس."
+
+msgid "Applied to rows that do not have a gender value."
+msgstr "يُطبَّق على الصفوف التي لا تحتوي على قيمة للجنس."
+
+msgid "Apply a fee to every student in a classroom at once."
+msgstr "تطبيق رسوم على جميع طلاب الصف دفعة واحدة."
+
+msgid "Arabic"
+msgstr "العربية"
+
+msgid "Ask the assistant"
+msgstr "اسأل المساعد"
+
+msgid "Assistant"
+msgstr "المساعد"
+
+msgid "Assistant Manager"
+msgstr "مدير مساعد"
+
+msgid "Assistant analysis"
+msgstr "تحليل المساعد"
+
+msgid "Assistant attachment"
+msgstr "مرفق المساعد"
+
+msgid "Assistant attachments"
+msgstr "مرفقات المساعد"
+
+msgid "Assistant conversation"
+msgstr "محادثة المساعد"
+
+msgid "Assistant conversations"
+msgstr "محادثات المساعد"
+
+msgid "Assistant message"
+msgstr "رسالة المساعد"
+
+msgid "Assistant messages"
+msgstr "رسائل المساعد"
+
+msgid "Attendance Sessions"
+msgstr "جلسات الحضور"
+
+msgid "Attendance Today"
+msgstr "حضور اليوم"
+
+msgid "Attendance Trend"
+msgstr "اتجاه الحضور"
+
+msgid "Attendance deleted successfully."
+msgstr "تم حذف الحضور بنجاح."
+
+msgid "Attendance has already been recorded for this class today."
+msgstr "تم تسجيل الحضور لهذا الصف اليوم بالفعل."
+
+msgid "Attendance rate"
+msgstr "نسبة الحضور"
+
+msgid "Attendance record removed"
+msgstr "تم حذف سجل الحضور"
+
+msgid "Attendance recorded"
+msgstr "تم تسجيل الحضور"
+
+msgid "Attendance recorded successfully."
+msgstr "تم تسجيل الحضور بنجاح."
+
+msgid "Attendance saved successfully."
+msgstr "تم حفظ الحضور بنجاح."
+
+msgid "Attendance session recorded"
+msgstr "تم تسجيل جلسة الحضور"
+
+msgid "Attendance updated successfully."
+msgstr "تم تحديث الحضور بنجاح."
+
+msgid ""
+"Attendance was recorded for {count} students in class {classroom} on {date}."
+msgstr "تم تسجيل الحضور لـ {count} طالباً في صف {classroom} بتاريخ {date}."
+
+msgid "Attendance was recorded for {student} on {date}."
+msgstr "تم تسجيل حضور {student} بتاريخ {date}."
+
+msgid "Average"
+msgstr "المتوسط"
+
+msgid "Average by Subject"
+msgstr "المتوسط حسب المادة"
+
+msgid "Back to Charges"
+msgstr "العودة إلى الرسوم"
+
+msgid "Bad request"
+msgstr "طلب غير صحيح"
+
+msgid "Balances"
+msgstr "الأرصدة"
+
+msgid "Bank Transfer"
+msgstr "تحويل بنكي"
+
+msgid "Cannot delete a fee that already has payments."
+msgstr "لا يمكن حذف نوع رسوم يحتوي على دفعات مسجلة."
+
+msgid "Card"
+msgstr "بطاقة"
+
+msgid "Cash"
+msgstr "نقدي"
+
+msgid "Charge Class"
+msgstr "رسوم الصف"
+
+msgid "Charge a Class"
+msgstr "تطبيق رسوم على صف"
+
+msgid "Charge removed."
+msgstr "تم حذف الرسوم."
+
+msgid "Charges"
+msgstr "الرسوم"
+
+msgid "Charges & Payments"
+msgstr "الرسوم والدفعات"
+
+msgid "Choose the institution you want to work with."
+msgstr "اختر المؤسسة التي تريد العمل معها."
+
+msgid "Class Name"
+msgstr "اسم الصف"
+
+msgid "Class Room"
+msgstr "الصف الدراسي"
+
+msgid "Class Rooms"
+msgstr "الصفوف الدراسية"
+
+msgid "Class created successfully."
+msgstr "تم إنشاء الصف بنجاح."
+
+msgid "Class deleted"
+msgstr "تم حذف الصف"
+
+msgid "Class deleted successfully."
+msgstr "تم حذف الصف بنجاح."
+
+msgid "Class updated"
+msgstr "تم تحديث الصف"
+
+msgid "Class updated successfully."
+msgstr "تم تحديث الصف بنجاح."
+
+msgid "Class {name} has been added to {institution}."
+msgstr "تمت إضافة صف {name} إلى {institution}."
+
+msgid "Class {name} has been removed."
+msgstr "تم حذف صف {name}."
+
+msgid "Confirm Password"
+msgstr "تأكيد كلمة المرور"
+
+msgid "Create Student"
+msgstr "إنشاء طالب"
+
+msgid "Create User"
+msgstr "إنشاء مستخدم"
+
+msgid "Create a new student account."
+msgstr "أنشئ حساباً جديداً للطالب."
+
+msgid "Create or edit a class room."
+msgstr "أنشئ أو عدّل صفاً دراسياً."
+
+msgid "Current"
+msgstr "الحالي"
+
+msgid "Default Gender"
+msgstr "الجنس الافتراضي"
+
+msgid "Default Gender (optional)"
+msgstr "الجنس الافتراضي (اختياري)"
+
+msgid ""
+"Define the fees your school charges (registration, books, transport...)."
+msgstr "حدّد الرسوم التي تفرضها مدرستك (تسجيل، كتب، نقل...)."
+
+msgid "Delete User"
+msgstr "حذف المستخدم"
+
+msgid "Delete this fee type?"
+msgstr "حذف هذا النوع من الرسوم؟"
+
+msgid "Delete this payment?"
+msgstr "حذف هذه الدفعة؟"
+
+msgid "Description"
+msgstr "الوصف"
+
+msgid "Document contents"
+msgstr "محتوى المستند"
+
+msgid "Edit Class Room"
+msgstr "تعديل الصف الدراسي"
+
+msgid "Edit User"
+msgstr "تعديل المستخدم"
+
+msgid "Educational Stage"
+msgstr "المرحلة الدراسية"
+
+msgid "Employee Code"
+msgstr "كود الموظف"
+
+msgid "English"
+msgstr "الإنجليزية"
+
+msgid "Exam Date"
+msgstr "تاريخ الامتحان"
+
+msgid "Exams"
+msgstr "الامتحانات"
+
+msgid "Exams Taken"
+msgstr "الامتحانات المنجزة"
+
+msgid "Excel spreadsheet"
+msgstr "جدول بيانات Excel"
+
+msgid "Excellent"
+msgstr "ممتاز"
+
+msgid "Excused"
+msgstr "معذور"
+
+msgid "Extracted text used for summarization and Q&A."
+msgstr "النص المستخرج المستخدم في التلخيص والأسئلة والأجوبة."
+
+msgid "Fee"
+msgstr "رسوم"
+
+msgid "Fee Price List"
+msgstr "قائمة أسعار الرسوم"
+
+msgid "Fee Price List - {institution}"
+msgstr "قائمة أسعار الرسوم - {institution}"
+
+msgid "Fee Type"
+msgstr "نوع الرسوم"
+
+msgid "Fee Types"
+msgstr "أنواع الرسوم"
+
+msgid "Fee name"
+msgstr "اسم الرسوم"
+
+msgid "Fee type"
+msgstr "نوع الرسوم"
+
+msgid "Fee type added successfully."
+msgstr "تمت إضافة نوع الرسوم بنجاح."
+
+msgid "Fee type deleted."
+msgstr "تم حذف نوع الرسوم."
+
+msgid "Fee type has charges and was deactivated instead."
+msgstr "نوع الرسوم يحتوي على رسوم مسجلة وتم إيقافه بدلاً من حذفه."
+
+msgid "Fee type updated."
+msgstr "تم تحديث نوع الرسوم."
+
+msgid "Fees"
+msgstr "الرسوم"
+
+msgid "Fees & Payments"
+msgstr "الرسوم والدفعات"
+
+msgid "Fees Collected"
+msgstr "الرسوم المحصّلة"
+
+msgid "Female"
+msgstr "أنثى"
+
+msgid "File"
+msgstr "ملف"
+
+msgid "File exceeds the %(size)s MB limit."
+msgstr "يتجاوز الملف حد %(size)s ميغابايت."
+
+msgid "File name"
+msgstr "اسم الملف"
+
+msgid "File size in bytes."
+msgstr "حجم الملف بالبايت."
+
+msgid "Files ({count})"
+msgstr "الملفات ({count})"
+
+msgid "Fill in the user information below."
+msgstr "املأ معلومات المستخدم أدناه."
+
+msgid "Finance"
+msgstr "المالية"
+
+msgid "Follow up student fees, record payments and issue receipts."
+msgstr "تابع رسوم الطلاب، وسجّل الدفعات وأصدر الإيصالات."
+
+msgid "Forces the user to change their password on next login."
+msgstr "يفرض على المستخدم تغيير كلمة المرور عند تسجيل الدخول التالي."
+
+msgid "Full academic overview and control panel."
+msgstr "نظرة أكاديمية شاملة ولوحة تحكم كاملة."
+
+msgid "Gender"
+msgstr "الجنس"
+
+msgid ""
+"Gender values: male / female (or: m, boy, girl, ذكر, انثى, طالب, طالبة)."
+msgstr "قيم الجنس: male / female (أو: m, boy, girl, ذكر، انثى، طالب، طالبة)."
+
+msgid "Generated by the AI Assistant"
+msgstr "مولّد بواسطة المساعد الذكي"
+
+msgid "Generated on"
+msgstr "مولّد بتاريخ"
+
+msgid "Global overview of the whole platform."
+msgstr "نظرة عامة شاملة على المنصة كاملة."
+
+msgid "Good"
+msgstr "جيد"
+
+msgid "Grade added successfully."
+msgstr "تمت إضافة الدرجة بنجاح."
+
+msgid "Grade deleted successfully."
+msgstr "تم حذف الدرجة بنجاح."
+
+msgid "Grade removed"
+msgstr "تم حذف الدرجة"
+
+msgid "Grade saved successfully."
+msgstr "تم حفظ الدرجة بنجاح."
+
+msgid "Grade updated"
+msgstr "تم تحديث الدرجة"
+
+msgid "Grade updated successfully."
+msgstr "تم تحديث الدرجة بنجاح."
+
+msgid "Grades Recorded"
+msgstr "الدرجات المسجلة"
+
+msgid "Hire Date"
+msgstr "تاريخ التعيين"
+
+msgid "IQD"
+msgstr "د.ع"
+
+msgid "Image"
+msgstr "صورة"
+
+msgid "Institution created successfully."
+msgstr "تم إنشاء المؤسسة بنجاح."
+
+msgid "Institution deleted successfully."
+msgstr "تم حذف المؤسسة بنجاح."
+
+msgid "Institution updated"
+msgstr "تم تحديث المؤسسة"
+
+msgid "Institution updated successfully."
+msgstr "تم تحديث المؤسسة بنجاح."
+
+msgid "Institution {name} data has been updated."
+msgstr "تم تحديث بيانات المؤسسة {name}."
+
+msgid "Institution {name} has been created."
+msgstr "تم إنشاء المؤسسة {name}."
+
+msgid "Invalid attendance status provided."
+msgstr "حالة الحضور المقدمة غير صالحة."
+
+msgid "Invalid institution."
+msgstr "مؤسسة غير صالحة."
+
+msgid "Invalid payment amount."
+msgstr "مبلغ الدفعة غير صالح."
+
+msgid "Joined"
+msgstr "تاريخ الانضمام"
+
+msgid "Last 7 days"
+msgstr "آخر 7 أيام"
+
+msgid "Last Login"
+msgstr "آخر تسجيل دخول"
+
+msgid "Late"
+msgstr "متأخر"
+
+msgid "Leave empty to keep the current password when editing."
+msgstr "اتركه فارغاً للإبقاء على كلمة المرور الحالية عند التعديل."
+
+msgid "Level"
+msgstr "المستوى"
+
+msgid "Male"
+msgstr "ذكر"
+
+msgid "Manage Students"
+msgstr "إدارة الطلاب"
+
+msgid "Manage Teachers"
+msgstr "إدارة المعلمين"
+
+msgid "Manage all class rooms."
+msgstr "إدارة جميع الصفوف الدراسية."
+
+msgid "Manager"
+msgstr "مدير"
+
+msgid "Manager Code"
+msgstr "كود المدير"
+
+msgid "Manager Dashboard"
+msgstr "لوحة المدير"
+
+msgid "Manager Login Code"
+msgstr "كود دخول المدير"
+
+msgid "Manager Panel"
+msgstr "لوحة المدير"
+
+msgid "Mark all as read"
+msgstr "تحديد الكل كمقروء"
+
+msgid "Mark as read"
+msgstr "تحديد كمقروء"
+
+msgid "Maximum Score"
+msgstr "الدرجة القصوى"
+
+msgid "Maximum score must be greater than zero."
+msgstr "يجب أن تكون الدرجة القصوى أكبر من صفر."
+
+msgid "Method"
+msgstr "طريقة الدفع"
+
+msgid "Middle School"
+msgstr "المرحلة المتوسطة"
+
+msgid "Must change password on next login"
+msgstr "يجب تغيير كلمة المرور عند تسجيل الدخول التالي"
+
+msgid "My Attendance"
+msgstr "حضوري"
+
+msgid "My Fees"
+msgstr "رسومي"
+
+msgid "Needs Work"
+msgstr "يحتاج إلى تحسين"
+
+msgid "Never"
+msgstr "أبداً"
+
+msgid "New class added"
+msgstr "تمت إضافة صف جديد"
+
+msgid "New grade"
+msgstr "درجة جديدة"
+
+msgid "New grade recorded"
+msgstr "تم تسجيل درجة جديدة"
+
+msgid "New institution added"
+msgstr "تمت إضافة مؤسسة جديدة"
+
+msgid "New institution assigned"
+msgstr "تم تخصيص مؤسسة جديدة"
+
+msgid "New parent added"
+msgstr "تمت إضافة ولي أمر جديد"
+
+msgid "New student added"
+msgstr "تمت إضافة طالب جديد"
+
+msgid "New subject added"
+msgstr "تمت إضافة مادة جديدة"
+
+msgid "New subject assigned"
+msgstr "تم تخصيص مادة جديدة"
+
+msgid "New teacher added"
+msgstr "تمت إضافة معلم جديد"
+
+msgid "No absences recorded today."
+msgstr "لا توجد غيابات مسجلة اليوم."
+
+msgid "No active fee types to display."
+msgstr "لا توجد أنواع رسوم نشطة للعرض."
+
+msgid "No charges found."
+msgstr "لا توجد رسوم."
+
+msgid "No class rooms found."
+msgstr "لا توجد صفوف دراسية."
+
+msgid "No data available."
+msgstr "لا توجد بيانات متاحة."
+
+msgid "No extractable text content for this file."
+msgstr "لا يوجد محتوى نصي قابل للاستخراج لهذا الملف."
+
+msgid "No fee types yet. Add your first one."
+msgstr "لا توجد أنواع رسوم بعد. أضف النوع الأول."
+
+msgid "No fees for this student."
+msgstr "لا توجد رسوم لهذا الطالب."
+
+msgid "No files received"
+msgstr "لم يتم استلام ملفات"
+
+msgid "No grades recorded yet."
+msgstr "لا توجد درجات مسجلة بعد."
+
+msgid ""
+"No institution is assigned to your account yet. Please contact the system "
+"administrator."
+msgstr "لم يتم تخصيص مؤسسة لحسابك بعد. يرجى التواصل مع مسؤول النظام."
+
+msgid "No institutions are assigned to your account yet."
+msgstr "لم يتم تخصيص مؤسسات لحسابك بعد."
+
+msgid "No institutions yet."
+msgstr "لا توجد مؤسسات بعد."
+
+msgid "No payments recorded yet."
+msgstr "لا توجد دفعات مسجلة بعد."
+
+msgid "No students found in this institution yet."
+msgstr "لا يوجد طلاب في هذه المؤسسة بعد."
+
+msgid "No students linked to your account."
+msgstr "لا يوجد طلاب مرتبطون بحسابك."
+
+msgid "No teachers found in this institution yet."
+msgstr "لا يوجد معلمون في هذه المؤسسة بعد."
+
+msgid "No users found."
+msgstr "لا يوجد مستخدمون."
+
+msgid "No users yet."
+msgstr "لا يوجد مستخدمون بعد."
+
+msgid "No valid files selected"
+msgstr "لم يتم تحديد ملفات صالحة"
+
+msgid "Not specified"
+msgstr "غير محدد"
+
+msgid "Note:"
+msgstr "ملاحظة:"
+
+msgid "Notification"
+msgstr "إشعار"
+
+msgid "Notifications"
+msgstr "الإشعارات"
+
+msgid "Optional"
+msgstr "اختياري"
+
+msgid "Overview of students and their academic activity."
+msgstr "نظرة عامة على الطلاب ونشاطهم الأكاديمي."
+
+msgid "Overview of teachers and their activity on the platform."
+msgstr "نظرة عامة على المعلمين ونشاطهم على المنصة."
+
+msgid "PDF document"
+msgstr "مستند PDF"
+
+msgid "Page"
+msgstr "صفحة"
+
+msgid "Pagination"
+msgstr "الترقيم"
+
+msgid "Paid"
+msgstr "مدفوع"
+
+msgid "Parent"
+msgstr "ولي الأمر"
+
+msgid "Parent created successfully."
+msgstr "تم إنشاء ولي الأمر بنجاح."
+
+msgid "Parent deleted successfully."
+msgstr "تم حذف ولي الأمر بنجاح."
+
+msgid "Parent removed"
+msgstr "تم حذف ولي الأمر"
+
+msgid "Parent updated successfully."
+msgstr "تم تحديث ولي الأمر بنجاح."
+
+msgid "Parent {name} has been added to {institution}."
+msgstr "تمت إضافة ولي الأمر {name} إلى {institution}."
+
+msgid "Parent {name} has been removed."
+msgstr "تم حذف ولي الأمر {name}."
+
+msgid "Password is required."
+msgstr "كلمة المرور مطلوبة."
+
+msgid "Passwords do not match."
+msgstr "كلمتا المرور غير متطابقتين."
+
+msgid "Pay"
+msgstr "دفع"
+
+msgid "Payment"
+msgstr "دفعة"
+
+msgid "Payment Receipt"
+msgstr "إيصال الدفع"
+
+msgid "Payment amount cannot exceed the remaining balance."
+msgstr "لا يمكن أن يتجاوز مبلغ الدفعة الرصيد المتبقي."
+
+msgid "Payment amount must be greater than zero."
+msgstr "يجب أن يكون مبلغ الدفعة أكبر من صفر."
+
+msgid "Payment recorded"
+msgstr "تم تسجيل الدفعة"
+
+msgid "Payment recorded successfully."
+msgstr "تم تسجيل الدفعة بنجاح."
+
+msgid "Payment removed."
+msgstr "تم حذف الدفعة."
+
+msgid "Payments"
+msgstr "الدفعات"
+
+msgid "Pending"
+msgstr "قيد الانتظار"
+
+msgid "Please check the payment details."
+msgstr "يرجى التحقق من تفاصيل الدفعة."
+
+msgid "Please choose a valid charge to pay."
+msgstr "يرجى اختيار رسوم صالحة للدفع."
+
+msgid "Please choose a valid student for this subject."
+msgstr "يرجى اختيار طالب صالح لهذه المادة."
+
+msgid "Please contact the system administrator."
+msgstr "يرجى التواصل مع مسؤول النظام."
+
+msgid "Please provide an exam name."
+msgstr "يرجى تقديم اسم الامتحان."
+
+msgid "Please select an institution first."
+msgstr "يرجى تحديد مؤسسة أولاً."
+
+msgid "Preparatory School"
+msgstr "المرحلة الإعدادية"
+
+msgid "Price List PDF"
+msgstr "ملف PDF لقائمة الأسعار"
+
+msgid "Primary School"
+msgstr "المرحلة الابتدائية"
+
+msgid "Print"
+msgstr "طباعة"
+
+msgid "Profile updated"
+msgstr "تم تحديث الملف الشخصي"
+
+msgid "Receipt"
+msgstr "إيصال"
+
+msgid "Receipt no."
+msgstr "رقم الإيصال"
+
+msgid "Receipts"
+msgstr "الإيصالات"
+
+msgid "Recent Grades"
+msgstr "أحدث الدرجات"
+
+msgid "Recent Institutions"
+msgstr "أحدث المؤسسات"
+
+msgid "Recent Payments"
+msgstr "أحدث الدفعات"
+
+msgid "Recent Users"
+msgstr "أحدث المستخدمين"
+
+msgid "Record Payment"
+msgstr "تسجيل دفعة"
+
+msgid "Recorded by"
+msgstr "سجّل بواسطة"
+
+msgid "Remaining"
+msgstr "المتبقي"
+
+msgid "Remaining balance:"
+msgstr "الرصيد المتبقي:"
+
+msgid "Remove"
+msgstr "إزالة"
+
+msgid "Remove this charge?"
+msgstr "إزالة هذه الرسوم؟"
+
+msgid "Required"
+msgstr "مطلوب"
+
+msgid "Result"
+msgstr "النتيجة"
+
+msgid "Role"
+msgstr "الدور"
+
+msgid "Save Payment"
+msgstr "حفظ الدفعة"
+
+msgid "Save User"
+msgstr "حفظ المستخدم"
+
+msgid "Score cannot be greater than maximum score."
+msgstr "لا يمكن أن تكون الدرجة أكبر من الدرجة القصوى."
+
+msgid "Score cannot be negative."
+msgstr "لا يمكن أن تكون الدرجة سالبة."
+
+msgid "Score must be a valid number."
+msgstr "يجب أن تكون الدرجة رقماً صالحاً."
+
+msgid "Score must be between 0 and the maximum score."
+msgstr "يجب أن تكون الدرجة بين 0 والدرجة القصوى."
+
+msgid "Search by name, username or login code..."
+msgstr "ابحث بالاسم أو اسم المستخدم أو كود الدخول..."
+
+msgid "Select Institution"
+msgstr "اختر المؤسسة"
+
+msgid "Settled"
+msgstr "مسدَّد"
+
+msgid "Size"
+msgstr "الحجم"
+
+msgid "Sort order"
+msgstr "ترتيب العرض"
+
+msgid "Sources cited by the assistant, as a list of {title, url} objects."
+msgstr "المصادر التي استشهد بها المساعد، كقائمة من كائنات {title, url}."
+
+msgid "Student Activity"
+msgstr "نشاط الطالب"
+
+msgid "Student Balances"
+msgstr "أرصدة الطلاب"
+
+msgid "Student Fee"
+msgstr "رسوم الطالب"
+
+msgid "Student Fees"
+msgstr "رسوم الطلاب"
+
+msgid "Student deleted successfully."
+msgstr "تم حذف الطالب بنجاح."
+
+msgid "Student removed"
+msgstr "تم حذف الطالب"
+
+msgid "Student updated"
+msgstr "تم تحديث الطالب"
+
+msgid "Student updated successfully."
+msgstr "تم تحديث الطالب بنجاح."
+
+msgid "Student {name} ({code}) has been added to {institution}."
+msgstr "تمت إضافة الطالب {name} ({code}) إلى {institution}."
+
+msgid "Student {name} has been removed."
+msgstr "تم حذف الطالب {name}."
+
+msgid "Students At Risk"
+msgstr "الطلاب المعرّضون للخطر"
+
+msgid "Students With Parents"
+msgstr "الطلاب المرتبطون بأولياء الأمور"
+
+msgid "Students imported"
+msgstr "تم استيراد الطلاب"
+
+msgid "Subject Code"
+msgstr "كود المادة"
+
+msgid "Subject Name"
+msgstr "اسم المادة"
+
+msgid "Subject created successfully."
+msgstr "تم إنشاء المادة بنجاح."
+
+msgid "Subject deleted"
+msgstr "تم حذف المادة"
+
+msgid "Subject deleted successfully."
+msgstr "تم حذف المادة بنجاح."
+
+msgid "Subject removed"
+msgstr "تم حذف المادة"
+
+msgid "Subject updated"
+msgstr "تم تحديث المادة"
+
+msgid "Subject updated successfully."
+msgstr "تم تحديث المادة بنجاح."
+
+msgid "Subject {name} assigned to you has been removed."
+msgstr "تم حذف المادة {name} المخصصة لك."
+
+msgid "Subject {name} assigned to you has been updated."
+msgstr "تم تحديث المادة {name} المخصصة لك."
+
+msgid "Subject {name} has been added to your class."
+msgstr "تمت إضافة المادة {name} إلى صفك."
+
+msgid "Subject {name} has been added to {institution}."
+msgstr "تمت إضافة المادة {name} إلى {institution}."
+
+msgid "Subject {name} has been assigned to you."
+msgstr "تم تخصيص المادة {name} لك."
+
+msgid "Subject {name} has been removed."
+msgstr "تم حذف المادة {name}."
+
+msgid "Switched to {name}."
+msgstr "تم التبديل إلى {name}."
+
+msgid "System"
+msgstr "النظام"
+
+msgid "System Administration"
+msgstr "إدارة النظام"
+
+msgid "System Administrator"
+msgstr "مسؤول النظام"
+
+msgid "Teacher Activity"
+msgstr "نشاط المعلم"
+
+msgid "Teacher created successfully."
+msgstr "تم إنشاء المعلم بنجاح."
+
+msgid "Teacher deleted"
+msgstr "تم حذف المعلم"
+
+msgid "Teacher deleted successfully."
+msgstr "تم حذف المعلم بنجاح."
+
+msgid "Teacher updated"
+msgstr "تم تحديث المعلم"
+
+msgid "Teacher updated successfully."
+msgstr "تم تحديث المعلم بنجاح."
+
+msgid "Teacher {name} has been added to {institution}."
+msgstr "تمت إضافة المعلم {name} إلى {institution}."
+
+msgid "Teacher {name} has been removed."
+msgstr "تم حذف المعلم {name}."
+
+msgid "Text"
+msgstr "نص"
+
+msgid "Text file"
+msgstr "ملف نصي"
+
+msgid "The data of class {name} has been updated."
+msgstr "تم تحديث بيانات الصف {name}."
+
+msgid "The data of student {name} ({code}) has been updated."
+msgstr "تم تحديث بيانات الطالب {name} ({code})."
+
+msgid "The data of subject {name} has been updated."
+msgstr "تم تحديث بيانات المادة {name}."
+
+msgid "The data of teacher {name} has been updated."
+msgstr "تم تحديث بيانات المعلم {name}."
+
+msgid "The request could not be understood by the server."
+msgstr "تعذّر على الخادم فهم الطلب."
+
+msgid "The selected subject does not belong to the selected class."
+msgstr "المادة المحددة لا تنتمي إلى الصف المحدد."
+
+msgid "The two password fields did not match."
+msgstr "حقلَا كلمة المرور غير متطابقين."
+
+msgid "The uploaded document or image."
+msgstr "المستند أو الصورة المرفوعة."
+
+msgid "This file is not a valid PDF."
+msgstr "هذا الملف ليس ملف PDF صالحاً."
+
+msgid ""
+"This report was generated automatically by the SchoolPlatform AI assistant."
+msgstr "تم إنشاء هذا التقرير تلقائياً بواسطة المساعد الذكي للمنصة المدرسية."
+
+msgid "Today"
+msgstr "اليوم"
+
+msgid "Toggle"
+msgstr "تبديل"
+
+msgid "Total (required)"
+msgstr "المجموع (مطلوب)"
+
+msgid "Total Due"
+msgstr "إجمالي المستحق"
+
+msgid "Total Users"
+msgstr "إجمالي المستخدمين"
+
+msgid "Type"
+msgstr "النوع"
+
+msgid "Unsupported file type."
+msgstr "نوع الملف غير مدعوم."
+
+msgid "Update the user information below."
+msgstr "حدّث معلومات المستخدم أدناه."
+
+msgid "Used to pick the assistant character (boy/girl)."
+msgstr "يُستخدم لاختيار شخصية المساعد (فتى/فتاة)."
+
+msgid "User"
+msgstr "مستخدم"
+
+msgid "User {name} created successfully."
+msgstr "تم إنشاء المستخدم {name} بنجاح."
+
+msgid "User {name} deleted successfully."
+msgstr "تم حذف المستخدم {name} بنجاح."
+
+msgid "User {name} updated successfully."
+msgstr "تم تحديث المستخدم {name} بنجاح."
+
+msgid "Users"
+msgstr "المستخدمون"
+
+msgid "Users by Role"
+msgstr "المستخدمون حسب الدور"
+
+msgid "Very Good"
+msgstr "جيد جداً"
+
+msgid "View"
+msgstr "عرض"
+
+msgid "Welcome back"
+msgstr "مرحباً بعودتك"
+
+msgid "Welcome!"
+msgstr "مرحباً!"
+
+msgid "Who owes what, at a glance."
+msgstr "من يدين بماذا، بنظرة واحدة."
+
+msgid "Word document"
+msgstr "مستند Word"
+
+msgid "Year"
+msgstr "السنة"
+
+msgid "You can upload up to %(count)s files at once."
+msgstr "يمكنك رفع حتى %(count)s ملفات في المرة الواحدة."
+
+msgid "You have been assigned to institution {name}."
+msgstr "تم تخصيصك لمؤسسة {name}."
+
+msgid "You have no notifications yet."
+msgstr "لا توجد إشعارات لك بعد."
+
+msgid "You received {score} in {subject}."
+msgstr "حصلت على {score} في {subject}."
+
+msgid "You received {score}/{max} in {subject}."
+msgstr "حصلت على {score}/{max} في {subject}."
+
+msgid "Your attendance on {date} was marked as {status} in {subject}."
+msgstr "تم تحديد حضورك يوم {date} على أنه {status} في مادة {subject}."
+
+msgid "Your attendance on {date} was marked as {status}."
+msgstr "تم تحديد حضورك يوم {date} على أنه {status}."
+
+msgid "Your attendance on {date} was marked in {subject}."
+msgstr "تم تسجيل حضورك يوم {date} في مادة {subject}."
+
+msgid "Your attendance record for {date} has been removed."
+msgstr "تم حذف سجل حضورك ليوم {date}."
+
+msgid "Your current password is incorrect."
+msgstr "كلمة المرور الحالية غير صحيحة."
+
+msgid "Your fee balance and payment history."
+msgstr "رصيد رسومك وسجل دفعاتك."
+
+msgid "Your grade for {subject} has been removed."
+msgstr "تم حذف درجتك في مادة {subject}."
+
+msgid ""
+"Your parent account has been created. Please log in and change your "
+"password."
+msgstr "تم إنشاء حسابك كولي أمر. يرجى تسجيل الدخول وتغيير كلمة المرور."
+
+msgid "Your parent data has been updated."
+msgstr "تم تحديث بياناتك كولي أمر."
+
+msgid ""
+"Your student account has been created at {institution}. Please log in and "
+"change your password."
+msgstr ""
+"تم إنشاء حسابك كطالب في {institution}. يرجى تسجيل الدخول وتغيير كلمة المرور."
+
+msgid "Your student data has been updated."
+msgstr "تم تحديث بياناتك كطالب."
+
+msgid "Your teacher account has been created at {institution}."
+msgstr "تم إنشاء حسابك كمعلم في {institution}."
+
+msgid "Your teacher data has been updated."
+msgstr "تم تحديث بياناتك كمعلم."
+
+msgid "attendance records"
+msgstr "سجلات الحضور"
+
+msgid "child"
+msgstr "طفل"
+
+msgid "children"
+msgstr "أطفال"
+
+msgid "empty message"
+msgstr "رسالة فارغة"
+
+msgid "method not allowed"
+msgstr "الطريقة غير مسموحة"
+
+msgid "of"
+msgstr "من"
+
+msgid "users on the platform."
+msgstr "مستخدم على المنصة."
+
+msgid "{count} students were imported into {institution}."
+msgstr "تم استيراد {count} طالباً إلى {institution}."
+
+msgid "{created} charge(s) created, {skipped} already existed."
+msgstr "تم إنشاء {created} رسوم، و{skipped} منها كانت موجودة بالفعل."
+
+msgid "{student} received {score} in {subject}."
+msgstr "حصل الطالب {student} على {score} في {subject}."
+
+msgid ""
+"A unique secure password was generated for each student. Save and distribute"
+" these credentials."
+msgstr ""
+"تم توليد كلمة مرور عشوائية فريدة وآمنة لكل طالب. احفظ هذه البيانات ووزعها "
+"على الطلاب."
+
+msgid "Copy All"
+msgstr "نسخ الكل"
+
+msgid ""
+"Each student will get a unique login code and a secure random password. They"
+" will be required to change it after their first login."
+msgstr ""
+"سيحصل كل طالب على كود دخول فريد وكلمة مرور عشوائية آمنة. وسيُطلب منه تغييرها"
+" بعد أول تسجيل دخول."
+
+msgid "Leave empty to generate a secure random password automatically."
+msgstr "اتركه فارغًا لتوليد كلمة مرور عشوائية آمنة تلقائيًا."
+
+msgid "Login Credentials"
+msgstr "بيانات الدخول"
+
+msgid "Password (optional)"
+msgstr "كلمة المرور (اختياري)"
+
+msgid ""
+"Student created successfully. Login code: {code}. Initial password: "
+"{password}"
+msgstr ""
+"تم إنشاء الطالب بنجاح. كود الدخول: {code}. كلمة المرور الأولية: {password}"
+
+msgid "Temporary Password"
+msgstr "كلمة المرور المؤقتة"
+
+msgid "optional"
+msgstr "اختياري"
+
+msgid "A total of {count} students"
+msgstr "إجمالي {count} طالب"
+
+msgid "A unique secure password was generated automatically."
+msgstr "تم توليد كلمة مرور عشوائية آمنة وفريدة تلقائيًا."
+
+msgid "Add Another Student"
+msgstr "إضافة طالب آخر"
+
+msgid "Download PDF"
+msgstr "تحميل PDF"
+
+msgid "No recent student credentials found to download."
+msgstr "لا توجد بيانات دخول حديثة للتنزيل."
+
+msgid "No."
+msgstr "م"
+
+msgid ""
+"Save these credentials and hand them to the student. The password must be "
+"changed after the first login."
+msgstr ""
+"احفظ هذه البيانات وسلّمها للطالب. يجب تغيير كلمة المرور بعد أول تسجيل دخول."
+
+msgid "Student Created"
+msgstr "تم إنشاء الطالب"
+
+msgid "Student Login Credentials"
+msgstr "بيانات دخول الطلاب"
+
+msgid "Student Name"
+msgstr "اسم الطالب"
+
+msgid "Students must change their password on their first login."
+msgstr "يجب على الطلاب تغيير كلمة المرور عند أول تسجيل دخول."
+
+msgid "This document was generated automatically by the SchoolPlatform."
+msgstr "تم إنشاء هذا المستند تلقائيًا بواسطة المنصة المدرسية."
+
+msgid "Could not generate the PDF file. Please try again."
+msgstr "تعذّر إنشاء ملف PDF. يرجى المحاولة مرة أخرى."

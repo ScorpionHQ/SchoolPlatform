@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Student Activity" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h1 class="section-title mb-1">
+            {% trans "Student Activity" %}
+        </h1>
+
+        <p class="section-subtitle mb-0">
+            {{ institution.name }}
+            &middot;
+            {% trans "Overview of students and their academic activity." %}
+        </p>
+
+    </div>
+
+    <a href="{% url 'students:list' %}"
+       class="btn btn-outline-primary">
+
+        <i class="bi bi-mortarboard me-2"></i>
+
+        {% trans "Manage Students" %}
+
+    </a>
+
+</div>
+
+{% if students %}
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>{% trans "Student" %}</th>
+
+                        <th>{% trans "Code" %}</th>
+
+                        <th>{% trans "Class" %}</th>
+
+                        <th>{% trans "Grades" %}</th>
+
+                        <th>{% trans "Average" %}</th>
+
+                        <th>{% trans "Attendance" %}</th>
+
+                        <th>{% trans "Absences" %}</th>
+
+                        <th>{% trans "Last Login" %}</th>
+
+                        <th>{% trans "Status" %}</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for item in students %}
+
+                    <tr>
+
+                        <td>
+
+                            <div class="fw-semibold">
+
+                                {{ item.student.user.get_full_name|default:item.student.student_code }}
+
+                            </div>
+
+                        </td>
+
+                        <td>{{ item.student.student_code }}</td>
+
+                        <td>{{ item.classroom|default:"-" }}</td>
+
+                        <td>
+
+                            <span class="badge bg-info text-dark">
+
+                                {{ item.grade_count }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            {% if item.average_grade %}
+
+                                <span class="badge bg-primary">
+
+                                    {{ item.average_grade|floatformat:1 }}
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-light text-muted">-</span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            <div class="d-flex align-items-center gap-2">
+
+                                <div class="progress flex-grow-1" style="height:8px;">
+
+                                    <div class="progress-bar bg-success"
+                                         role="progressbar"
+                                         style="width: {{ item.attendance_percentage }}%;">
+
+                                    </div>
+
+                                </div>
+
+                                <small class="text-muted">{{ item.attendance_percentage }}%</small>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            {% if item.absent_count %}
+
+                                <span class="badge bg-danger">
+
+                                    {{ item.absent_count }}
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-light text-muted">0</span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {% if item.last_login %}
+
+                                {{ item.last_login|date:"d/m/Y H:i" }}
+
+                            {% else %}
+
+                                <span class="text-muted">{% trans "Never" %}</span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {% if item.is_active %}
+
+                                <span class="badge bg-success">
+
+                                    {% trans "Active" %}
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-secondary">
+
+                                    {% trans "Inactive" %}
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% else %}
+
+<div class="alert alert-info">
+
+    <i class="bi bi-info-circle me-2"></i>
+
+    {% trans "No students found in this institution yet." %}
+
+</div>
+
+{% endif %}
+
+{% endblock %}

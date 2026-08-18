@@ -1,0 +1,383 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Import Students" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h2>{% trans "Import Students" %}</h2>
+        <p class="text-muted">
+            {% trans "Upload an Excel file to create student accounts in bulk." %}
+        </p>
+    </div>
+
+    <a href="{% url 'students:list' %}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i>
+        {% trans "Back to Students" %}
+    </a>
+
+</div>
+
+<div class="card mb-4">
+
+    <div class="card-body">
+
+        <h5 class="mb-3">
+            <i class="bi bi-file-earmark-excel text-success"></i>
+            {% trans "File Requirements" %}
+        </h5>
+
+        <ul class="text-muted mb-0">
+
+            <li>
+                {% trans "The first row must contain the column headers." %}
+            </li>
+
+            <li>
+                {% trans "Required columns:" %}
+                <strong>{% trans "First Name" %}</strong>,
+                <strong>{% trans "Last Name" %}</strong>.
+            </li>
+
+            <li>
+                {% trans "Optional columns:" %}
+                <strong>{% trans "Student Code" %}</strong>,
+                <strong>{% trans "Username" %}</strong>,
+                <strong>{% trans "Gender" %}</strong>,
+                <strong>{% trans "Date of Birth" %}</strong>,
+                <strong>{% trans "Parent Phone" %}</strong>,
+                <strong>{% trans "Address" %}</strong>.
+            </li>
+
+            <li>
+                {% trans "Supported headers (English or Arabic):" %}
+                <em>
+                    first_name / last_name / student_code / username /
+                    gender / date_of_birth / parent_phone / address
+                </em>
+            </li>
+
+            <li>
+                {% trans "Gender values: male / female (or: m, boy, girl, ذكر, انثى, طالب, طالبة)." %}
+            </li>
+
+            <li>
+                {% trans "Each student will get a unique login code and a secure random password. They will be required to change it after their first login." %}
+            </li>
+
+        </ul>
+
+    </div>
+
+</div>
+
+<div class="card mb-4">
+
+    <div class="card-body">
+
+        {% if form.non_field_errors %}
+
+            <div class="alert alert-danger">
+
+                {{ form.non_field_errors }}
+
+            </div>
+
+        {% endif %}
+
+        <form method="post"
+              enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        {% trans "Excel File" %}
+                    </label>
+
+                    {{ form.excel_file }}
+
+                    {% if form.excel_file.errors %}
+
+                        <div class="text-danger small">
+                            {{ form.excel_file.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        {% trans "Institution" %}
+                    </label>
+
+                    {{ form.institution }}
+
+                    {% if form.institution.errors %}
+
+                        <div class="text-danger small">
+                            {{ form.institution.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        {% trans "Default Class (optional)" %}
+                    </label>
+
+                    {{ form.classroom }}
+
+                    {% if form.classroom.errors %}
+
+                        <div class="text-danger small">
+                            {{ form.classroom.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        {% trans "Default Gender (optional)" %}
+                    </label>
+
+                    {{ form.gender }}
+
+                    <small class="text-muted">
+                        {% trans "Applied to rows that do not have a gender value." %}
+                    </small>
+
+                    {% if form.gender.errors %}
+
+                        <div class="text-danger small">
+                            {{ form.gender.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <div class="mt-4">
+
+                <button class="btn btn-success">
+                    <i class="bi bi-cloud-upload"></i>
+                    {% trans "Import Students" %}
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% if import_result %}
+
+    <div class="card" id="import-results">
+
+        <div class="card-body">
+
+            <h5 class="mb-3">
+                <i class="bi bi-clipboard-check text-primary"></i>
+                {% trans "Import Results" %}
+            </h5>
+
+            <div class="row text-center mb-4">
+
+                <div class="col-md-4">
+
+                    <div class="stat-card">
+
+                        <div>
+                            <div class="stat-title">
+                                {% trans "Imported" %}
+                            </div>
+
+                            <div class="stat-number text-success">
+                                {{ import_result.created_count }}
+                            </div>
+                        </div>
+
+                        <div class="stat-icon bg-success">
+                            <i class="bi bi-person-check-fill"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="stat-card">
+
+                        <div>
+                            <div class="stat-title">
+                                {% trans "Skipped" %}
+                            </div>
+
+                            <div class="stat-number text-warning">
+                                {{ import_result.skipped_count }}
+                            </div>
+                        </div>
+
+                        <div class="stat-icon bg-warning">
+                            <i class="bi bi-person-dash-fill"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% if import_result.credentials %}
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                    <h6 class="mb-0">
+                        <i class="bi bi-key-fill text-warning"></i>
+                        {% trans "Login Credentials" %}
+                    </h6>
+
+                    <div class="d-flex gap-2">
+
+                        <a href="{% url 'students:credentials_pdf' %}"
+                           class="btn btn-outline-success btn-sm">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                            {% trans "Download PDF" %}
+                        </a>
+
+                        <button type="button"
+                                class="btn btn-outline-primary btn-sm"
+                                onclick="copyCredentials()">
+                            <i class="bi bi-clipboard"></i>
+                            {% trans "Copy All" %}
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="alert alert-info py-2">
+                    {% trans "A unique secure password was generated for each student. Save and distribute these credentials." %}
+                </div>
+
+                <div class="table-responsive mb-4">
+
+                    <table class="table table-bordered align-middle"
+                           id="credentials-table">
+
+                        <thead>
+                            <tr>
+                                <th>{% trans "Name" %}</th>
+                                <th>{% trans "Login Code" %}</th>
+                                <th>{% trans "Temporary Password" %}</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for cred in import_result.credentials %}
+
+                                <tr>
+                                    <td>{{ cred.name }}</td>
+                                    <td><code>{{ cred.code }}</code></td>
+                                    <td><code>{{ cred.password }}</code></td>
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% endif %}
+
+            {% if import_result.errors %}
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead>
+                            <tr>
+                                <th>{% trans "Row" %}</th>
+                                <th>{% trans "Error" %}</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for error in import_result.errors %}
+
+                                <tr>
+                                    <td>{{ error.row }}</td>
+                                    <td>{{ error.message }}</td>
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function copyCredentials() {
+    var table = document.getElementById('credentials-table');
+    if (!table) return;
+    var text = '';
+    var rows = table.querySelectorAll('tbody tr');
+    rows.forEach(function (row) {
+        var parts = [];
+        row.querySelectorAll('td').forEach(function (cell) {
+            parts.push(cell.textContent.trim());
+        });
+        text += parts.join('\t') + '\n';
+    });
+    navigator.clipboard.writeText(text);
+}
+
+(function() {
+    var results = document.getElementById('import-results');
+    if (results) {
+        setTimeout(function() {
+            results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 200);
+    }
+})();
+</script>
+{% endblock %}

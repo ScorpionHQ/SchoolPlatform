@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% if form.is_update %}
+{% trans "Edit Parent" %}
+{% else %}
+{% trans "Add Parent" %}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+
+    <div class="card-header">
+
+        <h4 class="mb-0">
+
+            {% if form.is_update %}
+            {% trans "Edit Parent" %}
+            {% else %}
+            {% trans "Add Parent" %}
+            {% endif %}
+
+        </h4>
+
+    </div>
+
+    <div class="card-body">
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+
+                <div class="alert alert-danger">
+
+                    {{ form.non_field_errors }}
+
+                </div>
+
+            {% endif %}
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        {{ form.first_name.label }}
+                    </label>
+
+                    {{ form.first_name }}
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        {{ form.last_name.label }}
+                    </label>
+
+                    {{ form.last_name }}
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        {{ form.username.label }}
+                    </label>
+
+                    {{ form.username }}
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        {{ form.relationship.label }}
+                    </label>
+
+                    {{ form.relationship }}
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        {{ form.password.label }}
+                    </label>
+
+                    {{ form.password }}
+
+                    {% if form.is_update %}
+
+                        <small class="text-muted">
+                            {% trans "Leave empty to keep the current password." %}
+                        </small>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        {{ form.confirm_password.label }}
+                    </label>
+
+                    {{ form.confirm_password }}
+
+                </div>
+
+            </div>
+
+            <div class="mb-4">
+
+                <label class="form-label">
+
+                    {{ form.students.label }}
+
+                </label>
+
+                <div class="border rounded p-3">
+
+                    {{ form.students }}
+
+                </div>
+
+            </div>
+
+            <div class="text-end">
+
+                <button
+                    type="submit"
+                    class="btn btn-primary">
+
+                    <i class="bi bi-save"></i>
+
+                    {% trans "Save Parent" %}
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

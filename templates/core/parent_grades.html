@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "My Children" %} — {% trans "Grades" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h4 class="mb-0">
+        <i class="bi bi-bar-chart-fill"></i>
+        {% trans "Grades" %}
+    </h4>
+</div>
+
+<div class="card shadow-sm">
+
+    <div class="card-body table-responsive">
+
+        <table class="table table-hover align-middle">
+
+            <thead>
+
+                <tr>
+
+                    <th>{% trans "Student" %}</th>
+                    <th>{% trans "Subject" %}</th>
+                    <th>{% trans "Exam" %}</th>
+                    <th>{% trans "Score" %}</th>
+                    <th>{% trans "Date" %}</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for grade in grades %}
+
+                <tr>
+
+                    <td>
+                        <i class="bi bi-person-circle text-primary me-1"></i>
+                        {{ grade.student.user.get_full_name }}
+                    </td>
+
+                    <td>{{ grade.subject.name }}</td>
+
+                    <td>{{ grade.exam_name }}</td>
+
+                    <td>
+                        <span class="badge bg-primary-subtle text-primary">
+                            {{ grade.score }}/{{ grade.max_score }}
+                        </span>
+                    </td>
+
+                    <td>{{ grade.exam_date|default:"—" }}</td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="5" class="text-center text-muted py-4">
+
+                        {% trans "No grades available." %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

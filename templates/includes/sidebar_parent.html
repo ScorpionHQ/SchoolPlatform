@@ -1,0 +1,101 @@
+{% load i18n %}
+
+<aside class="sidebar">
+
+    <div class="sidebar-header">
+
+        <i class="bi bi-people-fill"></i>
+
+        <h4>{% trans "Parent Panel" %}</h4>
+
+        <small>{% trans "Parent Dashboard" %}</small>
+
+    </div>
+
+    <div class="sidebar-menu">
+
+        <a href="{% url 'parent_dashboard' %}"
+           class="{% if request.resolver_match.url_name == 'parent_dashboard' %}active{% endif %}">
+
+            <i class="bi bi-grid-1x2-fill"></i>
+
+            <span>{% trans "Dashboard" %}</span>
+
+        </a>
+
+        <hr>
+
+        <a href="{% url 'parent_children' %}"
+           class="{% if request.resolver_match.url_name == 'parent_children' %}active{% endif %}">
+
+            <i class="bi bi-person-hearts"></i>
+
+            <span>{% trans "My Children" %}</span>
+
+        </a>
+
+        <a href="{% url 'parent_grades' %}"
+           class="{% if request.resolver_match.url_name == 'parent_grades' %}active{% endif %}">
+
+            <i class="bi bi-bar-chart-fill"></i>
+
+            <span>{% trans "Grades" %}</span>
+
+        </a>
+
+        <a href="{% url 'attendance:calendar' %}"
+           class="{% if request.resolver_match.url_name == 'parent_attendance' or request.resolver_match.url_name == 'calendar' %}active{% endif %}">
+
+            <i class="bi bi-calendar-check-fill"></i>
+
+            <span>{% trans "Attendance" %}</span>
+
+        </a>
+
+        <a href="{% url 'profile' %}">
+
+            <i class="bi bi-person-circle"></i>
+
+            <span>{% trans "Profile" %}</span>
+
+        </a>
+
+        <a href="{% url 'billing:my_fees' %}"
+           class="{% if request.resolver_match.namespace == 'billing' %}active{% endif %}">
+
+            <i class="bi bi-cash-coin"></i>
+
+            <span>{% trans "Fees" %}</span>
+
+        </a>
+
+        <hr>
+
+        <a href="{% url 'assistant:chat' %}"
+           class="{% if request.resolver_match.namespace == 'assistant' %}active{% endif %}">
+
+            <i class="bi bi-robot"></i>
+
+            <span>{% if LANGUAGE_CODE == 'ar' %}المساعد الذكي{% else %}AI Assistant{% endif %}</span>
+
+        </a>
+
+        <hr>
+
+        <form action="{% url 'logout' %}" method="post">
+
+            {% csrf_token %}
+
+            <button type="submit" class="sidebar-link-btn">
+
+                <i class="bi bi-box-arrow-right"></i>
+
+                <span>{% trans "Logout" %}</span>
+
+            </button>
+
+        </form>
+
+    </div>
+
+</aside>

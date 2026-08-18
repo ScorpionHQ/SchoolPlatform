@@ -1,0 +1,395 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Charges & Payments" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+
+    <div>
+
+        <h2>{% trans "Charges & Payments" %}</h2>
+
+        <p class="text-muted">
+            {% trans "Follow up student fees, record payments and issue receipts." %}
+        </p>
+
+    </div>
+
+    <div class="d-flex gap-2">
+
+        <a href="{% url 'billing:charge_class' %}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i>
+            {% trans "Charge a Class" %}
+        </a>
+
+        <a href="{% url 'billing:balances' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-calculator"></i>
+            {% trans "Balances" %}
+        </a>
+
+        <a href="{% url 'billing:fees' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-coin"></i>
+            {% trans "Fee Types" %}
+        </a>
+
+    </div>
+
+</div>
+
+<div class="card mb-4">
+
+    <div class="card-body">
+
+        <form method="get" class="row g-3">
+
+            <div class="col-md-4">
+
+                <select name="classroom" class="form-select">
+
+                    <option value="">
+                        {% trans "All classes" %}
+                    </option>
+
+                    {% for classroom in classrooms %}
+
+                        <option value="{{ classroom.pk }}"
+                                {% if requested_classroom == classroom.pk|stringformat:"s" %}selected{% endif %}>
+                            {{ classroom }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <input type="text"
+                       name="q"
+                       class="form-control"
+                       placeholder="{% trans 'Search student...' %}"
+                       value="{{ request.GET.q }}">
+
+            </div>
+
+            <div class="col-md-2">
+
+                <button class="btn btn-primary w-100">
+                    <i class="bi bi-search"></i>
+                    {% trans "Search" %}
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>{% trans "Student" %}</th>
+                        <th>{% trans "Class" %}</th>
+                        <th>{% trans "Fee" %}</th>
+                        <th>{% trans "Year" %}</th>
+                        <th>{% trans "Amount" %}</th>
+                        <th>{% trans "Paid" %}</th>
+                        <th>{% trans "Remaining" %}</th>
+                        <th class="text-end">{% trans "Actions" %}</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for fee in fees %}
+
+                        <tr>
+
+                            <td>{{ fee.student.user.get_full_name }}</td>
+
+                            <td>{{ fee.student.classroom }}</td>
+
+                            <td>{{ fee.fee_type.name }}</td>
+
+                            <td>{{ fee.academic_year|default:"-" }}</td>
+
+                            <td>{{ fee.amount }}</td>
+
+                            <td>{{ fee.paid_amount }}</td>
+
+                            <td>
+
+                                {% if fee.is_fully_paid %}
+
+                                    <span class="badge text-bg-success">{% trans "Paid" %}</span>
+
+                                {% elif fee.remaining == fee.amount %}
+
+                                    <span class="badge text-bg-danger">{{ fee.remaining }}</span>
+
+                                {% else %}
+
+                                    <span class="badge text-bg-warning">{{ fee.remaining }}</span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td class="text-end">
+
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-primary"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#paymentModal"
+                                        data-fee="{{ fee.pk }}"
+                                        data-student="{{ fee.student.user.get_full_name }}"
+                                        data-max="{{ fee.remaining }}">
+                                    <i class="bi bi-cash-coin"></i>
+                                    {% trans "Pay" %}
+                                </button>
+
+                                {% if fee.payments.exists %}
+
+                                    <a href="#payments-{{ fee.pk }}"
+                                       class="btn btn-sm btn-outline-secondary"
+                                       title="{% trans 'Receipts' %}">
+                                        <i class="bi bi-receipt"></i>
+                                    </a>
+
+                                {% endif %}
+
+                                <form method="post"
+                                      action="{% url 'billing:student_fee_delete' fee.pk %}"
+                                      class="d-inline"
+                                      onsubmit="return confirm('{% trans 'Remove this charge?' %}');">
+                                    {% csrf_token %}
+                                    <button class="btn btn-sm btn-outline-danger"
+                                            title="{% trans 'Remove' %}">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+                    {% empty %}
+
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-5">
+                                <i class="bi bi-cash-stack display-5 d-block mb-3"></i>
+                                {% trans "No charges found." %}
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% include "includes/pagination.html" with page_obj=fees %}
+
+    </div>
+
+</div>
+
+<h5 class="mb-3">{% trans "Recent Payments" %}</h5>
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>{% trans "Date" %}</th>
+                        <th>{% trans "Student" %}</th>
+                        <th>{% trans "Fee" %}</th>
+                        <th>{% trans "Amount" %}</th>
+                        <th>{% trans "Method" %}</th>
+                        <th>{% trans "Recorded by" %}</th>
+                        <th class="text-end">{% trans "Actions" %}</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for fee in fees %}
+
+                        {% if fee.payments.exists %}
+
+                            {% for payment in fee.payments.all %}
+
+                                <tr id="payments-{{ fee.pk }}">
+
+                                    <td>{{ payment.created_at|date:"d/m/Y" }}</td>
+
+                                    <td>{{ payment.student.user.get_full_name }}</td>
+
+                                    <td>{{ payment.student_fee.fee_type.name }}</td>
+
+                                    <td>{{ payment.amount }}</td>
+
+                                    <td>{{ payment.get_method_display }}</td>
+
+                                    <td>{{ payment.created_by.get_full_name|default:"-" }}</td>
+
+                                    <td class="text-end">
+
+                                        <a href="{% url 'billing:receipt' payment.pk %}"
+                                           target="_blank"
+                                           class="btn btn-sm btn-outline-secondary">
+                                            <i class="bi bi-printer"></i>
+                                            {% trans "Receipt" %}
+                                        </a>
+
+                                        <form method="post"
+                                              action="{% url 'billing:payment_delete' payment.pk %}"
+                                              class="d-inline"
+                                              onsubmit="return confirm('{% trans 'Delete this payment?' %}');">
+                                            {% csrf_token %}
+                                            <button class="btn btn-sm btn-outline-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        {% endif %}
+
+                    {% empty %}
+
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">
+                                {% trans "No payments recorded yet." %}
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="paymentModal" tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <form method="post" action="{% url 'billing:payment_create' %}">
+
+                {% csrf_token %}
+
+                <input type="hidden" name="student_fee" id="payment-fee-id">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">{% trans "Record Payment" %}</h5>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"></button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <p class="text-muted" id="payment-student"></p>
+
+                    {% for field in payment_form %}
+
+                        <div class="mb-3">
+
+                            <label class="form-label">{{ field.label }}</label>
+
+                            {{ field }}
+
+                        </div>
+
+                    {% endfor %}
+
+                    <div class="alert alert-info small mb-0">
+
+                        <i class="bi bi-info-circle"></i>
+
+                        {% trans "Remaining balance:" %}
+
+                        <strong id="payment-max"></strong>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        {% trans "Cancel" %}
+                    </button>
+
+                    <button class="btn btn-primary">
+                        <i class="bi bi-check-lg"></i>
+                        {% trans "Save Payment" %}
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    document.querySelectorAll("[data-bs-target='#paymentModal']").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            document.getElementById("payment-fee-id").value = btn.dataset.fee;
+            document.getElementById("payment-student").textContent = btn.dataset.student;
+            document.getElementById("payment-max").textContent = btn.dataset.max;
+        });
+    });
+</script>
+
+{% endblock %}

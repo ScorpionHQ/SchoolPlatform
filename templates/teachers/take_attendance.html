@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Take Attendance" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+
+    <div class="card-header">
+
+        <h3>
+            <i class="bi bi-check2-square"></i>
+            {% trans "Take Attendance" %}
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div class="row mb-4">
+
+                <div class="col-md-8">
+
+                    <select
+                        name="subject"
+                        class="form-select">
+
+                        <option value="">
+                            {% trans "Choose Subject" %}
+                        </option>
+
+                        {% for subject in subjects %}
+
+                        <option
+                            value="{{ subject.id }}"
+                            {% if selected_subject == subject.id|stringformat:"s" %}selected{% endif %}>
+
+                            {{ subject.name }} - {{ subject.classroom }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <button
+                        type="submit"
+                        name="load_students"
+                        class="btn btn-primary w-100">
+
+                        <i class="bi bi-search"></i>
+
+                        {% trans "Load Students" %}
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            {% if students %}
+
+            <table class="table table-bordered align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>{% trans "Student" %}</th>
+
+                        <th>{% trans "Status" %}</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for student in students %}
+
+                    <tr>
+
+                        <td>
+
+                            <div class="d-flex align-items-center gap-2">
+                            {% if student.user.profile_image %}
+                            <img src="{{ student.user.profile_image.url }}"
+                                 class="rounded-circle"
+                                 style="width:36px; height:36px; object-fit:cover;"
+                                 alt="">
+                            {% else %}
+                            <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center"
+                                 style="width:36px; height:36px;">
+                                <i class="bi bi-person text-primary"></i>
+                            </div>
+                            {% endif %}
+                            <div>
+                                {{ student.user.get_full_name }}
+                                <br>
+                                <small class="text-muted">
+                                    {{ student.student_code }}
+                                </small>
+                            </div>
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <input
+                                type="hidden"
+                                name="student_ids"
+                                value="{{ student.id }}">
+
+                            <select
+                                name="status_{{ student.id }}"
+                                class="form-select">
+
+                                <option value="present">
+                                    Present
+                                </option>
+
+                                <option value="absent">
+                                    Absent
+                                </option>
+
+                                <option value="late">
+                                    Late
+                                </option>
+
+                                <option value="excused">
+                                    Excused
+                                </option>
+
+                            </select>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            <div class="mt-3">
+
+                <button
+                    type="submit"
+                    name="save_attendance"
+                    class="btn btn-success">
+
+                    <i class="bi bi-save"></i>
+
+                    {% trans "Save Attendance" %}
+
+                </button>
+
+            </div>
+
+            {% endif %}
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

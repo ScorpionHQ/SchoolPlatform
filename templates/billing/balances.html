@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Student Balances" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+
+    <div>
+
+        <h2>{% trans "Student Balances" %}</h2>
+
+        <p class="text-muted">
+            {% trans "Who owes what, at a glance." %}
+        </p>
+
+    </div>
+
+    <a href="{% url 'billing:charges' %}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i>
+        {% trans "Charges" %}
+    </a>
+
+</div>
+
+<div class="card mb-4">
+
+    <div class="card-body">
+
+        <form method="get" class="row g-3">
+
+            <div class="col-md-10">
+
+                <input type="text"
+                       name="q"
+                       class="form-control"
+                       placeholder="{% trans 'Search student...' %}"
+                       value="{{ request.GET.q }}">
+
+            </div>
+
+            <div class="col-md-2">
+
+                <button class="btn btn-primary w-100">
+                    <i class="bi bi-search"></i>
+                    {% trans "Search" %}
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>{% trans "Student" %}</th>
+                        <th>{% trans "Class" %}</th>
+                        <th>{% trans "Total Due" %}</th>
+                        <th>{% trans "Paid" %}</th>
+                        <th>{% trans "Remaining" %}</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for student in students %}
+
+                        <tr>
+
+                            <td>{{ student.user.get_full_name }}</td>
+
+                            <td>{{ student.classroom|default:"-" }}</td>
+
+                            <td>{{ student.total_due|default:0 }}</td>
+
+                            <td>{{ student.total_paid|default:0 }}</td>
+
+                            <td>
+
+                                {% if student.total_remaining and student.total_remaining > 0 %}
+
+                                    <span class="badge text-bg-danger">{{ student.total_remaining }}</span>
+
+                                {% else %}
+
+                                    <span class="badge text-bg-success">{% trans "Settled" %}</span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                    {% empty %}
+
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-5">
+                                <i class="bi bi-wallet2 display-5 d-block mb-3"></i>
+                                {% trans "No students found." %}
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% include "includes/pagination.html" with page_obj=students %}
+
+    </div>
+
+</div>
+
+{% endblock %}

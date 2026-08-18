@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Attendance Session" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+
+    <div class="card-header d-flex justify-content-between align-items-center">
+
+        <h4 class="mb-0">
+            {% trans "Start Attendance Session" %}
+        </h4>
+
+    </div>
+
+    <div class="card-body">
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div class="row g-3">
+
+                <div class="col-md-3">
+
+                    <label class="form-label">
+                        {{ form.classroom.label }}
+                    </label>
+
+                    {{ form.classroom }}
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <label class="form-label">
+                        {{ form.subject.label }}
+                    </label>
+
+                    {{ form.subject }}
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <label class="form-label">
+                        {{ form.teacher.label }}
+                    </label>
+
+                    {{ form.teacher }}
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <label class="form-label">
+                        {{ form.date.label }}
+                    </label>
+
+                    {{ form.date }}
+
+                </div>
+
+            </div>
+
+            {% if students %}
+
+                <input
+                    type="hidden"
+                    name="classroom"
+                    value="{{ form.classroom.value }}">
+
+                <input
+                    type="hidden"
+                    name="subject"
+                    value="{{ form.subject.value }}">
+
+                <input
+                    type="hidden"
+                    name="teacher"
+                    value="{{ form.teacher.value }}">
+
+                <input
+                    type="hidden"
+                    name="date"
+                    value="{{ form.date.value|default:'' }}">
+
+            {% endif %}
+
+            <div class="mt-4">
+
+                <button
+                  type="submit"
+                 name="action"
+                 value="start"
+                 class="btn btn-primary">
+
+                 <i class="bi bi-play-fill"></i>
+
+                 {% trans "Start Session" %}
+
+                 </button>
+            </div>
+
+            {% if students %}
+
+            <div class="card shadow-sm mt-4">
+
+                <div class="card-header d-flex justify-content-between align-items-center">
+
+                    <h5 class="mb-0">
+
+                        {% trans "Students" %}
+
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn btn-success btn-sm"
+                        id="mark-all-present">
+
+                        <i class="bi bi-check2-all"></i>
+
+                        {% trans "Mark All Present" %}
+
+                    </button>
+
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>#</th>
+                                <th>{% trans "Student" %}</th>
+                                <th width="220">{% trans "Status" %}</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for student in students %}
+
+                            <tr>
+
+                                <td>
+
+                                    {{ forloop.counter }}
+
+                                </td>
+
+                                <td>
+
+                                    <strong>
+
+                                        {{ student.user.get_full_name }}
+
+                                    </strong>
+
+                                </td>
+
+                                <td>
+
+                                    <select
+                                        name="status_{{ student.id }}"
+                                        class="form-select attendance-status">
+
+                                        <option value="present">
+                                            🟢 Present
+                                        </option>
+
+                                        <option value="absent">
+                                            🔴 Absent
+                                        </option>
+
+                                        <option value="late">
+                                            🟡 Late
+                                        </option>
+
+                                        <option value="excused">
+                                            🔵 Excused
+                                        </option>
+
+                                    </select>
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                    <div class="mt-4 text-end">
+
+                      <button
+                        type="submit"
+                        name="action"
+                       value="save"
+                       class="btn btn-success">
+
+                       <i class="bi bi-save"></i>
+
+                        {% trans "Save Attendance" %}
+
+                      </button>
+
+                    </div>
+
+                    <div class="mt-4 d-flex justify-content-between">
+
+                        <div>
+
+                            <span class="badge bg-success me-2">
+                                Present: {{ students|length }}
+                            </span>
+
+                            <span class="badge bg-danger me-2">
+                                Absent: 0
+                            </span>
+
+                            <span class="badge bg-warning text-dark me-2">
+                                Late: 0
+                            </span>
+
+                            <span class="badge bg-primary">
+                                Excused: 0
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

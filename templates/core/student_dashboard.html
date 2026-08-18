@@ -1,0 +1,419 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Student Dashboard" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-hero mb-4">
+
+    <div class="row align-items-center g-3">
+
+        <div class="col-lg-7">
+
+            <div class="d-flex align-items-center gap-3 position-relative" style="z-index:1;">
+
+                <span class="avatar-circle is-info" style="width:60px;height:60px;font-size:1.4rem;">
+
+                    {{ student.user.get_full_name|default:student.user.username|slice:":1"|upper }}
+
+                </span>
+
+                <div>
+
+                    <h1 class="hero-title mb-1">
+
+                        {% trans "Welcome" %}
+
+                        {{ student.user.get_full_name|default:student.user.username }}
+
+                    </h1>
+
+                    <p class="hero-subtitle mb-0">
+
+                        {{ student.institution.name|default:"" }}
+
+                        {% if student.classroom %}
+                        &middot;
+                        {{ student.classroom }}
+                        {% endif %}
+
+                        {% if stage %}
+                        &middot;
+                        <span class="badge-soft badge-soft-warning">{{ stage }}</span>
+                        {% endif %}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-5">
+
+            <div class="hero-actions justify-content-lg-end">
+
+                <span class="badge-soft" style="background:rgba(255,255,255,.16);color:#fff;">
+                    <i class="bi bi-qr-code me-1"></i>
+                    {{ student.student_code }}
+                </span>
+
+                <a href="{% url 'notifications:list' %}" class="btn position-relative">
+                    <i class="bi bi-bell me-1"></i>
+                    {% trans "Notifications" %}
+                    {% if unread_notifications_count %}
+                    <span class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle">
+                        {{ unread_notifications_count }}
+                    </span>
+                    {% endif %}
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row g-4 mb-4">
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="stat-card">
+
+            <div>
+
+                <div class="stat-title">{% trans "Average Grade" %}</div>
+
+                <div class="stat-number">{{ average_grade_percentage }}%</div>
+
+            </div>
+
+            <div class="stat-icon is-emerald">
+                <i class="bi bi-award-fill"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="stat-card">
+
+            <div>
+
+                <div class="stat-title">{% trans "Attendance" %}</div>
+
+                <div class="stat-number">{{ attendance_percentage }}%</div>
+
+            </div>
+
+            <div class="stat-icon is-info">
+                <i class="bi bi-calendar-check-fill"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="stat-card">
+
+            <div>
+
+                <div class="stat-title">{% trans "Subjects" %}</div>
+
+                <div class="stat-number">{{ subject_count }}</div>
+
+            </div>
+
+            <div class="stat-icon is-amber">
+                <i class="bi bi-book-fill"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="stat-card">
+
+            <div>
+
+                <div class="stat-title">{% trans "Exams Taken" %}</div>
+
+                <div class="stat-number">{{ grade_count }}</div>
+
+            </div>
+
+            <div class="stat-icon is-rose">
+                <i class="bi bi-journal-check"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row g-4 mb-4">
+
+    <div class="col-lg-4">
+
+        <div class="card h-100">
+
+            <div class="card-header">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-pie-chart-fill me-2"></i>
+
+                    {% trans "My Attendance" %}
+
+                </h5>
+
+            </div>
+
+            <div class="card-body d-flex flex-column align-items-center justify-content-center">
+
+                <div class="progress-donut mb-3"
+                     style="--value:{{ attendance_percentage }};--donut-color:#10B981;">
+
+                    <span class="donut-value">{{ attendance_percentage }}%</span>
+
+                    <span class="donut-label">{% trans "Present" %}</span>
+
+                </div>
+
+                <small class="text-muted text-center">
+
+                    {{ attendance_count }} {% trans "attendance records" %}
+
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-8">
+
+        <div class="card h-100">
+
+            <div class="card-header d-flex justify-content-between align-items-center">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-bar-chart-fill me-2"></i>
+
+                    {% trans "Latest Grades" %}
+
+                </h5>
+
+                <a href="{% url 'grades:list' %}" class="btn btn-sm btn-outline-primary">
+                    {% trans "View All" %}
+                </a>
+
+            </div>
+
+            <div class="card-body p-0">
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle mb-0">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>{% trans "Subject" %}</th>
+
+                                <th>{% trans "Exam" %}</th>
+
+                                <th>{% trans "Score" %}</th>
+
+                                <th>{% trans "Result" %}</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for item in grades %}
+
+                            <tr>
+
+                                <td class="fw-semibold">{{ item.grade.subject.name }}</td>
+
+                                <td>{{ item.grade.exam_name }}</td>
+
+                                <td>
+
+                                    <span class="badge-soft badge-soft-primary">
+
+                                        {{ item.grade.score }}/{{ item.grade.max_score }}
+
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    {% if item.percentage is None %}
+
+                                        <span class="badge-soft badge-soft-muted">—</span>
+
+                                    {% elif item.percentage >= 85 %}
+
+                                        <span class="badge-soft badge-soft-success">{% trans "Excellent" %}</span>
+
+                                    {% elif item.percentage >= 70 %}
+
+                                        <span class="badge-soft badge-soft-primary">{% trans "Very Good" %}</span>
+
+                                    {% elif item.percentage >= 50 %}
+
+                                        <span class="badge-soft badge-soft-warning">{% trans "Good" %}</span>
+
+                                    {% else %}
+
+                                        <span class="badge-soft badge-soft-danger">{% trans "Needs Work" %}</span>
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                            {% empty %}
+
+                            <tr>
+
+                                <td colspan="4" class="text-center text-muted py-4">
+
+                                    {% trans "No grades yet." %}
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card">
+
+    <div class="card-header">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-journal-bookmark-fill me-2"></i>
+
+            {% trans "My Subjects" %}
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        {% if subjects %}
+
+        <div class="row g-3">
+
+            {% for item in subjects %}
+
+            <div class="col-lg-3 col-md-4 col-sm-6">
+
+                <div class="card h-100 border">
+
+                    <div class="card-body">
+
+                        <div class="d-flex align-items-center gap-2 mb-3">
+
+                            <span class="icon-tile">
+                                <i class="bi bi-book-fill"></i>
+                            </span>
+
+                            <h6 class="mb-0">{{ item.subject.name }}</h6>
+
+                        </div>
+
+                        {% if item.average %}
+
+                        <div class="d-flex justify-content-between small mb-1">
+
+                            <span class="text-muted">{% trans "Average" %}</span>
+
+                            <strong>{{ item.average|floatformat:1 }}</strong>
+
+                        </div>
+
+                        <div class="progress" style="height:8px;">
+
+                            <div class="progress-bar"
+                                 role="progressbar"
+                                 style="width:{{ item.percentage }}%;"
+                                 aria-valuenow="{{ item.percentage }}"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100">
+
+                            </div>
+
+                        </div>
+
+                        {% else %}
+
+                        <span class="text-muted small">{% trans "No grades yet." %}</span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <div class="empty-icon"><i class="bi bi-book"></i></div>
+
+            <p>{% trans "No subjects assigned." %}</p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
