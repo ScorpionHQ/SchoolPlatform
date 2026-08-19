@@ -147,7 +147,7 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
-MEDIA_URL = "media/"
+MEDIA_URL = "/media/"
 
 MEDIA_ROOT = BASE_DIR / "media"
 
@@ -184,12 +184,12 @@ ASSISTANT_API_TIMEOUT = 12
 # with real sources. Get a free API key from Google AI Studio
 # (https://aistudio.google.com/apikey) and put it in the .env file.
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
-GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
 GEMINI_BACKUP_MODELS = [
     model.strip()
     for model in os.environ.get(
         "GEMINI_BACKUP_MODELS",
-        "gemini-3.1-flash-lite,gemini-flash-lite-latest",
+        "gemini-2.5-flash,gemini-1.5-flash",
     ).split(",")
     if model.strip()
 ]
