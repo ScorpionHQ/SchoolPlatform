@@ -1,0 +1,15 @@
+{% with size=size|default:"44" %}
+{% if user.profile_image %}
+<img src="{{ user.profile_image.url }}"
+     class="rounded-circle"
+     style="width:{{ size }}px; height:{{ size }}px; object-fit:cover;"
+     alt="{{ user.get_full_name }}">
+{% else %}
+{% with initials=user.first_name.0|default:user.username.0 %}
+<span class="avatar-circle"
+      style="width:{{ size }}px;height:{{ size }}px;font-size:calc({{ size }}px / 2.8);box-shadow:none;">
+    {{ initials|upper }}{% if user.last_name %}{{ user.last_name.0|upper }}{% endif %}
+</span>
+{% endwith %}
+{% endif %}
+{% endwith %}

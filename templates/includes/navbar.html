@@ -209,7 +209,9 @@
                          style="width:36px; height:36px; object-fit:cover;"
                          alt="">
                     {% else %}
-                    <i class="bi bi-person-circle fs-2 text-primary"></i>
+                    <span class="avatar-circle" style="width:36px;height:36px;font-size:.75rem;box-shadow:none;">
+                        {{ request.user.first_name.0|default:request.user.username.0|upper }}{{ request.user.last_name.0|default:""|upper }}
+                    </span>
                     {% endif %}
 
                     <div class="text-start d-none d-lg-block">

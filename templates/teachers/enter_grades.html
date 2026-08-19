@@ -142,10 +142,9 @@
                                  style="width:36px; height:36px; object-fit:cover;"
                                  alt="">
                             {% else %}
-                            <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center"
-                                 style="width:36px; height:36px;">
-                                <i class="bi bi-person text-primary"></i>
-                            </div>
+                            <span class="avatar-circle" style="width:36px;height:36px;font-size:.75rem;box-shadow:none;">
+                                {{ student.user.first_name.0|default:student.user.username.0|upper }}{{ student.user.last_name.0|default:""|upper }}
+                            </span>
                             {% endif %}
                             {{ student.user.get_full_name }}
                             </div>

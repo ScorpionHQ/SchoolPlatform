@@ -94,10 +94,9 @@
                              style="width:40px; height:40px; object-fit:cover;"
                              alt="">
                         {% else %}
-                        <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center"
-                             style="width:40px; height:40px;">
-                            <i class="bi bi-person text-primary"></i>
-                        </div>
+                        <span class="avatar-circle" style="width:40px;height:40px;font-size:.85rem;box-shadow:none;">
+                            {{ teacher.user.first_name.0|default:teacher.user.username.0|upper }}{{ teacher.user.last_name.0|default:""|upper }}
+                        </span>
                         {% endif %}
                     </td>
 
