@@ -43,13 +43,42 @@
 
 }
 
+[dir="rtl"] .sidebar-toggle{
+    margin-right:0;
+    margin-left:.5rem;
+}
+
 
 
 @media(max-width:992px){
 
     [dir="rtl"] .content-area{
 
-        margin-right:88px;
+        margin-right:0;
+
+    }
+
+    [dir="rtl"] .sidebar{
+
+        right:0;
+        left:auto;
+        transform:translateX(100%);
+
+    }
+
+    [dir="rtl"] .sidebar.open{
+
+        transform:translateX(0);
+
+    }
+
+}
+
+@media(min-width:993px){
+
+    [dir="rtl"] .content-area{
+
+        margin-right:270px;
 
     }
 

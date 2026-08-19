@@ -47,18 +47,18 @@
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <link rel="stylesheet" href="{% static 'css/variables.css' %}?v=6">
-    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=6">
-    <link rel="stylesheet" href="{% static 'css/typography.css' %}?v=6">
-    <link rel="stylesheet" href="{% static 'css/layout.css' %}?v=6">
-    <link rel="stylesheet" href="{% static 'css/components.css' %}?v=6">
-    <link rel="stylesheet" href="{% static 'css/theme.css' %}?v=6">
+    <link rel="stylesheet" href="{% static 'css/variables.css' %}?v=8">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=8">
+    <link rel="stylesheet" href="{% static 'css/typography.css' %}?v=8">
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}?v=8">
+    <link rel="stylesheet" href="{% static 'css/components.css' %}?v=8">
+    <link rel="stylesheet" href="{% static 'css/theme.css' %}?v=8">
 
     {% if LANGUAGE_BIDI %}
-    <link rel="stylesheet" href="{% static 'css/rtl.css' %}?v=6">
+    <link rel="stylesheet" href="{% static 'css/rtl.css' %}?v=8">
     {% endif %}
 
-    <link rel="stylesheet" href="{% static 'css/dark.css' %}?v=6">
+    <link rel="stylesheet" href="{% static 'css/dark.css' %}?v=8">
 
     {% block extra_css %}
     {% endblock %}
@@ -87,6 +87,8 @@
 {% if request.user.is_authenticated %}
 
     {% include "includes/navbar.html" %}
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <div class="app-layout">
 
@@ -148,6 +150,35 @@
 
 {% if request.user.is_authenticated and request.resolver_match.app_name != "assistant" %}
     {% include "assistant/widget.html" %}
+{% endif %}
+
+{% if request.user.is_authenticated %}
+<script>
+(function(){
+    var toggle = document.querySelector('.sidebar-toggle');
+    var sidebar = document.querySelector('.sidebar');
+    var overlay = document.getElementById('sidebarOverlay');
+    if(!toggle || !sidebar) return;
+    function openSidebar(){
+        sidebar.classList.add('open');
+        overlay.classList.add('active');
+        document.body.style.overflow='hidden';
+    }
+    function closeSidebar(){
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+        document.body.style.overflow='';
+    }
+    toggle.addEventListener('click', function(){
+        if(sidebar.classList.contains('open')) closeSidebar();
+        else openSidebar();
+    });
+    overlay.addEventListener('click', closeSidebar);
+    window.addEventListener('resize', function(){
+        if(window.innerWidth > 992) closeSidebar();
+    });
+})();
+</script>
 {% endif %}
 
 </body>

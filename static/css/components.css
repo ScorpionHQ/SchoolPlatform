@@ -1023,3 +1023,127 @@ a{
     text-decoration:none;
 
 }
+
+/* ------------------------------------------------------------------
+   Mobile responsive
+   ------------------------------------------------------------------ */
+
+@media(max-width:992px){
+
+    .table-responsive{
+        border-radius:var(--radius-md);
+        overflow-x:auto;
+        -webkit-overflow-scrolling:touch;
+    }
+
+    .stat-card{
+        padding:16px 18px;
+    }
+    .stat-number{
+        font-size:1.6rem;
+    }
+    .stat-icon{
+        width:44px;
+        height:44px;
+        font-size:20px;
+    }
+
+    .dashboard-hero{
+        padding:20px;
+    }
+    .hero-title{
+        font-size:1.2rem;
+    }
+    .hero-subtitle{
+        font-size:.85rem;
+    }
+
+    .card-body{
+        padding:1rem;
+    }
+    .card-header{
+        padding:.85rem 1rem;
+    }
+
+}
+
+@media(max-width:576px){
+
+    .stat-card{
+        padding:14px 14px;
+        gap:10px;
+    }
+    .stat-number{
+        font-size:1.4rem;
+    }
+    .stat-title{
+        font-size:.75rem;
+    }
+    .stat-icon{
+        width:40px;
+        height:40px;
+        font-size:18px;
+        border-radius:10px;
+    }
+
+    .insight-card{
+        padding:10px 12px;
+        gap:10px;
+    }
+    .insight-icon{
+        width:36px;
+        height:36px;
+        font-size:16px;
+    }
+    .insight-value{
+        font-size:.95rem;
+    }
+
+    .card-body{
+        padding:.85rem;
+    }
+    .card-header{
+        padding:.75rem .85rem;
+    }
+
+    .btn{
+        padding:.55rem .9rem;
+        font-size:.88rem;
+    }
+
+    .table thead th{
+        font-size:.68rem;
+        padding:.6rem .6rem;
+    }
+    .table tbody td{
+        padding:.6rem .6rem;
+        font-size:.82rem;
+    }
+
+    .dashboard-hero{
+        padding:16px;
+        border-radius:var(--radius-lg);
+    }
+    .hero-title{
+        font-size:1.05rem;
+    }
+    .hero-subtitle{
+        font-size:.8rem;
+    }
+
+    .empty-state{
+        padding:24px 14px;
+    }
+    .empty-state .empty-icon{
+        font-size:32px;
+    }
+
+    .upload-box{
+        padding:20px;
+    }
+
+    .page-header{
+        margin-bottom:16px;
+    }
+
+}

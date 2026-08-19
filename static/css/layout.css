@@ -308,11 +308,62 @@
 
 
 
+.sidebar-overlay{
+
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.5);
+
+    z-index:999;
+
+    -webkit-backdrop-filter:blur(2px);
+
+    backdrop-filter:blur(2px);
+
+    transition:.3s;
+
+}
+
+.sidebar-overlay.active{
+
+    display:block;
+
+}
+
+
+
 @media(max-width:992px){
 
 .sidebar{
 
-    width:88px;
+    width:270px;
+
+    transform:translateX(-100%);
+
+    top:0;
+
+    height:100vh;
+
+    z-index:1101;
+
+}
+
+[dir="rtl"] .sidebar{
+
+    transform:translateX(100%);
+
+    left:auto;
+    right:0;
+
+}
+
+.sidebar.open{
+
+    transform:translateX(0);
 
 }
 
@@ -320,45 +371,62 @@
 .sidebar-header small,
 .sidebar-menu span{
 
-    display:none;
+    display:inline;
 
 }
 
 .sidebar-header{
 
-    padding:20px 10px;
-
-}
-
-.sidebar-header .current-institution{
-
-    display:none;
+    padding:28px 22px;
 
 }
 
 .sidebar-menu a{
 
-    justify-content:center;
+    justify-content:flex-start;
 
-    padding:15px;
+    padding:14px 16px;
 
 }
 
 .sidebar-menu a i{
 
     margin:0;
+    width:24px;
+
+}
+
+.sidebar-link-btn{
+
+    justify-content:flex-start;
 
 }
 
 .content-area{
 
-    margin-left:88px;
+    margin-left:0;
 
 }
 
 .content-wrapper{
 
     padding:20px;
+
+}
+
+.sidebar-toggle{
+
+    display:inline-flex !important;
+
+}
+
+}
+
+@media(min-width:993px){
+
+.sidebar-toggle{
+
+    display:none !important;
 
 }
 
@@ -430,22 +498,71 @@
 
 @media(max-width:576px){
 
-    .sidebar{
-
-        width:76px;
-
-    }
-
-    .content-area{
-
-        margin-left:76px;
-
-    }
-
     .content-wrapper{
 
-        padding:16px;
+        padding:14px;
 
+    }
+
+    .page-header h4{
+
+        font-size:1.1rem;
+
+    }
+
+    .stat-card{
+        padding:16px 18px;
+    }
+    .stat-number{
+        font-size:1.6rem;
+    }
+    .stat-icon{
+        width:44px;
+        height:44px;
+        font-size:20px;
+        border-radius:12px;
+    }
+    .dashboard-hero{
+        padding:18px 18px;
+    }
+    .hero-title{
+        font-size:1.15rem;
+    }
+    .hero-subtitle{
+        font-size:.85rem;
+    }
+    .card-body{
+        padding:1rem;
+    }
+    .card-header{
+        padding:.8rem 1rem;
+    }
+    .table-responsive{
+        border-radius:var(--radius-md);
+    }
+    .table thead th{
+        font-size:.7rem;
+        padding:.65rem .7rem;
+    }
+    .table tbody td{
+        padding:.65rem .7rem;
+        font-size:.85rem;
+    }
+    .btn{
+        padding:.6rem 1rem;
+        font-size:.9rem;
+    }
+    .insight-card{
+        padding:12px 14px;
+    }
+    .insight-value{
+        font-size:1rem;
+    }
+    .brand-logo{
+        height:30px;
+    }
+    .navbar .d-flex.gap-3{
+        gap:.5rem !important;
     }
 
 }
