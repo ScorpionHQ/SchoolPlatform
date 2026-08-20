@@ -197,6 +197,27 @@ ASSISTANT_ALLOWED_EXTENSIONS = (
     "webp",
 )
 
+# OpenRouter (free models — OpenAI-compatible).
+# Get a free key from https://openrouter.ai/keys (no credit card).
+OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
+OPENROUTER_MODEL = os.environ.get(
+    "OPENROUTER_MODEL",
+    "meta-llama/llama-3.3-70b-instruct:free",
+)
+OPENROUTER_BACKUP_MODELS = [
+    m.strip()
+    for m in os.environ.get(
+        "OPENROUTER_BACKUP_MODELS",
+        "google/gemma-2-9b-it:free,mistralai/mistral-7b-instruct:free",
+    ).split(",")
+    if m.strip()
+]
+OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
+OPENROUTER_TIMEOUT = int(os.environ.get("OPENROUTER_TIMEOUT", "30"))
+OPENROUTER_MAX_TOKENS = int(
+    os.environ.get("OPENROUTER_MAX_TOKENS", "4096")
+)
+
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"

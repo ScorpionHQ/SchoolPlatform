@@ -1,4 +1,7 @@
+import json
 import logging
+import urllib.error
+import urllib.request
 from datetime import date
 
 from django.conf import settings
@@ -494,6 +497,59 @@ class AssistantService:
     # ------------------------------------------------------------------
 
     @staticmethod
+    def _system_prompt(user, institution, context):
+        """Build system prompt with role + real data context for OpenRouter."""
+
+        name = AssistantService._persona_name(user)
+
+        role = getattr(user, "role", "student")
+
+        inst_name = getattr(institution, "name", "the school")
+
+        lang = "Arabic" if AssistantService._is_arabic() else "English"
+
+        role_labels = {
+            "student": "student",
+            "teacher": "teacher",
+            "manager": "manager",
+            "admin": "admin",
+        }
+
+        role_label = role_labels.get(role, "user")
+
+        lines = [
+            f"You are {name}, an AI assistant for {inst_name}.",
+            f"Reply in {lang}.",
+            f"The user is a {role_label}.",
+            "",
+            "RULES:",
+            "- Answer ONLY using the context data below.",
+            "- If the data does not contain the answer, say so politely.",
+            "- Do NOT make up information or reference non-existent data.",
+            "- Be polite, concise, and role-appropriate.",
+            "- Use the user's name when available.",
+            "- For greetings, greet briefly and ask how you can help.",
+        ]
+
+        if role_label == "student":
+            lines.append(
+                "- Students can only see their own grades and attendance."
+            )
+
+        lines.append("")
+        lines.append("CONTEXT DATA:")
+        lines.append(json.dumps(context, ensure_ascii=False, indent=2))
+
+        if role_label in ("teacher", "manager", "admin"):
+            lines.append("")
+            lines.append(
+                "You have broader access to the platform data. "
+                "Answer questions about students, classes, and schedules."
+            )
+
+        return "\n".join(lines)
+
+    @staticmethod
     def _average(grade_qs):
         total_score = 0.0
         total_max = 0.0
@@ -682,9 +738,118 @@ class AssistantService:
 
         return context
 
+    # ------------------------------------------------------------------
+    # OpenRouter (free models — OpenAI-compatible)
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _openrouter_available():
+        key = (getattr(settings, "OPENROUTER_API_KEY", "") or "").strip()
+        return bool(key) and len(key) > 10
+
+    @staticmethod
+    def _call_openrouter(system_prompt, history, question):
+        """Call OpenRouter API. Returns (reply, sources)."""
+
+        models = [settings.OPENROUTER_MODEL] + list(
+            settings.OPENROUTER_BACKUP_MODELS
+        )
+
+        errors = []
+
+        for model in models:
+
+            messages = [{"role": "system", "content": system_prompt}]
+
+            for role, text in history:
+                messages.append({
+                    "role": "assistant" if role == "model" else "user",
+                    "content": text,
+                })
+
+            messages.append({"role": "user", "content": question})
+
+            payload = {
+                "model": model,
+                "messages": messages,
+                "max_tokens": settings.OPENROUTER_MAX_TOKENS,
+                "temperature": 0.7,
+            }
+
+            endpoint = f"{settings.OPENROUTER_BASE_URL}/chat/completions"
+
+            request = urllib.request.Request(
+                endpoint,
+                data=json.dumps(payload).encode("utf-8"),
+                headers={
+                    "Content-Type": "application/json",
+                    "Authorization": f"Bearer {settings.OPENROUTER_API_KEY}",
+                    "User-Agent": "SchoolPlatform/1.0",
+                    "HTTP-Referer": "https://schoolplatform.com",
+                },
+                method="POST",
+            )
+
+            for attempt in range(2):
+
+                try:
+
+                    with urllib.request.urlopen(
+                        request,
+                        timeout=settings.OPENROUTER_TIMEOUT,
+                    ) as response:
+
+                        data = json.loads(
+                            response.read().decode("utf-8")
+                        )
+
+                    text = (
+                        (data.get("choices") or [{}])[0]
+                        .get("message", {})
+                        .get("content", "")
+                    ).strip()
+
+                    if text:
+                        return text, []
+
+                except urllib.error.HTTPError as exc:
+
+                    body = exc.read().decode("utf-8", "ignore")[:300]
+
+                    if exc.code == 404:
+                        errors.append(f"{model}: 404 not found")
+                        break
+
+                    if exc.code == 429:
+                        errors.append(f"{model}: 429 rate limited")
+                        break
+
+                    if exc.code >= 500 and attempt == 0:
+                        errors.append(
+                            f"{model}: HTTP {exc.code} (retrying)"
+                        )
+                        continue
+
+                    errors.append(f"{model}: HTTP {exc.code} {body}")
+                    break
+
+                except Exception as exc:
+
+                    if attempt == 0:
+                        errors.append(f"{model}: {exc} (retrying)")
+                        continue
+
+                    errors.append(f"{model}: {exc}")
+                    break
+
+        if errors:
+            raise RuntimeError("; ".join(errors))
+
+        return None, []
+
     @staticmethod
     def get_reply(user, institution, question, conversation=None):
-        """Return (reply, source, sources) where source is always 'local'."""
+        """Return (reply, source, sources)."""
 
         question = (question or "").strip()
 
@@ -711,6 +876,50 @@ class AssistantService:
 
         context = AssistantService.build_context(user, institution)
 
+        # --- Build conversation history ---
+        history = []
+
+        if conversation is not None:
+
+            recent = list(
+                conversation.messages
+                .exclude(role="system")
+                .order_by("-created_at")[:10]
+            )
+
+            recent.reverse()
+
+            history = [
+                (
+                    "assistant" if m.role == "assistant" else "user",
+                    m.content,
+                )
+                for m in recent
+            ]
+
+        system_prompt = AssistantService._system_prompt(
+            user, institution, context,
+        )
+
+        # --- 1) Try OpenRouter first ---
+        if AssistantService._openrouter_available():
+
+            try:
+
+                reply, sources = AssistantService._call_openrouter(
+                    system_prompt, history, question,
+                )
+
+                if reply:
+                    return reply, "api", sources
+
+            except Exception as exc:
+
+                logger.warning(
+                    "OpenRouter failed (%s), using local agent", exc,
+                )
+
+        # --- 2) Local fallback ---
         return (
             AssistantService.local_reply(
                 user,
