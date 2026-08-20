@@ -202,13 +202,13 @@ ASSISTANT_ALLOWED_EXTENSIONS = (
 OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
 OPENROUTER_MODEL = os.environ.get(
     "OPENROUTER_MODEL",
-    "meta-llama/llama-3.3-70b-instruct:free",
+    "google/gemma-4-26b-a4b-it:free",
 )
 OPENROUTER_BACKUP_MODELS = [
     m.strip()
     for m in os.environ.get(
         "OPENROUTER_BACKUP_MODELS",
-        "google/gemma-2-9b-it:free,mistralai/mistral-7b-instruct:free",
+        "nvidia/nemotron-3-super-120b-a12b:free,nvidia/nemotron-3-nano-30b-a3b:free",
     ).split(",")
     if m.strip()
 ]
