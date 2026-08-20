@@ -153,7 +153,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 
 # ---------------------------------------------------------------------------
-# AI Assistant
+# AI Assistant (local agent only — no external LLM API)
 # ---------------------------------------------------------------------------
 
 ASSISTANT_ENABLED = True
@@ -170,66 +170,20 @@ ASSISTANT_AVATAR_MALE = "assistant/avatar_male.png"
 ASSISTANT_NAME_FEMALE = "Huda"
 ASSISTANT_AVATAR_FEMALE = "assistant/avatar_female.png"
 
-# External LLM API (optional). Leave blank to use the built-in agent.
-ASSISTANT_API_URL = os.environ.get("ASSISTANT_API_URL", "")
-ASSISTANT_API_KEY = os.environ.get("ASSISTANT_API_KEY", "")
-ASSISTANT_API_MODEL = os.environ.get(
-    "ASSISTANT_API_MODEL",
-    "gpt-4o-mini",
-)
-ASSISTANT_API_TIMEOUT = 12
-
-# Google Gemini (free tier). The recommended engine for the assistant:
-# free of charge, very powerful, and supports Google Search grounding
-# with real sources. Get a free API key from Google AI Studio
-# (https://aistudio.google.com/apikey) and put it in the .env file.
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
-GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-flash-latest")
-GEMINI_BACKUP_MODELS = ["gemini-3.6-flash"]
-GEMINI_TIMEOUT = int(os.environ.get("GEMINI_TIMEOUT", "30"))
-GEMINI_ENABLE_SEARCH = os.environ.get(
-    "GEMINI_ENABLE_SEARCH",
-    "1",
-) == "1"
-GEMINI_MAX_OUTPUT_TOKENS = int(
-    os.environ.get("GEMINI_MAX_OUTPUT_TOKENS", "8192")
-)
-
-# Groq (free backup LLM — very fast, OpenAI-compatible).
-# Get a free key from https://console.groq.com (no credit card).
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
-GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
-GROQ_BACKUP_MODELS = [
-    m.strip()
-    for m in os.environ.get("GROQ_BACKUP_MODELS", "llama-3.1-8b-instant").split(",")
-    if m.strip()
-]
-GROQ_BASE_URL = "https://api.groq.com/openai/v1"
-GROQ_TIMEOUT = int(os.environ.get("GROQ_TIMEOUT", "30"))
-GROQ_MAX_OUTPUT_TOKENS = int(
-    os.environ.get("GROQ_MAX_OUTPUT_TOKENS", "4096")
-)
-
-# Assistant file uploads (AI document reader).
-# Users can attach PDF/DOCX/XLSX/TXT/CSV/images and ask the assistant to
-# summarize, analyze or answer questions about them, then export a PDF report.
+# Assistant file uploads (document reader).
 ASSISTANT_MAX_FILES = int(os.environ.get("ASSISTANT_MAX_FILES", "10"))
 ASSISTANT_MAX_FILE_SIZE_MB = int(
     os.environ.get("ASSISTANT_MAX_FILE_SIZE_MB", "20")
 )
-# Max characters of extracted text kept per file (protects the LLM prompt).
 ASSISTANT_MAX_FILE_TEXT_CHARS = int(
     os.environ.get("ASSISTANT_MAX_FILE_TEXT_CHARS", "300000")
 )
-# Per-file excerpt included inside generated PDF reports.
 ASSISTANT_REPORT_EXCERPT_CHARS = int(
     os.environ.get("ASSISTANT_REPORT_EXCERPT_CHARS", "3000")
 )
-# Extracted text included in each Gemini prompt, capped per file.
 ASSISTANT_FILE_PROMPT_CHARS = int(
     os.environ.get("ASSISTANT_FILE_PROMPT_CHARS", "120000")
 )
-# Allowed upload extensions.
 ASSISTANT_ALLOWED_EXTENSIONS = (
     "pdf",
     "docx",

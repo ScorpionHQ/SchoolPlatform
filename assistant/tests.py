@@ -214,7 +214,6 @@ class AssistantServicePersonaTests(TestCase):
         )
 
 
-@override_settings(GEMINI_API_KEY="")
 class AssistantServiceReplyTests(TestCase):
 
     def setUp(self):
@@ -398,7 +397,6 @@ class AssistantEmotionTests(TestCase):
         self.assertEqual(response.json()["emotion"], "celebrating")
 
 
-@override_settings(GEMINI_API_KEY="")
 class AssistantApiTests(TestCase):
 
     def setUp(self):
@@ -488,7 +486,6 @@ class AssistantApiTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-@override_settings(GEMINI_API_KEY="")
 class AssistantSafetyGateTests(TestCase):
 
     def setUp(self):
@@ -742,7 +739,6 @@ class _FileApiTestCase(TestCase):
 
 
 @override_settings(
-    GEMINI_API_KEY="",
     MEDIA_ROOT=_MEDIA_ROOT,
 )
 class FileUploadApiTests(_FileApiTestCase):
@@ -849,7 +845,6 @@ class FileUploadApiTests(_FileApiTestCase):
 
 
 @override_settings(
-    GEMINI_API_KEY="",
     MEDIA_ROOT=_MEDIA_ROOT,
 )
 class FileAnalyzeApiTests(_FileApiTestCase):
@@ -942,7 +937,6 @@ class FileAnalyzeApiTests(_FileApiTestCase):
 
 
 @override_settings(
-    GEMINI_API_KEY="",
     MEDIA_ROOT=_MEDIA_ROOT,
 )
 class FileReportApiTests(_FileApiTestCase):
@@ -990,7 +984,6 @@ class FileReportApiTests(_FileApiTestCase):
 
 
 @override_settings(
-    GEMINI_API_KEY="",
     MEDIA_ROOT=_MEDIA_ROOT,
 )
 class FileServiceTests(_FileApiTestCase):
