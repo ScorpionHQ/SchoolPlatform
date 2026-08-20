@@ -881,7 +881,7 @@ class AssistantService:
 
             abort_models = False
 
-            for attempt in range(2):
+            for attempt in range(3):
 
                 if abort_models:
                     break
@@ -942,6 +942,29 @@ class AssistantService:
 
                     if exc.code == 404:
                         errors.append(f"{model}: 404 not found")
+                        break
+
+                    if exc.code == 429:
+                        # Rate limited — if search was enabled, retry
+                        # the SAME model without the search tool.
+                        if "tools" in payload and attempt < 2:
+                            errors.append(
+                                f"{model}: 429 (retrying without search)"
+                            )
+                            payload.pop("tools", None)
+                            request = urllib.request.Request(
+                                endpoint,
+                                data=json.dumps(payload).encode("utf-8"),
+                                headers={
+                                    "Content-Type": "application/json",
+                                    "x-goog-api-key": settings.GEMINI_API_KEY,
+                                },
+                                method="POST",
+                            )
+                            continue
+
+                        errors.append(f"{model}: 429 rate limited")
+                        abort_models = True
                         break
 
                     if exc.code >= 500 and attempt == 0:

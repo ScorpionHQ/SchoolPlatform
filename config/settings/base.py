@@ -185,7 +185,7 @@ ASSISTANT_API_TIMEOUT = 12
 # (https://aistudio.google.com/apikey) and put it in the .env file.
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-flash-latest")
-GEMINI_BACKUP_MODELS = []
+GEMINI_BACKUP_MODELS = ["gemini-3.6-flash"]
 GEMINI_TIMEOUT = int(os.environ.get("GEMINI_TIMEOUT", "30"))
 GEMINI_ENABLE_SEARCH = os.environ.get(
     "GEMINI_ENABLE_SEARCH",
