@@ -215,7 +215,7 @@ OPENROUTER_BACKUP_MODELS = [
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 OPENROUTER_TIMEOUT = int(os.environ.get("OPENROUTER_TIMEOUT", "30"))
 OPENROUTER_MAX_TOKENS = int(
-    os.environ.get("OPENROUTER_MAX_TOKENS", "4096")
+    os.environ.get("OPENROUTER_MAX_TOKENS", "8192")
 )
 
 
