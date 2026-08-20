@@ -531,7 +531,14 @@ class AssistantService:
             "- كن مختصاً وودوداً ومناسباً لدور المستخدم.",
             "- استخدم اسم المستخدم إذا كان متاحاً.",
             "- للتحيات، رد باختصار واسأل كيف تساعد.",
-            "- أنت مساعد ذكي resembla ChatGPT — أجب عن أي سؤال بذكاء.",
+            "- أنت مساعد ذكي — أجب عن أي سؤال بذكاء.",
+            "",
+            "قواعد التنسيق (مهمة جداً):",
+            "- ممنوع تماماً استخدام LaTeX أو رموز رياضية مثل $ أو \\.",
+            "- استخدم الرموز البسيطة: ∧ (و), ∨ (أو), ¬ (ليس), → (إذا).",
+            "- استخدم Markdown البسيط: **عناوين عريزة**, قوائم نقاطية, جداول.",
+            "- لا تستخدم أي رموز غريبة غير مقروءة.",
+            "- النص يجب أن يكون نقياً وواضحاً وجميلاً.",
         ]
 
         if role_label == "student":
@@ -920,6 +927,7 @@ class AssistantService:
                 )
 
                 if reply:
+                    reply = AssistantService._clean_response(reply)
                     return reply, "api", sources
 
             except Exception as exc:
@@ -1748,6 +1756,71 @@ class AssistantService:
     # File reader (multi-file upload, summarization, Q&A, reports)
     # ------------------------------------------------------------------
 
+    @staticmethod
+    def _clean_response(text):
+        """Remove LaTeX and math symbols, clean up the response."""
+
+        import re
+
+        if not text:
+            return text
+
+        def _latex_to_unicode(match):
+            block = match.group(0).strip('$')
+            block = block.replace('$$', '')
+            block = block.replace('\\leftrightarrow', '↔')
+            block = block.replace('\\rightarrow', '→')
+            block = block.replace('\\leftarrow', '←')
+            block = block.replace('\\wedge', '∧')
+            block = block.replace('\\vee', '∨')
+            block = block.replace('\\land', '∧')
+            block = block.replace('\\lor', '∨')
+            block = block.replace('\\neg', '¬')
+            block = block.replace('\\lnot', '¬')
+            block = block.replace('\\times', '×')
+            block = block.replace('\\div', '÷')
+            block = block.replace('\\leq', '≤')
+            block = block.replace('\\geq', '≥')
+            block = block.replace('\\neq', '≠')
+            block = block.replace('\\approx', '≈')
+            block = block.replace('\\forall', '∀')
+            block = block.replace('\\exists', '∃')
+            block = block.replace('\\in', '∈')
+            block = block.replace('\\subset', '⊂')
+            block = block.replace('\\cup', '∪')
+            block = block.replace('\\cap', '∩')
+            block = block.replace('\\sum', 'Σ')
+            block = block.replace('\\prod', 'Π')
+            block = block.replace('\\alpha', 'α')
+            block = block.replace('\\beta', 'β')
+            block = block.replace('\\gamma', 'γ')
+            block = block.replace('\\delta', 'δ')
+            block = block.replace('\\theta', 'θ')
+            block = block.replace('\\pi', 'π')
+            block = block.replace('\\sigma', 'σ')
+            block = block.replace('\\omega', 'ω')
+            block = block.replace('\\lambda', 'λ')
+            block = block.replace('\\mu', 'μ')
+            block = block.replace('\\epsilon', 'ε')
+            block = block.replace('\\phi', 'φ')
+            block = block.replace('\\psi', 'ψ')
+            block = re.sub(r'\\frac\{([^}]*)\}\{([^}]*)\}', r'\1/\2', block)
+            block = re.sub(r'\\sqrt\{([^}]*)\}', r'√(\1)', block)
+            block = re.sub(r'\\[a-zA-Z]+', '', block)
+            block = block.replace('{', '').replace('}', '')
+            block = block.replace('\\', '')
+            return block.strip()
+
+        text = re.sub(r'\$\$.*?\$\$', _latex_to_unicode, text, flags=re.DOTALL)
+        text = re.sub(r'\$[^$]+\$', _latex_to_unicode, text)
+
+        text = re.sub(r'\[math\]', '', text, flags=re.IGNORECASE)
+        text = re.sub(r'\[/math\]', '', text, flags=re.IGNORECASE)
+        text = re.sub(r'\n{3,}', '\n\n', text)
+        text = re.sub(r'[ \t]+', ' ', text)
+        text = re.sub(r' +\n', '\n', text)
+        return text.strip()
+
     KIND_LABELS = {
         "pdf": ("مستند PDF", "PDF document"),
         "docx": ("مستند Word", "Word document"),
@@ -1928,8 +2001,18 @@ class AssistantService:
             f"8) قدّم استنتاجات وتوصيات عملية في نهاية التحليل.\n"
             f"9) إذا كان المستند يحتوي على جداول، استخرجها بشكل منظم.\n"
             f"10) رد بالعربية unless the user writes in English.\n\n"
-            f"أنت محلل مستندات محترف — التحليل должен يكون "
-            f"شاملاً ودقيقاً و.easy to read."
+            f"قواعد مهمة جداً للتنسيق:\n"
+            f"- ممنوع تماماً استخدام LaTeX أو أي رموز رياضية مثل "
+            f"$\\wedge$ أو $\\vee$ أو $\\neg$ أو \\frac{...}{...}.\n"
+            f"- بدلاً من ذلك استخدم: ∧ (و), ∨ (أو), ¬ (ليس), → (إذا), "
+            f"↔ (إذا وفقط إذا).\n"
+            f"- للكتابة العربية الجميلة، استخدم عناوين بخط عريض "
+            f"ومنقطة (مثل: **العنوان**) وفقرات واضحة.\n"
+            f"- استخدم الجداول البسيطة بدلاً من المعادلات.\n"
+            f"- لا تستخدم أي أسطر تبدأ بـ $ أو \\ أو [ أو ] ك⚥رموز رياضية.\n"
+            f"- النص يجب أن يكون نقياً وواضحاً وجميلاً بدون أي رموز غريبة.\n"
+            f"- أنت محلل مستندات محترف — التحليل يجب أن يكون "
+            f"شاملاً ودقيقاً وسهل القراءة."
         )
 
     @staticmethod
@@ -1976,6 +2059,7 @@ class AssistantService:
                     system_prompt, [], full_prompt,
                 )
                 if reply:
+                    reply = AssistantService._clean_response(reply)
                     return reply, "api", sources
             except Exception as exc:
                 logger.warning(
