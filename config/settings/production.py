@@ -55,18 +55,3 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# ---------------------------------------------------------------------------
-# Local secrets (API keys etc.) — NEVER committed to git.
-# Create config/settings/local_settings.py on the server with:
-#   GEMINI_API_KEY = "your-actual-key-here"
-# This file is in .gitignore and survives git pull/reset.
-# ---------------------------------------------------------------------------
-try:
-    from .local_settings import *  # noqa: F401, F403
-except ImportError:
-    pass
-
-# Fallback: env var if local_settings.py doesn't set the key
-if not GEMINI_API_KEY:
-    GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")

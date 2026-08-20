@@ -247,6 +247,16 @@ ASSISTANT_ALLOWED_EXTENSIONS = (
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"
 
+# ---------------------------------------------------------------------------
+# Local secrets (API keys etc.) — NEVER committed to git.
+# Create config/settings/local_settings.py with your actual keys.
+# This file is in .gitignore and survives git pull/reset.
+# ---------------------------------------------------------------------------
+try:
+    from .local_settings import *  # noqa: F401, F403
+except ImportError:
+    pass
+
 from django.contrib.messages import constants as message_constants
 
 MESSAGE_TAGS = {
