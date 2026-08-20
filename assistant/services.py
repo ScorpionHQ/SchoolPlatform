@@ -1086,6 +1086,7 @@ class AssistantService:
                 headers={
                     "Content-Type": "application/json",
                     "Authorization": f"Bearer {settings.GROQ_API_KEY}",
+                    "User-Agent": "SchoolPlatform/1.0",
                 },
                 method="POST",
             )
