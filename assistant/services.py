@@ -1042,6 +1042,111 @@ class AssistantService:
 
         return sources[:5]
 
+    # ------------------------------------------------------------------
+    # Groq API (free backup — OpenAI-compatible)
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _groq_api_available():
+        key = (getattr(settings, "GROQ_API_KEY", "") or "").strip()
+        return bool(key) and key not in ("changeme", "your_groq_api_key_here")
+
+    @staticmethod
+    def _call_groq(system_prompt, history, question):
+        """Call the Groq API (OpenAI-compatible). Returns (reply, sources)."""
+
+        models = [settings.GROQ_MODEL] + list(settings.GROQ_BACKUP_MODELS)
+
+        errors = []
+
+        for model in models:
+
+            messages = [{"role": "system", "content": system_prompt}]
+
+            for role, text in history:
+                messages.append({
+                    "role": "model" if role == "model" else "user",
+                    "content": text,
+                })
+
+            messages.append({"role": "user", "content": question})
+
+            payload = {
+                "model": model,
+                "messages": messages,
+                "max_tokens": settings.GROQ_MAX_OUTPUT_TOKENS,
+                "temperature": 0.7,
+            }
+
+            endpoint = f"{settings.GROQ_BASE_URL}/chat/completions"
+
+            request = urllib.request.Request(
+                endpoint,
+                data=json.dumps(payload).encode("utf-8"),
+                headers={
+                    "Content-Type": "application/json",
+                    "Authorization": f"Bearer {settings.GROQ_API_KEY}",
+                },
+                method="POST",
+            )
+
+            for attempt in range(2):
+
+                try:
+
+                    with urllib.request.urlopen(
+                        request,
+                        timeout=settings.GROQ_TIMEOUT,
+                    ) as response:
+
+                        data = json.loads(
+                            response.read().decode("utf-8")
+                        )
+
+                    text = (
+                        (data.get("choices") or [{}])[0]
+                        .get("message", {})
+                        .get("content", "")
+                    ).strip()
+
+                    if text:
+                        return text, []
+
+                except urllib.error.HTTPError as exc:
+
+                    body = exc.read().decode("utf-8", "ignore")[:300]
+
+                    if exc.code == 404:
+                        errors.append(f"{model}: 404 not found")
+                        break
+
+                    if exc.code == 429:
+                        errors.append(f"{model}: 429 rate limited")
+                        break
+
+                    if exc.code >= 500 and attempt == 0:
+                        errors.append(
+                            f"{model}: HTTP {exc.code} (retrying)"
+                        )
+                        continue
+
+                    errors.append(f"{model}: HTTP {exc.code} {body}")
+                    break
+
+                except Exception as exc:
+
+                    if attempt == 0:
+                        errors.append(f"{model}: {exc} (retrying)")
+                        continue
+
+                    errors.append(f"{model}: {exc}")
+                    break
+
+        if errors:
+            raise RuntimeError("; ".join(errors))
+
+        return None, []
+
     @staticmethod
     def get_reply(user, institution, question, conversation=None):
         """Return (reply, source, sources) where source is one of
@@ -1073,42 +1178,42 @@ class AssistantService:
 
         context = AssistantService.build_context(user, institution)
 
+        # --- Build conversation history (shared by all API providers) ---
+        history = []
+
+        if conversation is not None:
+
+            recent = list(
+                conversation.messages
+                .exclude(role="system")
+                .order_by("-created_at")[:10]
+            )
+
+            recent.reverse()
+
+            history = [
+                (
+                    (
+                        "model"
+                        if m.role == "assistant"
+                        else "user"
+                    ),
+                    m.content,
+                )
+                for m in recent
+            ]
+
+        system_prompt = AssistantService._system_prompt(
+            user, institution, context,
+        )
+
+        # --- 1) Try Gemini first ---
         if AssistantService._api_available():
 
             try:
 
-                history = []
-
-                if conversation is not None:
-
-                    recent = list(
-                        conversation.messages
-                        .exclude(role="system")
-                        .order_by("-created_at")[:10]
-                    )
-
-                    recent.reverse()
-
-                    history = [
-                        (
-                            (
-                                "model"
-                                if m.role == "assistant"
-                                else "user"
-                            ),
-                            m.content,
-                        )
-                        for m in recent
-                    ]
-
                 reply, sources = AssistantService._call_gemini(
-                    AssistantService._system_prompt(
-                        user,
-                        institution,
-                        context,
-                    ),
-                    history,
-                    question,
+                    system_prompt, history, question,
                 )
 
                 if reply:
@@ -1117,22 +1222,28 @@ class AssistantService:
             except Exception as exc:
 
                 logger.warning(
-                    "Gemini API call failed, using local agent: %s",
-                    exc,
+                    "Gemini API failed (%s), trying Groq...", exc,
                 )
 
-                if "429" in str(exc):
-                    return (
-                        AssistantService._t(
-                            "الطلبات كثيرة جداً الآن ⏳ "
-                            "يرجى المحاولة بعد دقيقة.",
-                            "Too many requests right now ⏳ "
-                            "Please try again in a minute.",
-                        ),
-                        "local",
-                        [],
-                    )
+        # --- 2) Try Groq as backup ---
+        if AssistantService._groq_api_available():
 
+            try:
+
+                reply, sources = AssistantService._call_groq(
+                    system_prompt, history, question,
+                )
+
+                if reply:
+                    return reply, "api", sources
+
+            except Exception as exc:
+
+                logger.warning(
+                    "Groq API failed (%s), using local agent", exc,
+                )
+
+        # --- 3) Local fallback ---
         return (
             AssistantService.local_reply(
                 user,

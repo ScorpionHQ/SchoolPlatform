@@ -195,6 +195,21 @@ GEMINI_MAX_OUTPUT_TOKENS = int(
     os.environ.get("GEMINI_MAX_OUTPUT_TOKENS", "8192")
 )
 
+# Groq (free backup LLM — very fast, OpenAI-compatible).
+# Get a free key from https://console.groq.com (no credit card).
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
+GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
+GROQ_BACKUP_MODELS = [
+    m.strip()
+    for m in os.environ.get("GROQ_BACKUP_MODELS", "llama-3.1-8b-instant").split(",")
+    if m.strip()
+]
+GROQ_BASE_URL = "https://api.groq.com/openai/v1"
+GROQ_TIMEOUT = int(os.environ.get("GROQ_TIMEOUT", "30"))
+GROQ_MAX_OUTPUT_TOKENS = int(
+    os.environ.get("GROQ_MAX_OUTPUT_TOKENS", "4096")
+)
+
 # Assistant file uploads (AI document reader).
 # Users can attach PDF/DOCX/XLSX/TXT/CSV/images and ask the assistant to
 # summarize, analyze or answer questions about them, then export a PDF report.

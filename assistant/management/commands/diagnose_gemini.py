@@ -173,33 +173,44 @@ class Command(BaseCommand):
         except Exception as exc:
             self.stdout.write(self.style.ERROR(f"  FAIL - {type(exc).__name__}: {exc}"))
 
-        # 6. Test with gemini-2.5-flash as fallback
-        if model != "gemini-2.5-flash":
-            self.stdout.write(f"\n[6] Fallback test (gemini-2.5-flash, no search, 256 tokens) ...")
-            payload_fb = {
-                "contents": [{"role": "user", "parts": [{"text": "قل مرحبا بword واحد فقط"}]}],
-                "generationConfig": {
-                    "temperature": 0.3,
-                    "maxOutputTokens": 256,
-                },
+        # 6. Test Groq backup
+        self.stdout.write("\n[6] Groq backup test ...")
+        groq_key = getattr(settings, "GROQ_API_KEY", "")
+        groq_model = getattr(settings, "GROQ_MODEL", "llama-3.3-70b-versatile")
+        if groq_key and len(groq_key) > 10:
+            groq_payload = {
+                "model": groq_model,
+                "messages": [
+                    {"role": "user", "content": "قل مرحبا بword واحد فقط"}
+                ],
+                "max_tokens": 256,
+                "temperature": 0.3,
             }
+            groq_endpoint = f"{getattr(settings, 'GROQ_BASE_URL', 'https://api.groq.com/openai/v1')}/chat/completions"
             try:
-                data = self._api_call(key, "gemini-2.5-flash", payload_fb)
-                text = self._extract_text(data)
-                feedback = data.get("promptFeedback") or {}
-                block = feedback.get("blockReason")
-
-                if block:
-                    self.stdout.write(self.style.ERROR(
-                        f"  BLOCKED by safety: {block}"
-                    ))
-                elif text:
+                groq_request = urllib.request.Request(
+                    groq_endpoint,
+                    data=json.dumps(groq_payload).encode("utf-8"),
+                    headers={
+                        "Content-Type": "application/json",
+                        "Authorization": f"Bearer {groq_key}",
+                    },
+                    method="POST",
+                )
+                with urllib.request.urlopen(groq_request, timeout=15) as response:
+                    groq_data = json.loads(response.read().decode("utf-8"))
+                groq_text = (
+                    (groq_data.get("choices") or [{}])[0]
+                    .get("message", {})
+                    .get("content", "")
+                ).strip()
+                if groq_text:
                     self.stdout.write(self.style.SUCCESS(
-                        f"  OK - replied: '{text[:60]}'"
+                        f"  OK ({groq_model}) - replied: '{groq_text[:60]}'"
                     ))
                 else:
                     self.stdout.write(self.style.ERROR(
-                        f"  FAIL - empty, response: {json.dumps(data)[:400]}"
+                        f"  FAIL - empty response: {json.dumps(groq_data)[:300]}"
                     ))
             except urllib.error.HTTPError as exc:
                 body = exc.read().decode("utf-8", "ignore")[:300]
@@ -207,7 +218,9 @@ class Command(BaseCommand):
             except Exception as exc:
                 self.stdout.write(self.style.ERROR(f"  FAIL - {type(exc).__name__}: {exc}"))
         else:
-            self.stdout.write("\n[6] Skipping fallback (already using gemini-2.5-flash)")
+            self.stdout.write(self.style.WARNING(
+                "  SKIP - GROQ_API_KEY not set (add it to local_settings.py)"
+            ))
 
         self.stdout.write("\n" + "=" * 60)
         self.stdout.write("  DIAGNOSTIC COMPLETE")
