@@ -877,6 +877,12 @@ class AssistantService:
         if blocked:
             return blocked, "safety", []
 
+        # Fast-path: platform error help (always local).
+        question_lower = " ".join(question.lower().split())
+
+        if AssistantService._wants_error_help(question_lower):
+            return AssistantService._error_tip(question_lower), "local", []
+
         context = AssistantService.build_context(user, institution)
 
         # --- Build conversation history ---
@@ -1768,39 +1774,60 @@ class AssistantService:
         if task == "summarize":
 
             return AssistantService._t(
-                "قدم ملخصًا واضحًا ومنظمًا للمستندات المرفقة، "
-                "مع ذكر أهم النقاط والأرقام والتواريخ. استخدم "
-                "عناوينًا ونقاطًا مرقمة.",
-                "Provide a clear, well-organized summary of the "
-                "attached documents, highlighting the key points, "
-                "numbers and dates. Use headings and bullet lists.",
+                "لخص المستندات المرفقة بشكل احترافي ومفصل:\n"
+                "1) ملخص تنفيذي (3-5 جمل)\n"
+                "2) أهم النقاط الرئيسية مع الأرقام والتواريخ\n"
+                "3) التفاصيل والمحتوى حسب الأقسام\n"
+                "4) استنتاجات وتوصيات\n"
+                "استخدم عناوين واضحة ونقاطاً مرقمة و الجداول عند الحاجة.",
+                "Provide a professional detailed summary of the "
+                "attached documents:\n"
+                "1) Executive summary (3-5 sentences)\n"
+                "2) Key points with numbers and dates\n"
+                "3) Detailed content by section\n"
+                "4) Conclusions and recommendations\n"
+                "Use clear headings, numbered points, and tables "
+                "when appropriate.",
             )
 
         if task == "analyze":
 
             return AssistantService._t(
-                "حلل المستندات المرفقة تحليلًا دقيقًا: استخرج "
-                "المعلومات المهمة، وحدد الأنماط والملاحظات، وقدّم "
-                "توصيات عملية واضحة.",
-                "Analyze the attached documents thoroughly: extract "
-                "the important information, identify patterns and "
-                "notes, and give clear practical recommendations.",
+                "حلل المستندات المرفقة تحليلًا شاملاً واحترافيًا:\n"
+                "1) نظرة عامة على المستندات\n"
+                "2) استخراج المعلومات الرئيسية والأرقام والبيانات\n"
+                "3) تحديد الأنماط والعلاقات والتغيرات\n"
+                "4) نقاط القوة والضعف (إن وُجدت)\n"
+                "5) توصيات عملية مقترحة\n"
+                "6) خلاصة وتقييم عام\n"
+                "استخدم جداول مقارنة ورسوم بيانية نصية عند الحاجة.",
+                "Analyze the attached documents comprehensively:\n"
+                "1) Document overview\n"
+                "2) Extract key information, numbers and data\n"
+                "3) Identify patterns, relationships and trends\n"
+                "4) Strengths and weaknesses (if applicable)\n"
+                "5) Practical recommendations\n"
+                "6) Summary and overall assessment\n"
+                "Use comparison tables and text-based charts when "
+                "appropriate.",
             )
 
         if question:
 
             return AssistantService._t(
-                f"أجب على السؤال التالي بالاعتماد على محتوى "
-                f"المستندات المرفقة فقط، مع الاستشهاد بالملف "
-                f"المصدر عند الحاجة:\n\n{question}",
-                f"Answer the following question based ONLY on the "
-                f"content of the attached documents, citing the "
-                f"source file when relevant:\n\n{question}",
+                f"أجب على السؤال التالي بالتفصيل والتحليل، "
+                f"استنادًا فقط إلى محتوى المستندات المرفقة. "
+                f"استشهد بالملف المصدر والصفحة إن أمكن.\n\n"
+                f"السؤال: {question}",
+                f"Answer the following question in detail, based "
+                f"ONLY on the content of the attached documents. "
+                f"Cite the source file and page if possible.\n\n"
+                f"Question: {question}",
             )
 
         return AssistantService._t(
-            "لخص المستندات المرفقة.",
-            "Summarize the attached documents.",
+            "لخص المستندات المرفقة بشكل احترافي.",
+            "Summarize the attached documents professionally.",
         )
 
     @staticmethod
@@ -1815,16 +1842,17 @@ class AssistantService:
 
         blocks = []
 
-        for attachment in attachments:
+        for idx, attachment in enumerate(attachments, 1):
 
             name = attachment.name
             kind = attachment.kind
+            size = attachment.display_size
 
             if kind == "image":
                 blocks.append(
                     AssistantService._t(
-                        f"--- ملف: {name} (صورة تُرسل للموديل) ---",
-                        f"--- File: {name} (image, sent to the model) ---",
+                        f"--- [{idx}] {name} — صورة ({size}) ---",
+                        f"--- [{idx}] {name} — Image ({size}) ---",
                     )
                 )
                 continue
@@ -1832,7 +1860,8 @@ class AssistantService:
             text = (attachment.text or "")[:per_file]
 
             blocks.append(
-                f"--- {AssistantService._kind_label(kind)}: {name} ---\n"
+                f"--- [{idx}] {AssistantService._kind_label(kind)}: "
+                f"{name} ({size}) ---\n"
                 f"{text}"
             )
 
@@ -1871,33 +1900,45 @@ class AssistantService:
     def _file_system_prompt(user, institution):
         persona = AssistantService.persona_for(user)
 
-        lang = "Arabic" if AssistantService._is_arabic() else "English"
+        role = getattr(user, "role", "student")
+
+        inst_name = getattr(institution, "name", "the school") if institution else "the school"
+
+        role_label = {
+            "student": "طالب",
+            "teacher": "معلم",
+            "manager": "مدير",
+            "admin": "مدير النظام",
+        }.get(role, "مستخدم")
 
         return (
-            f"You are {persona['name']}, a careful document analyst "
-            f"inside a school management platform.\n"
-            f"Reply in {lang}.\n"
-            f"You help users understand documents they upload: "
-            f"summaries, analysis, extracting key figures and "
-            f"answering questions strictly from the provided files.\n"
-            f"Rules:\n"
-            f"- Base your answer ONLY on the attached documents. "
-            f"Never invent facts, numbers or quotes.\n"
-            f"- If the answer is not in the documents, say so "
-            f"honestly and suggest what to look for.\n"
-            f"- For images, read their visual content carefully.\n"
-            f"- Structure long answers with headings and bullets.\n"
-            f"- Respect the user's role permissions; do not discuss "
-            f"other people's private data.\n"
+            f"أنت {persona['name']}، محلل مستندات ذكي ومحترف في "
+            f"منصة إدارة المدرسة ({inst_name}).\n\n"
+            f"المستخدم: {role_label}\n\n"
+            f"مهمتك: تحليل واجتياز المستندات المرفقة بدقة واحترافية.\n\n"
+            f"القواعد:\n"
+            f"1) استخرج النص من المستندات المرفقة وحلله بعمق.\n"
+            f"2) لا تتخطى أي معلومات — استخرج كل شيء: أرقام، تواريخ، "
+            f"أسماء، جداول، إحصائيات.\n"
+            f"3) لا تختلق معلومات غير موجودة في المستندات.\n"
+            f"4) إذا كانت هناك صور، وصف محت visual بعناية.\n"
+            f"5) استخدم عناوين واضحة ونقاطاً مرقمة ورسوماً بيانية نصية.\n"
+            f"6) اجعل التحليل شاملاً و_methodical — لا تترك سؤالاً без إجابة.\n"
+            f"7) اذكر الأرقام والنسب المئوية والتواريخ بدقة.\n"
+            f"8) قدّم استنتاجات وتوصيات عملية في نهاية التحليل.\n"
+            f"9) إذا كان المستند يحتوي على جداول، استخرجها بشكل منظم.\n"
+            f"10) رد بالعربية unless the user writes in English.\n\n"
+            f"أنت محلل مستندات محترف — التحليل должен يكون "
+            f"شاملاً ودقيقاً و.easy to read."
         )
 
     @staticmethod
     def get_file_reply(user, institution, task, question, attachments):
         """Analyze uploaded files. Returns (reply, source, sources).
 
-        Uses Gemini when available, otherwise a local offline
-        summarizer so the feature still works without a key.
+        Uses OpenRouter for AI-powered analysis, with local fallback.
         """
+
         if not attachments:
             return (
                 AssistantService._t(
@@ -1910,12 +1951,40 @@ class AssistantService:
                 [],
             )
 
+        context = AssistantService.build_context(user, institution)
+
+        system_prompt = AssistantService._file_system_prompt(user, institution)
+
+        user_prompt = AssistantService.file_task_prompt(task, question)
+
+        file_context = AssistantService.build_file_context(attachments)
+
+        full_prompt = (
+            f"{user_prompt}\n\n"
+            f"{'=' * 50}\n"
+            f"محتوى المستندات المرفقة:\n"
+            f"{'=' * 50}\n\n"
+            f"{file_context}\n\n"
+            f"{'=' * 50}\n"
+            f"رجاءً حلل المستندات أعلاه وأجب على المطلوب."
+        )
+
+        # --- 1) Try OpenRouter ---
+        if AssistantService._openrouter_available():
+            try:
+                reply, sources = AssistantService._call_openrouter(
+                    system_prompt, [], full_prompt,
+                )
+                if reply:
+                    return reply, "api", sources
+            except Exception as exc:
+                logger.warning(
+                    "OpenRouter file analysis failed (%s), using local", exc,
+                )
+
+        # --- 2) Local fallback ---
         return (
-            AssistantService._local_file_reply(
-                task,
-                question,
-                attachments,
-            ),
+            AssistantService._local_file_reply(task, question, attachments),
             "local",
             [],
         )
