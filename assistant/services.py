@@ -1076,6 +1076,18 @@ class AssistantService:
                     exc,
                 )
 
+                if "429" in str(exc):
+                    return (
+                        AssistantService._t(
+                            "الطلبات كثيرة جداً الآن ⏳ "
+                            "يرجى المحاولة بعد دقيقة.",
+                            "Too many requests right now ⏳ "
+                            "Please try again in a minute.",
+                        ),
+                        "local",
+                        [],
+                    )
+
         return (
             AssistantService.local_reply(
                 user,

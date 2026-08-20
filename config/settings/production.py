@@ -3,6 +3,10 @@ import os
 import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 
+from dotenv import load_dotenv
+
+load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), ".env"))
+
 from .base import *
 
 DEBUG = False
