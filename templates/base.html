@@ -10,14 +10,14 @@
     <meta charset="UTF-8">
 
     <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+          content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <link rel="manifest" href="{% static 'pwa/manifest.webmanifest' %}?v=6">
     <link rel="icon" href="{% static 'favicon.ico' %}?v=4" sizes="32x32">
     <meta name="theme-color" content="#6C5CE7">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="{% static 'pwa/apple-touch-icon.png' %}?v=4">
 
     <script>
@@ -59,6 +59,8 @@
     {% endif %}
 
     <link rel="stylesheet" href="{% static 'css/dark.css' %}?v=8">
+
+    <link rel="stylesheet" href="{% static 'css/mobile.css' %}?v=1">
 
     {% block extra_css %}
     {% endblock %}
