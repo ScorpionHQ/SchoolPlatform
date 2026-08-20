@@ -1,24 +1,15 @@
 /* ==================================================================
-   PROFESSIONAL MOBILE REDESIGN
-   SchoolPlatform — Native app-like mobile experience
+   MOBILE — Full responsive system for all device sizes
+   Breakpoints: 992px (tablet), 768px (small tablet), 576px (phone)
    ================================================================== */
 
-/* --- Global mobile safety --- */
+/* ── Global mobile safety ──────────────────────────────────────── */
 html, body {
     overflow-x: hidden;
     -webkit-text-size-adjust: 100%;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    user-select: none;
 }
 
-body {
-    min-height: 100dvh;
-    font-feature-settings: "kern" 1;
-}
-
-/* --- Safe area for notched devices --- */
+/* ── Safe area for notched devices ─────────────────────────────── */
 @supports (padding: env(safe-area-inset-top)) {
     .navbar {
         padding-left: max(0.75rem, env(safe-area-inset-left));
@@ -34,417 +25,279 @@ body {
 }
 
 /* ==================================================================
-   1. NAVBAR — sleek, minimal, app-like
+   TABLET (≤992px) — Sidebar becomes drawer, navbar shrinks
    ================================================================== */
 
 @media (max-width: 992px) {
+
+    /* ── Navbar ──────────────────────────────────────────────── */
     .navbar {
-        padding: 0.4rem 0.6rem !important;
-        min-height: 52px;
-        border-bottom: 1px solid var(--theme-border) !important;
-        background: var(--theme-card) !important;
-        backdrop-filter: blur(20px) !important;
-        -webkit-backdrop-filter: blur(20px) !important;
+        padding: 0 .6rem !important;
+        min-height: var(--navbar-height-mobile);
     }
 
-    /* Brand: clean single line */
+    /* Brand: compact */
     .navbar .navbar-brand {
-        font-size: 0.9rem !important;
-        font-weight: 700 !important;
-        letter-spacing: -0.01em;
-        gap: 0.5rem !important;
-        padding: 0 !important;
+        font-size: .88rem !important;
+        gap: .4rem !important;
     }
-    .navbar .navbar-brand small {
-        display: none !important;
-    }
-    .navbar .navbar-brand .brand-logo {
-        height: 26px !important;
-        width: auto;
-    }
+    .navbar .navbar-brand small { display: none !important; }
+    .navbar .navbar-brand .brand-logo { height: 24px !important; }
 
-    /* Right-side: icon-only row */
+    /* Right actions: icon row */
     .navbar .d-flex.align-items-center.gap-3 {
-        gap: 0.2rem !important;
+        gap: .25rem !important;
         flex-shrink: 0;
         flex-wrap: nowrap;
     }
 
-    /* Institution button: icon only */
+    /* Institution btn: icon only */
     .navbar .btn-outline-primary {
-        padding: 0.35rem 0.45rem !important;
-        font-size: 0.8rem !important;
-        border-radius: 10px !important;
+        padding: .3rem .4rem !important;
+        border-radius: var(--radius-sm) !important;
         min-width: 0;
     }
     .navbar .btn-outline-primary .d-none.d-lg-inline,
-    .navbar .btn-outline-primary .bi-chevron-down {
-        display: none !important;
-    }
-    .navbar .btn-outline-primary .bi-building {
-        font-size: 1rem;
-    }
+    .navbar .btn-outline-primary .bi-chevron-down { display: none !important; }
+    .navbar .btn-outline-primary .bi-building { font-size: 1rem; }
 
     /* Theme toggle */
     .navbar .theme-toggle {
-        width: 36px !important;
-        height: 36px !important;
+        width: 34px !important;
+        height: 34px !important;
         display: flex !important;
         align-items: center;
         justify-content: center;
         padding: 0 !important;
-        border-radius: 10px !important;
-        font-size: 0.95rem;
+        border-radius: var(--radius-sm) !important;
+        font-size: .9rem;
     }
 
     /* Language toggle */
     .navbar .lang-toggle {
-        padding: 0.3rem 0.5rem !important;
-        font-size: 0.7rem !important;
+        padding: .25rem .5rem !important;
+        font-size: .7rem !important;
         font-weight: 800 !important;
         border-radius: 8px !important;
         min-width: 0;
-        letter-spacing: 0.02em;
     }
 
     /* Notification bell */
     .navbar .position-relative {
-        width: 36px !important;
-        height: 36px !important;
+        width: 34px !important;
+        height: 34px !important;
         display: flex !important;
         align-items: center;
         justify-content: center;
         padding: 0 !important;
-        border-radius: 10px !important;
+        border-radius: var(--radius-sm) !important;
     }
-    .navbar .position-relative .bi-bell {
-        font-size: 1rem !important;
-    }
+    .navbar .position-relative .bi-bell { font-size: .95rem !important; }
 
     /* User dropdown: avatar only */
     .navbar .dropdown > .btn-light.d-flex {
-        padding: 0.2rem !important;
-        gap: 0.2rem !important;
+        padding: .15rem !important;
         border-radius: 50% !important;
     }
     .navbar .dropdown > .btn-light.d-flex img,
     .navbar .dropdown > .btn-light.d-flex .avatar-circle {
-        width: 32px !important;
-        height: 32px !important;
+        width: 30px !important;
+        height: 30px !important;
         border-radius: 50% !important;
     }
     .navbar .dropdown > .btn-light.d-flex .d-none.d-lg-block,
-    .navbar .dropdown > .btn-light.d-flex .bi-chevron-down {
-        display: none !important;
-    }
+    .navbar .dropdown > .btn-light.d-flex .bi-chevron-down { display: none !important; }
 
-    /* Hide sidebar toggle — we use gesture */
-    .sidebar-toggle {
-        width: 36px !important;
-        height: 36px !important;
-        display: flex !important;
-        align-items: center;
-        justify-content: center;
-        padding: 0 !important;
-        border-radius: 10px !important;
-        font-size: 1.2rem;
-    }
-}
-
-@media (max-width: 400px) {
-    .navbar .d-flex.align-items-center.gap-3 {
-        gap: 0.15rem !important;
-    }
-    .navbar .lang-toggle {
-        padding: 0.25rem 0.4rem !important;
-        font-size: 0.65rem !important;
-    }
-}
-
-/* ==================================================================
-   2. SIDEBAR — smooth app-like drawer
-   ================================================================== */
-
-@media (max-width: 992px) {
-    .sidebar {
-        width: 280px;
-        max-width: 82vw;
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        box-shadow: none !important;
-        border-radius: 0 20px 20px 0;
-    }
-
-    [dir="rtl"] .sidebar {
-        border-radius: 20px 0 0 20px;
-        right: 0;
-        left: auto;
-    }
-
-    .sidebar.open {
-        box-shadow: 8px 0 40px rgba(0, 0, 0, 0.25) !important;
-    }
-
-    .sidebar-overlay {
-        transition: opacity 0.3s ease !important;
-        background: rgba(0, 0, 0, 0.4) !important;
-        backdrop-filter: blur(4px) !important;
-        -webkit-backdrop-filter: blur(4px) !important;
-    }
-
-    /* Sidebar links: bigger, smoother */
+    /* Sidebar links */
     .sidebar-menu a,
     .sidebar-link-btn {
-        padding: 14px 16px !important;
-        margin-bottom: 3px;
-        border-radius: 12px !important;
-        min-height: 46px;
-        display: flex;
-        align-items: center;
-        font-size: 0.92rem !important;
-        transition: all 0.2s ease !important;
+        padding: 12px 14px !important;
+        font-size: .88rem !important;
+        min-height: 44px;
     }
 
     .sidebar-menu a:active,
     .sidebar-link-btn:active {
-        background: rgba(255, 255, 255, 0.15) !important;
-        transform: scale(0.97) !important;
-        transition: all 0.1s ease !important;
+        background: rgba(255, 255, 255, .12) !important;
+        transform: scale(.97) !important;
     }
 
-    .sidebar-header {
-        padding: 24px 20px !important;
-    }
-
-    .sidebar-menu {
-        padding: 14px !important;
-    }
+    /* Sidebar header */
+    .sidebar-header { padding: 22px 18px !important; }
+    .sidebar-menu { padding: 12px !important; }
 }
 
 /* ==================================================================
-   3. CONTENT AREA — app-like spacing
+   SMALL TABLET (≤768px)
    ================================================================== */
 
-@media (max-width: 992px) {
-    .content-wrapper {
-        padding: 1rem;
-    }
-}
+@media (max-width: 768px) {
 
-@media (max-width: 576px) {
-    .content-wrapper {
-        padding: 0.75rem;
-    }
-}
+    /* Content */
+    .content-wrapper { padding: var(--space-4) !important; }
 
-/* ==================================================================
-   4. STAT CARDS — 2-col grid, clean design
-   ================================================================== */
-
-@media (max-width: 576px) {
-    /* Force 2-column grid */
-    .row .col-xl-3.col-md-6,
-    .row .col-md-6 {
+    /* Stat cards: 2-col grid */
+    .row .col-xl-3.col-md-6 {
         flex: 0 0 50% !important;
         max-width: 50% !important;
-        padding-left: 0.35rem;
-        padding-right: 0.35rem;
+        padding-left: 6px;
+        padding-right: 6px;
+        margin-bottom: 12px;
     }
 
-    .stat-card {
-        padding: 12px 10px !important;
-        gap: 8px !important;
-        border-radius: 14px !important;
-        border: 1px solid var(--theme-border);
-        background: var(--theme-card);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    /* Insight cards: 2-col */
+    .row .col-xl-3.col-md-6 .insight-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
     }
-    .stat-card:active {
-        transform: scale(0.97) !important;
-        transition: transform 0.1s ease;
+}
+
+/* ==================================================================
+   PHONE (≤576px) — Full mobile redesign
+   ================================================================== */
+
+@media (max-width: 576px) {
+
+    /* ── Content area ──────────────────────────────────────── */
+    .content-wrapper {
+        padding: var(--space-3) !important;
+    }
+
+    /* ── Stat cards: compact 2-col ─────────────────────────── */
+    .stat-card {
+        padding: 14px 12px !important;
+        gap: 8px !important;
+        border-radius: var(--radius-md) !important;
     }
 
     .stat-number {
-        font-size: 1.25rem !important;
-        line-height: 1.2 !important;
-        font-weight: 800 !important;
+        font-size: 1.3rem !important;
+        font-weight: 800;
     }
 
     .stat-title {
-        font-size: 0.68rem !important;
-        line-height: 1.3 !important;
-        margin-bottom: 0 !important;
-        letter-spacing: 0.01em;
+        font-size: .68rem !important;
+        line-height: 1.3;
     }
 
     .stat-icon {
-        width: 36px !important;
-        height: 36px !important;
+        width: 38px !important;
+        height: 38px !important;
         font-size: 16px !important;
         border-radius: 10px !important;
-        flex-shrink: 0;
     }
-}
 
-/* ==================================================================
-   5. DASHBOARD HERO — compact, beautiful
-   ================================================================== */
-
-@media (max-width: 576px) {
+    /* ── Dashboard hero ────────────────────────────────────── */
     .dashboard-hero {
-        padding: 16px 14px !important;
-        border-radius: 16px !important;
-        margin-bottom: 1rem !important;
+        padding: 18px 16px !important;
+        border-radius: var(--radius-lg) !important;
     }
-    .dashboard-hero::after {
-        display: none !important;
-    }
+
+    .dashboard-hero::after { display: none !important; }
 
     .hero-title {
         font-size: 1rem !important;
-        font-weight: 700 !important;
-        line-height: 1.4 !important;
-        margin-bottom: 0.2rem !important;
+        font-weight: 700;
     }
 
     .hero-subtitle {
-        font-size: 0.75rem !important;
-        line-height: 1.5 !important;
-        opacity: 0.85;
+        font-size: .78rem !important;
     }
 
     .hero-date {
-        font-size: 0.7rem !important;
-        margin-bottom: 0.3rem !important;
+        font-size: .68rem !important;
     }
 
     .hero-actions {
         flex-direction: column !important;
         align-items: stretch !important;
-        gap: 0.4rem !important;
-        margin-top: 0.5rem !important;
+        gap: .4rem !important;
+        margin-top: .5rem !important;
     }
+
     .hero-actions .btn {
         text-align: center !important;
-        padding: 0.55rem 1rem !important;
-        font-size: 0.82rem !important;
-        border-radius: 10px !important;
-        font-weight: 600;
+        justify-content: center;
+        padding: .5rem .8rem !important;
+        font-size: .82rem !important;
     }
-}
 
-/* ==================================================================
-   6. CARDS — clean, minimal
-   ================================================================== */
+    /* ── Insight cards ─────────────────────────────────────── */
+    .insight-card {
+        padding: 10px 12px !important;
+        gap: 10px !important;
+    }
 
-@media (max-width: 576px) {
+    .insight-icon {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 16px !important;
+    }
+
+    .insight-value { font-size: .9rem !important; }
+    .insight-label { font-size: .68rem !important; }
+
+    /* ── Cards ─────────────────────────────────────────────── */
     .card, .card-custom {
-        border-radius: 14px !important;
-        border: 1px solid var(--theme-border);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+        border-radius: var(--radius-md) !important;
     }
-    .card-body {
-        padding: 0.8rem !important;
-    }
+
+    .card-body { padding: .85rem !important; }
+
     .card-header {
-        padding: 0.65rem 0.8rem !important;
-        border-bottom: 1px solid var(--theme-border) !important;
+        padding: .65rem .85rem !important;
     }
+
     .card-header h5,
     .card-header h4 {
-        font-size: 0.88rem !important;
+        font-size: .85rem !important;
     }
-}
 
-/* ==================================================================
-   7. TABLES — scrollable, compact
-   ================================================================== */
-
-@media (max-width: 992px) {
-    .table-responsive {
-        border-radius: var(--radius-md) !important;
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-        border: 1px solid var(--theme-border) !important;
-        background: var(--theme-card);
-    }
-}
-
-@media (max-width: 576px) {
+    /* ── Tables ────────────────────────────────────────────── */
     .table thead th {
-        font-size: 0.62rem !important;
-        padding: 0.5rem 0.5rem !important;
-        white-space: nowrap;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
+        font-size: .62rem !important;
+        padding: .5rem .45rem !important;
     }
+
     .table tbody td {
-        padding: 0.5rem 0.5rem !important;
-        font-size: 0.75rem !important;
+        padding: .5rem .45rem !important;
+        font-size: .78rem !important;
         white-space: nowrap;
     }
-    .table tbody tr {
-        border-bottom: 1px solid var(--theme-border);
-    }
-}
 
-/* ==================================================================
-   8. BUTTONS — touch-friendly
-   ================================================================== */
-
-@media (max-width: 576px) {
+    /* ── Buttons ───────────────────────────────────────────── */
     .btn {
-        padding: 0.5rem 0.85rem !important;
-        font-size: 0.82rem !important;
-        border-radius: 10px !important;
+        padding: .5rem .8rem !important;
+        font-size: .82rem !important;
         min-height: 38px;
-        font-weight: 600;
     }
-    .btn:active {
-        transform: scale(0.96) !important;
-        transition: transform 0.1s ease;
-    }
+
+    .btn:active { transform: scale(.96) !important; }
+
     .btn-sm {
-        padding: 0.35rem 0.65rem !important;
-        font-size: 0.75rem !important;
-        min-height: 34px;
+        padding: .35rem .6rem !important;
+        font-size: .75rem !important;
+        min-height: 32px;
     }
-    .btn-lg {
-        padding: 0.65rem 1.2rem !important;
-        min-height: 44px;
-    }
-    /* Full-width action buttons */
-    .page-header .btn,
-    .hero-actions .btn {
-        width: 100%;
-        justify-content: center;
-    }
-}
 
-/* ==================================================================
-   9. FORMS — large, easy to tap
-   ================================================================== */
-
-@media (max-width: 576px) {
+    /* ── Forms ─────────────────────────────────────────────── */
     .form-control,
     .form-select {
-        padding: 0.6rem 0.8rem !important;
-        font-size: 0.9rem !important;
-        border-radius: 10px !important;
+        padding: .55rem .75rem !important;
+        font-size: .88rem !important;
         min-height: 42px;
-        background-clip: padding-box;
     }
+
     .form-control:focus,
     .form-select:focus {
-        box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.12) !important;
+        box-shadow: 0 0 0 .15rem rgba(108, 92, 231, .10) !important;
     }
+
     .form-label {
-        font-size: 0.82rem !important;
-        font-weight: 600;
-        margin-bottom: 0.3rem !important;
+        font-size: .82rem !important;
     }
-    textarea.form-control {
-        min-height: 80px;
-    }
+
     /* Stack form columns */
     .row .col-md-6,
     .row .col-md-4,
@@ -452,178 +305,189 @@ body {
         flex: 0 0 100% !important;
         max-width: 100% !important;
     }
-}
 
-/* ==================================================================
-   10. PAGE HEADERS — stacked, clean
-   ================================================================== */
-
-@media (max-width: 576px) {
+    /* ── Page header ───────────────────────────────────────── */
     .page-header {
         flex-direction: column !important;
         align-items: stretch !important;
-        gap: 0.6rem !important;
-        margin-bottom: 1rem !important;
+        gap: .5rem !important;
     }
-    .page-header h4 {
-        font-size: 1rem !important;
-        font-weight: 700;
-    }
-}
 
-/* ==================================================================
-   11. INSIGHT CARDS — compact
-   ================================================================== */
+    .page-header h4 { font-size: .95rem !important; }
 
-@media (max-width: 576px) {
-    .insight-card {
-        padding: 10px 12px !important;
-        gap: 10px !important;
-        border-radius: 12px !important;
-    }
-    .insight-icon {
-        width: 34px !important;
-        height: 34px !important;
-        font-size: 15px !important;
-        border-radius: 10px !important;
-    }
-    .insight-value {
-        font-size: 0.88rem !important;
-        font-weight: 700;
-    }
-    .insight-label {
-        font-size: 0.68rem !important;
-    }
-}
-
-/* ==================================================================
-   12. PROGRESS DONUT — smaller on phones
-   ================================================================== */
-
-@media (max-width: 576px) {
+    /* ── Progress donut ────────────────────────────────────── */
     .progress-donut {
-        width: 72px !important;
-        height: 72px !important;
+        width: 80px !important;
+        height: 80px !important;
     }
-    .progress-donut .donut-value {
-        font-size: 1rem !important;
-    }
-    .progress-donut .donut-label {
-        font-size: 0.55rem !important;
-    }
-}
 
-/* ==================================================================
-   13. QUICK ACTIONS — 2-col grid
-   ================================================================== */
+    .progress-donut .donut-value { font-size: 1.1rem !important; }
+    .progress-donut .donut-label { font-size: .52rem !important; }
 
-@media (max-width: 576px) {
-    .row .col-md-3 {
-        flex: 0 0 50% !important;
-        max-width: 50% !important;
-        padding-left: 0.35rem;
-        padding-right: 0.35rem;
-        margin-bottom: 0.5rem;
-    }
-    .row .col-md-3 .card,
-    .row .col-md-3 .btn {
-        width: 100%;
-    }
-}
-
-/* ==================================================================
-   14. EMPTY STATES — clean
-   ================================================================== */
-
-@media (max-width: 576px) {
-    .empty-state {
-        padding: 20px 14px !important;
-    }
-    .empty-state .empty-icon {
-        font-size: 30px !important;
-    }
-    .empty-state p {
-        font-size: 0.82rem !important;
-    }
-}
-
-/* ==================================================================
-   15. SECTION TITLES — responsive
-   ================================================================== */
-
-@media (max-width: 576px) {
-    .section-title {
-        font-size: 1.1rem !important;
-        font-weight: 700;
-    }
-    .section-subtitle {
-        font-size: 0.8rem !important;
-    }
-}
-
-/* ==================================================================
-   16. BADGES — compact
-   ================================================================== */
-
-@media (max-width: 576px) {
+    /* ── Badges ────────────────────────────────────────────── */
     .badge-soft {
-        font-size: 0.65rem !important;
-        padding: 0.25em 0.55em !important;
+        font-size: .65rem !important;
+        padding: .25em .5em !important;
     }
-}
 
-/* ==================================================================
-   17. UPLOAD BOX — compact
-   ================================================================== */
+    /* ── Empty state ───────────────────────────────────────── */
+    .empty-state { padding: 24px 14px !important; }
+    .empty-state .empty-icon { font-size: 32px !important; }
+    .empty-state p { font-size: .82rem !important; }
 
-@media (max-width: 576px) {
-    .upload-box {
-        padding: 18px 12px !important;
-    }
-    .upload-icon {
-        font-size: 32px !important;
-    }
-}
+    /* ── Section titles ────────────────────────────────────── */
+    .section-title { font-size: 1.05rem !important; }
+    .section-subtitle { font-size: .78rem !important; }
 
-/* ==================================================================
-   18. LOGIN / AUTH — mobile-optimized
-   ================================================================== */
+    /* ── Upload box ────────────────────────────────────────── */
+    .upload-box { padding: 20px 14px !important; }
+    .upload-icon { font-size: 34px !important; }
 
-@media (max-width: 576px) {
-    .container.py-5 {
-        padding-top: 1.5rem !important;
-        padding-bottom: 1.5rem !important;
-    }
+    /* ── Auth pages ────────────────────────────────────────── */
     .col-md-5,
     .col-md-6 {
         max-width: 100% !important;
+        flex: 0 0 100% !important;
     }
-    .auth-card,
-    .login-card,
+
+    .card.shadow,
     .card.shadow-lg {
-        margin: 0 !important;
-        border-radius: 16px !important;
+        border-radius: var(--radius-lg) !important;
         border: 1px solid var(--theme-border);
+    }
+
+    /* ── Modals ────────────────────────────────────────────── */
+    .modal-dialog {
+        margin: .5rem !important;
+        max-width: calc(100vw - 1rem) !important;
+    }
+
+    .modal-content {
+        border-radius: var(--radius-lg) !important;
+        border: none;
+    }
+
+    .modal-body { padding: 1rem !important; }
+
+    /* ── Dropdowns ─────────────────────────────────────────── */
+    .dropdown-menu {
+        border-radius: var(--radius-sm) !important;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, .12) !important;
+        padding: .3rem !important;
+    }
+
+    .dropdown-item {
+        padding: .5rem .7rem !important;
+        font-size: .84rem !important;
+        border-radius: 8px !important;
+    }
+
+    /* ── Pagination ────────────────────────────────────────── */
+    .pagination { gap: .2rem; }
+
+    .page-link {
+        padding: .35rem .55rem !important;
+        font-size: .75rem !important;
+        border-radius: 8px !important;
+        min-width: 32px;
+        text-align: center;
+    }
+
+    /* ── Scrollbar ─────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 3px; height: 3px; }
+    ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, .12); border-radius: 10px; }
+
+    /* ── Notification badge ────────────────────────────────── */
+    .navbar .badge.rounded-pill {
+        font-size: .5rem !important;
+        padding: .2em .4em !important;
+        top: 2px !important;
+        start: 82% !important;
+    }
+
+    /* ── Progress bars ─────────────────────────────────────── */
+    .progress {
+        height: 8px !important;
+        border-radius: 8px !important;
+    }
+    .progress-bar { border-radius: 8px !important; }
+
+    /* ── List groups ───────────────────────────────────────── */
+    .list-group-item { padding: .6rem .75rem !important; }
+
+    /* ── Tabs ──────────────────────────────────────────────── */
+    .nav-tabs .nav-link {
+        padding: .45rem .65rem !important;
+        font-size: .76rem !important;
+    }
+
+    /* ── Typography ────────────────────────────────────────── */
+    h1 { font-size: 1.2rem !important; }
+    h2 { font-size: 1.05rem !important; }
+    h3 { font-size: .95rem !important; }
+    h4 { font-size: .88rem !important; }
+
+    p { line-height: 1.55; }
+
+    /* ── Quick action cards: 2-col ─────────────────────────── */
+    .row .col-md-3 {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+        padding-left: 6px;
+        padding-right: 6px;
+        margin-bottom: 8px;
     }
 }
 
 /* ==================================================================
-   19. SCROLLBAR — ultra-thin on mobile
+   TOUCH FEEDBACK — only on touch devices
+   ================================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+    .stat-card:active,
+    .insight-card:active {
+        transform: scale(.97);
+        transition: transform .1s ease;
+    }
+
+    .sidebar-menu a:active,
+    .sidebar-link-btn:active {
+        background: rgba(255, 255, 255, .12);
+        transform: scale(.97);
+    }
+
+    .card:active {
+        transform: scale(.98);
+    }
+
+    .btn:active {
+        transform: scale(.96);
+    }
+}
+
+/* ==================================================================
+   SMOOTH ANIMATIONS
    ================================================================== */
 
 @media (max-width: 992px) {
-    ::-webkit-scrollbar {
-        width: 3px;
-        height: 3px;
+    .card,
+    .stat-card,
+    .insight-card {
+        transition: transform .2s var(--ease-out), box-shadow .2s var(--ease-out) !important;
     }
-    ::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0, 0.15);
-        border-radius: 10px;
+
+    .content-wrapper {
+        animation: fadeInUp .3s var(--ease-out);
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(6px); }
+        to   { opacity: 1; transform: translateY(0); }
     }
 }
 
 /* ==================================================================
-   20. GLOBAL SAFETY — prevent overflow
+   GLOBAL SAFETY — prevent horizontal overflow everywhere
    ================================================================== */
 
 .app-layout {
@@ -636,185 +500,16 @@ body {
     overflow-x: hidden;
 }
 
-.content-wrapper .table-responsive {
+.table-responsive {
     max-width: 100%;
 }
 
 /* ==================================================================
-   21. TOUCH FEEDBACK — active states
+   LARGE SCREENS (≥1400px) — Wider content
    ================================================================== */
 
-@media (hover: none) and (pointer: coarse) {
-    .stat-card:active,
-    .insight-card:active {
-        transform: scale(0.97);
-        transition: transform 0.1s ease;
-    }
-
-    .sidebar-menu a:active,
-    .sidebar-link-btn:active {
-        background: rgba(255, 255, 255, 0.15);
-        transform: scale(0.97);
-    }
-
-    .card:active {
-        transform: scale(0.98);
-        transition: transform 0.1s ease;
-    }
-
-    .btn:active {
-        transform: scale(0.96);
-    }
-}
-
-/* ==================================================================
-   22. TYPOGRAPHY — clean mobile
-   ================================================================== */
-
-@media (max-width: 576px) {
-    h1 { font-size: 1.2rem !important; font-weight: 700; }
-    h2 { font-size: 1.1rem !important; font-weight: 700; }
-    h3 { font-size: 1rem !important; font-weight: 600; }
-    h4 { font-size: 0.9rem !important; font-weight: 600; }
-    h5 { font-size: 0.85rem !important; font-weight: 600; }
-
-    p { line-height: 1.5; }
-
-    /* Reduce decorative elements */
-    .dashboard-hero::after { display: none !important; }
-    .stat-card::after { display: none !important; }
-}
-
-/* ==================================================================
-   23. PAGINATION — mobile-friendly
-   ================================================================== */
-
-@media (max-width: 576px) {
-    .pagination {
-        gap: 0.2rem;
-    }
-    .page-link {
-        padding: 0.4rem 0.6rem !important;
-        font-size: 0.75rem !important;
-        border-radius: 8px !important;
-        min-width: 34px;
-        text-align: center;
-    }
-}
-
-/* ==================================================================
-   24. MODAL — full-screen on mobile
-   ================================================================== */
-
-@media (max-width: 576px) {
-    .modal-dialog {
-        margin: 0.5rem !important;
-        max-width: calc(100vw - 1rem) !important;
-    }
-    .modal-content {
-        border-radius: 16px !important;
-        border: none;
-    }
-    .modal-body {
-        padding: 1rem !important;
-    }
-}
-
-/* ==================================================================
-   25. DROPDOWN — full-width on mobile
-   ================================================================== */
-
-@media (max-width: 576px) {
-    .dropdown-menu {
-        border-radius: 12px !important;
-        border: 1px solid var(--theme-border);
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12) !important;
-        padding: 0.4rem !important;
-    }
-    .dropdown-item {
-        padding: 0.55rem 0.75rem !important;
-        font-size: 0.85rem !important;
-        border-radius: 8px !important;
-    }
-}
-
-/* ==================================================================
-   26. NOTIFICATION BADGE — positioning fix
-   ================================================================== */
-
-@media (max-width: 576px) {
-    .navbar .badge.rounded-pill {
-        font-size: 0.55rem !important;
-        padding: 0.2em 0.45em !important;
-        top: 2px !important;
-        start: 85% !important;
-    }
-}
-
-/* ==================================================================
-   27. SMOOTH ANIMATIONS — app-like transitions
-   ================================================================== */
-
-@media (max-width: 992px) {
-    * {
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    .card,
-    .stat-card,
-    .insight-card {
-        transition: transform 0.2s ease, box-shadow 0.2s ease !important;
-    }
-
-    /* Page transition feel */
+@media (min-width: 1400px) {
     .content-wrapper {
-        animation: fadeInUp 0.3s ease;
-    }
-
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(8px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-}
-
-/* ==================================================================
-   28. PROGRESS BARS — smooth
-   ================================================================== */
-
-@media (max-width: 576px) {
-    .progress {
-        height: 8px !important;
-        border-radius: 8px !important;
-    }
-    .progress-bar {
-        border-radius: 8px !important;
-    }
-}
-
-/* ==================================================================
-   29. LIST GROUPS — app-like
-   ================================================================== */
-
-@media (max-width: 576px) {
-    .list-group-item {
-        padding: 0.65rem 0.8rem !important;
-    }
-}
-
-/* ==================================================================
-   30. TABS — mobile-friendly
-   ================================================================== */
-
-@media (max-width: 576px) {
-    .nav-tabs .nav-link {
-        padding: 0.5rem 0.75rem !important;
-        font-size: 0.78rem !important;
-        border-radius: 8px 8px 0 0 !important;
+        padding: var(--space-10) var(--space-8);
     }
 }

@@ -1,113 +1,31 @@
+/* ==================================================================
+   TYPOGRAPHY — Responsive type scale for all viewports
+   Uses clamp() for fluid sizing between breakpoints
+   ================================================================== */
 
-
-html{
-    font-size:16px;
+/* ── Base type ─────────────────────────────────────────────────── */
+body {
+    font-size: clamp(0.875rem, 0.844rem + 0.16vw, 1rem);
 }
 
-body{
+/* ── Headings — fluid scale ────────────────────────────────────── */
+h1 { font-size: clamp(1.5rem, 1.25rem + 1.25vw, 2.4rem); font-weight: 800; }
+h2 { font-size: clamp(1.25rem, 1.1rem + 0.75vw, 2rem);   font-weight: 700; }
+h3 { font-size: clamp(1.1rem, 1rem + 0.5vw, 1.6rem);      font-weight: 700; }
+h4 { font-size: clamp(1rem, 0.95rem + 0.25vw, 1.3rem);    font-weight: 600; }
+h5 { font-size: clamp(0.9rem, 0.85rem + 0.25vw, 1.1rem);  font-weight: 600; }
+h6 { font-size: clamp(0.85rem, 0.8rem + 0.25vw, 1rem);    font-weight: 600; }
 
-    font-family:
-    "Inter",
-    "Cairo",
-    sans-serif;
+/* ── Body text ─────────────────────────────────────────────────── */
+p  { line-height: 1.65; }
+small { font-size: 0.8125rem; }
 
-    color:var(--text);
-
-    background:var(--background);
-
-    font-weight:400;
-
-    line-height:1.6;
-
+/* ── Links inside text ─────────────────────────────────────────── */
+a {
+    text-decoration: none;
+    transition: var(--transition);
 }
 
-
-
-h1{
-
-    font-size:2.4rem;
-
-    font-weight:700;
-
-    margin-bottom:.5rem;
-
-}
-
-h2{
-
-    font-size:2rem;
-
-    font-weight:700;
-
-}
-
-h3{
-
-    font-size:1.6rem;
-
-    font-weight:600;
-
-}
-
-h4{
-
-    font-size:1.3rem;
-
-    font-weight:600;
-
-}
-
-h5{
-
-    font-size:1.1rem;
-
-    font-weight:600;
-
-}
-
-
-
-p{
-
-    color:var(--text-light);
-
-    margin-bottom:0;
-
-}
-
-
-
-a{
-
-    text-decoration:none;
-
-    transition:var(--transition);
-
-}
-
-a:hover{
-
-    text-decoration:none;
-
-}
-
-@media(max-width:576px){
-
-    html{
-        font-size:14px;
-    }
-
-    h1{
-        font-size:1.6rem;
-    }
-    h2{
-        font-size:1.35rem;
-    }
-    h3{
-        font-size:1.15rem;
-    }
-    h4{
-        font-size:1.05rem;
-    }
-
+a:hover {
+    text-decoration: none;
 }

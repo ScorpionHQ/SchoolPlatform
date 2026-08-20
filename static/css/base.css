@@ -1,84 +1,113 @@
+/* ==================================================================
+   BASE — Reset, body, elements, utilities
+   ================================================================== */
 
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-html{
-    scroll-behavior:smooth;
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    height: 100%;
 }
 
-body{
-
-    background:var(--background);
-
-    color:var(--text);
-
-    font-family:
-        "Cairo",
-        "Inter",
-        sans-serif;
-
-    font-size:1rem;
-
-    line-height:1.6;
-
-    -webkit-font-smoothing:antialiased;
-
-    -moz-osx-font-smoothing:grayscale;
-
-    text-rendering:optimizeLegibility;
-
+body {
+    background: var(--background);
+    color: var(--text);
+    font-family: "Cairo", "Inter", system-ui, -apple-system, sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    min-height: 100vh;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
 }
 
-
-
-a{
-
-    text-decoration:none;
-
-    color:inherit;
-
-    transition:var(--transition);
-
+/* ── Links ─────────────────────────────────────────────────────── */
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
 }
 
-
-
-img{
-
-    max-width:100%;
-
-    display:block;
-
+a:hover {
+    text-decoration: none;
 }
 
-
-
-.main-content{
-
-    min-height:100vh;
-
-    padding:32px 0;
-
+/* ── Images ────────────────────────────────────────────────────── */
+img, svg, video {
+    max-width: 100%;
+    display: block;
+    height: auto;
 }
 
-
-
-h1,h2,h3,h4,h5,h6{
-
-    font-weight:700;
-
-    color:var(--text);
-
-    letter-spacing:-.01em;
-
+/* ── Headings ──────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -.01em;
+    line-height: 1.25;
 }
 
-p{
+/* ── Paragraphs ────────────────────────────────────────────────── */
+p {
+    color: var(--text-light);
+    margin-bottom: 0;
+}
 
-    color:var(--text-light);
+/* ── Focus ring ────────────────────────────────────────────────── */
+:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
 
+/* ── Selection ─────────────────────────────────────────────────── */
+::selection {
+    background: rgba(108, 92, 231, .18);
+    color: var(--text);
+}
+
+/* ── Scrollbar base ────────────────────────────────────────────── */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #C4C9D8;
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #A8AFC4;
+}
+
+/* ── Legacy class (keep for backward compat) ───────────────────── */
+.main-content {
+    min-height: 100vh;
+    padding: var(--space-8) 0;
+}
+
+/* ── Screen reader only ────────────────────────────────────────── */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }

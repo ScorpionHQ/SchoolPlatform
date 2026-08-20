@@ -1,85 +1,71 @@
+/* ==================================================================
+   RTL — Right-to-Left language support (Arabic)
+   ================================================================== */
 
-
-[dir="rtl"] .sidebar{
-
-    left:auto;
-    right:0;
-
+/* ── Sidebar ───────────────────────────────────────────────────── */
+[dir="rtl"] .sidebar {
+    left: auto;
+    right: 0;
 }
 
-[dir="rtl"] .content-area{
-
-    margin-left:0;
-    margin-right:270px;
-
+/* ── Content area ──────────────────────────────────────────────── */
+[dir="rtl"] .content-area {
+    margin-left: 0;
+    margin-right: var(--sidebar-width);
 }
 
-[dir="rtl"] .sidebar-menu a:hover{
-
-    transform:translateX(-6px);
-
+/* ── Sidebar hover ─────────────────────────────────────────────── */
+[dir="rtl"] .sidebar-menu a:hover {
+    transform: translateX(-4px);
 }
 
-[dir="rtl"] .sidebar-menu a.active::before{
-
-    left:auto;
-    right:0;
-
-    border-radius:8px 0 0 8px;
-
+/* ── Active indicator ──────────────────────────────────────────── */
+[dir="rtl"] .sidebar-menu a.active::before {
+    left: auto;
+    right: 0;
+    border-radius: 6px 0 0 6px;
 }
 
-[dir="rtl"] .navbar-brand{
-
-    margin-left:1rem;
-    margin-right:0;
-
+/* ── Navbar brand ──────────────────────────────────────────────── */
+[dir="rtl"] .navbar-brand {
+    margin-left: 1rem;
+    margin-right: 0;
 }
 
-[dir="rtl"] .dropdown-menu-end{
-
-    right:auto;
-    left:0;
-
+/* ── Dropdown ──────────────────────────────────────────────────── */
+[dir="rtl"] .dropdown-menu-end {
+    right: auto;
+    left: 0;
 }
 
-[dir="rtl"] .sidebar-toggle{
-    margin-right:0;
-    margin-left:.5rem;
+/* ── Sidebar toggle ────────────────────────────────────────────── */
+[dir="rtl"] .sidebar-toggle {
+    margin-right: 0;
+    margin-left: .5rem;
 }
 
+/* ==================================================================
+   RESPONSIVE RTL
+   ================================================================== */
 
-
-@media(max-width:992px){
-
-    [dir="rtl"] .content-area{
-
-        margin-right:0;
-
+@media (max-width: 992px) {
+    [dir="rtl"] .content-area {
+        margin-right: 0;
     }
 
-    [dir="rtl"] .sidebar{
-
-        right:0;
-        left:auto;
-        transform:translateX(100%);
-
+    [dir="rtl"] .sidebar {
+        right: 0;
+        left: auto;
+        transform: translateX(100%);
     }
 
-    [dir="rtl"] .sidebar.open{
-
-        transform:translateX(0);
-
+    [dir="rtl"] .sidebar.open {
+        transform: translateX(0);
     }
-
 }
 
-@media(min-width:993px){
-
-    [dir="rtl"] .content-area{
-
-        margin-right:270px;
-
+@media (min-width: 993px) {
+    [dir="rtl"] .content-area {
+        margin-right: var(--sidebar-width);
     }
-
 }

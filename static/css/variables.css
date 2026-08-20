@@ -1,55 +1,102 @@
-:root{
+/* ==================================================================
+   DESIGN TOKENS — SchoolPlatform
+   Single source of truth for colors, spacing, radii, shadows, motion
+   ================================================================== */
 
-    --primary:#6C5CE7;
-    --primary-hover:#5B4BD6;
-    --primary-strong:#4737BF;
-    --primary-light:#EFEDFC;
+:root {
 
-    --accent:#8E78F4;
-    --accent-soft:#B9A8FB;
+    /* ── Brand ──────────────────────────────────────────────────── */
+    --primary:          #6C5CE7;
+    --primary-hover:    #5B4BD6;
+    --primary-strong:   #4737BF;
+    --primary-light:    #EFEDFC;
+    --primary-rgb:      108, 92, 231;
 
-    --elementary:#F59E0B;
-    --elementary-hover:#D97706;
-    --elementary-light:#FEF4E6;
+    --accent:           #8E78F4;
+    --accent-soft:      #B9A8FB;
 
-    --middle:#6C5CE7;
-    --middle-hover:#5B4BD6;
-    --middle-light:#EFEDFC;
+    /* ── Semantic palette ───────────────────────────────────────── */
+    --elementary:       #F59E0B;
+    --elementary-hover: #D97706;
+    --elementary-light: #FEF4E6;
 
-    --high:#2B2833;
-    --high-hover:#1B1822;
-    --high-light:#F6F4F0;
+    --middle:           #6C5CE7;
+    --middle-hover:     #5B4BD6;
+    --middle-light:     #EFEDFC;
 
-    --background:#F7F6F3;
-    --surface:#FFFFFF;
+    --high:             #2B2833;
+    --high-hover:       #1B1822;
+    --high-light:       #F6F4F0;
 
-    --border:#ECE9E3;
-    --border-strong:#DED9D0;
+    /* ── Surfaces ───────────────────────────────────────────────── */
+    --background:       #F7F6F3;
+    --surface:          #FFFFFF;
 
-    --text:#2B2833;
-    --text-light:#6F6B78;
+    /* ── Borders ────────────────────────────────────────────────── */
+    --border:           #ECE9E3;
+    --border-strong:    #DED9D0;
 
-    --success:#10B981;
-    --success-light:#E8F7F1;
-    --danger:#EF4444;
-    --danger-light:#FDECEC;
-    --warning:#F59E0B;
-    --warning-light:#FEF4E6;
-    --info:#3B82F6;
-    --info-light:#EAF2FE;
+    /* ── Text ───────────────────────────────────────────────────── */
+    --text:             #2B2833;
+    --text-light:       #6F6B78;
 
-    --grad-brand:linear-gradient(135deg,#4737BF 0%,#6C5CE7 55%,#8E78F4 100%);
-    --grad-soft:linear-gradient(135deg,#EFEDFC 0%,#F5F2FE 55%,#FBF9FF 100%);
+    /* ── Status colors ──────────────────────────────────────────── */
+    --success:          #10B981;
+    --success-light:    #E8F7F1;
+    --danger:           #EF4444;
+    --danger-light:     #FDECEC;
+    --warning:          #F59E0B;
+    --warning-light:    #FEF4E6;
+    --info:             #3B82F6;
+    --info-light:       #EAF2FE;
 
-    --radius-sm:10px;
-    --radius-md:14px;
-    --radius-lg:18px;
-    --radius-xl:24px;
+    /* ── Gradients ──────────────────────────────────────────────── */
+    --grad-brand:       linear-gradient(135deg, #4737BF 0%, #6C5CE7 55%, #8E78F4 100%);
+    --grad-soft:        linear-gradient(135deg, #EFEDFC 0%, #F5F2FE 55%, #FBF9FF 100%);
 
-    --shadow-sm:0 1px 2px rgba(76,64,160,.04),0 2px 10px rgba(76,64,160,.05);
-    --shadow-md:0 6px 18px rgba(76,64,160,.08),0 16px 40px -12px rgba(76,64,160,.12);
-    --shadow-lg:0 12px 32px rgba(76,64,160,.12),0 30px 70px -16px rgba(76,64,160,.22);
+    /* ── Border radius ──────────────────────────────────────────── */
+    --radius-xs:        6px;
+    --radius-sm:        10px;
+    --radius-md:        14px;
+    --radius-lg:        18px;
+    --radius-xl:        24px;
+    --radius-full:      9999px;
 
-    --transition:.25s ease;
+    /* ── Shadows ────────────────────────────────────────────────── */
+    --shadow-xs:        0 1px 2px rgba(76, 64, 160, .03);
+    --shadow-sm:        0 1px 3px rgba(76, 64, 160, .04), 0 2px 8px rgba(76, 64, 160, .04);
+    --shadow-md:        0 4px 12px rgba(76, 64, 160, .06), 0 12px 32px -8px rgba(76, 64, 160, .10);
+    --shadow-lg:        0 8px 24px rgba(76, 64, 160, .08), 0 24px 56px -12px rgba(76, 64, 160, .16);
 
+    /* ── Motion ─────────────────────────────────────────────────── */
+    --ease-out:         cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out:      cubic-bezier(0.45, 0, 0.55, 1);
+    --ease-bounce:      cubic-bezier(0.34, 1.56, 0.64, 1);
+    --transition:       .25s var(--ease-out);
+
+    /* ── Spacing scale (used by layout) ─────────────────────────── */
+    --space-1:          4px;
+    --space-2:          8px;
+    --space-3:          12px;
+    --space-4:          16px;
+    --space-5:          20px;
+    --space-6:          24px;
+    --space-8:          32px;
+    --space-10:         40px;
+    --space-12:         48px;
+
+    /* ── Z-index layers ─────────────────────────────────────────── */
+    --z-sidebar:        1000;
+    --z-navbar:         1100;
+    --z-overlay:        999;
+    --z-dropdown:       1050;
+    --z-modal:          1060;
+    --z-tooltip:        1070;
+    --z-widget:         1080;
+
+    /* ── Sidebar ────────────────────────────────────────────────── */
+    --sidebar-width:    270px;
+    --sidebar-width-mobile: 280px;
+    --navbar-height:    72px;
+    --navbar-height-mobile: 56px;
 }
