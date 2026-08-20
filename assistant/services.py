@@ -846,15 +846,24 @@ class AssistantService:
                 }
             )
 
+            gen_config = {
+                "temperature": 0.7,
+                "maxOutputTokens": settings.GEMINI_MAX_OUTPUT_TOKENS,
+            }
+
+            # Models like gemini-flash-latest / gemini-2.5-flash use
+            # thinking tokens that eat into maxOutputTokens. Setting a
+            # thinking budget of 0 disables internal thinking so all
+            # tokens are used for the visible reply.
+            if settings.GEMINI_MAX_OUTPUT_TOKENS <= 8192:
+                gen_config["thinkingConfig"] = {"thinkingBudget": 0}
+
             payload = {
                 "contents": contents,
                 "systemInstruction": {
                     "parts": [{"text": system_prompt}],
                 },
-                "generationConfig": {
-                    "temperature": 0.7,
-                    "maxOutputTokens": settings.GEMINI_MAX_OUTPUT_TOKENS,
-                },
+                "generationConfig": gen_config,
             }
 
             if settings.GEMINI_ENABLE_SEARCH:
@@ -913,6 +922,19 @@ class AssistantService:
                             ),
                             [],
                         )
+
+                    # Empty text without blockReason — log for debugging.
+                    finish = (
+                        (data.get("candidates") or [{}])[0]
+                        .get("finishReason", "unknown")
+                    )
+                    logger.warning(
+                        "Gemini returned empty text (finishReason=%s) "
+                        "for model %s. Response: %s",
+                        finish,
+                        model,
+                        json.dumps(data)[:500],
+                    )
 
                 except urllib.error.HTTPError as exc:
 

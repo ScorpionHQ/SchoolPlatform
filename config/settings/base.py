@@ -192,7 +192,7 @@ GEMINI_ENABLE_SEARCH = os.environ.get(
     "1",
 ) == "1"
 GEMINI_MAX_OUTPUT_TOKENS = int(
-    os.environ.get("GEMINI_MAX_OUTPUT_TOKENS", "4096")
+    os.environ.get("GEMINI_MAX_OUTPUT_TOKENS", "8192")
 )
 
 # Assistant file uploads (AI document reader).
