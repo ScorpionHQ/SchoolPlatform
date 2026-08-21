@@ -25,13 +25,12 @@
                 {% if request.user.profile_image %}
 
                 <img src="{{ request.user.profile_image.url }}"
-                     class="rounded-circle mb-3"
-                     style="width:120px; height:120px; object-fit:cover;"
+                     class="rounded-circle avatar-xl mb-3"
                      alt="">
 
                 {% else %}
 
-                <span class="avatar-circle mb-3" style="width:120px;height:120px;font-size:2.8rem;box-shadow:none;">
+                <span class="avatar-circle avatar-xl mb-3">
                     {{ request.user.first_name.0|default:request.user.username.0|upper }}{{ request.user.last_name.0|default:""|upper }}
                 </span>
 

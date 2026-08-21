@@ -90,11 +90,10 @@
                     <td>
                         {% if teacher.user.profile_image %}
                         <img src="{{ teacher.user.profile_image.url }}"
-                             class="rounded-circle"
-                             style="width:40px; height:40px; object-fit:cover;"
+                             class="rounded-circle avatar-sm"
                              alt="">
                         {% else %}
-                        <span class="avatar-circle" style="width:40px;height:40px;font-size:.85rem;box-shadow:none;">
+                        <span class="avatar-circle avatar-sm">
                             {{ teacher.user.first_name.0|default:teacher.user.username.0|upper }}{{ teacher.user.last_name.0|default:""|upper }}
                         </span>
                         {% endif %}

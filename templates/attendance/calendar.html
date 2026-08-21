@@ -51,9 +51,25 @@
     @media(max-width:768px){
         .att-cal-day{min-height:60px;padding:4px}
         .att-cal-badge{font-size:.55rem;padding:1px 3px}
-        .att-cal-stats{gap:6px}
-        .att-stat{padding:6px 10px;font-size:.75rem}
+        .att-cal-stats{gap:6px;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}
+        .att-stat{padding:6px 10px;font-size:.75rem;white-space:nowrap}
         .att-cal-header{padding:14px 16px}
+        .att-cal-header h4{font-size:1rem}
+        .att-cal-weekdays span{font-size:.6rem;padding:6px 0}
+        .att-cal-day-num{font-size:.7rem}
+        .att-cal-day.today .att-cal-day-num{width:20px;height:20px;font-size:.6rem}
+        .att-search-bar{padding:10px 12px}
+        .att-search-bar input,.att-search-bar select{padding:6px 10px;font-size:.8rem}
+        .att-search-bar select{max-width:100%}
+        .att-cal-detail{padding:0 10px 10px}
+        .att-cal-detail-card{padding:12px 14px}
+        .att-cal-nav a,.att-cal-nav button{width:34px;height:34px;font-size:.9rem}
+    }
+    @media(max-width:480px){
+        .att-cal-day{min-height:44px;padding:3px}
+        .att-cal-badges{display:none}
+        .att-cal-day-num{font-size:.65rem;margin-bottom:2px}
+        .att-stat{padding:5px 8px;font-size:.7rem}
     }
 </style>
 

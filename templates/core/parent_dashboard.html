@@ -15,7 +15,7 @@
 
             <div class="d-flex align-items-center gap-3 position-relative" style="z-index:1;">
 
-                <span class="avatar-circle" style="width:60px;height:60px;font-size:1.4rem;">
+                <span class="avatar-circle avatar-md">
 
                     {{ request.user.get_full_name|default:request.user.username|slice:":1"|upper }}
 

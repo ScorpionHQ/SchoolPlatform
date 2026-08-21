@@ -412,6 +412,22 @@ html, body {
     }
     .progress-bar { border-radius: 8px !important; }
 
+    /* ── Tables: force responsive ──────────────────────────── */
+    .table-bordered td,
+    .table-bordered th {
+        border-color: var(--theme-border, var(--border)) !important;
+    }
+
+    /* ── Forms: force full-width columns ───────────────────── */
+    .col-md-6, .col-md-4, .col-md-3, .col-md-5 {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* ── Avatar sizes ──────────────────────────────────────── */
+    .avatar-sm { width: 32px !important; height: 32px !important; font-size: .7rem !important; }
+    .avatar-nav { width: 30px !important; height: 30px !important; }
+
     /* ── List groups ───────────────────────────────────────── */
     .list-group-item { padding: .6rem .75rem !important; }
 

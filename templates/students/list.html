@@ -115,11 +115,10 @@
                             <div class="d-flex align-items-center gap-2">
                             {% if student.user.profile_image %}
                             <img src="{{ student.user.profile_image.url }}"
-                                 class="rounded-circle"
-                                 style="width:36px; height:36px; object-fit:cover;"
+                                 class="rounded-circle avatar-sm"
                                  alt="">
                             {% else %}
-                            <span class="avatar-circle avatar-emerald" style="width:36px;height:36px;font-size:.75rem;box-shadow:none;">
+                            <span class="avatar-circle avatar-emerald avatar-sm">
                                 {{ student.user.first_name.0|default:student.user.username.0|upper }}{{ student.user.last_name.0|default:""|upper }}
                             </span>
                             {% endif %}

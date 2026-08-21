@@ -119,11 +119,10 @@
                     <td>
                         {% if parent.user.profile_image %}
                         <img src="{{ parent.user.profile_image.url }}"
-                             class="rounded-circle"
-                             style="width:40px; height:40px; object-fit:cover;"
+                             class="rounded-circle avatar-sm"
                              alt="">
                         {% else %}
-                        <span class="avatar-circle avatar-info" style="width:40px;height:40px;font-size:.85rem;box-shadow:none;">
+                        <span class="avatar-circle avatar-info avatar-sm">
                             {{ parent.user.first_name.0|default:parent.user.username.0|upper }}{{ parent.user.last_name.0|default:""|upper }}
                         </span>
                         {% endif %}
