@@ -680,3 +680,29 @@
 
 .text-primary { color: var(--theme-primary, var(--primary)) !important; }
 .bg-primary   { background: var(--theme-primary, var(--primary)) !important; }
+
+/* ── Avatar placeholder ────────────────────────────────────────── */
+.avatar-placeholder {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--theme-soft, var(--primary-light));
+    flex-shrink: 0;
+}
+
+/* ── Auth center ───────────────────────────────────────────────── */
+.auth-center {
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+@media (max-width: 576px) {
+    .auth-center {
+        padding: 1rem;
+        min-height: auto;
+        padding-top: 3rem;
+    }
+}

@@ -97,8 +97,8 @@
         <form method="get" class="d-flex gap-2 flex-grow-1" style="flex-wrap:wrap">
             <input type="hidden" name="year" value="{{ year }}">
             <input type="hidden" name="month" value="{{ month }}">
-            <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="{% trans 'Search student...' %}" style="max-width:280px;border-radius:10px">
-            <select name="student" class="form-select" style="max-width:260px;border-radius:10px" onchange="this.form.submit()">
+            <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="{% trans 'Search student...' %}" style="border-radius:10px">
+            <select name="student" class="form-select" style="border-radius:10px" onchange="this.form.submit()">
                 <option value="">{% trans "All Students" %}</option>
                 {% for s in students %}
                 <option value="{{ s.pk }}" {% if current_student_id|stringformat:"s" == s.pk|stringformat:"s" %}selected{% endif %}>

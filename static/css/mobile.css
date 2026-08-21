@@ -145,12 +145,39 @@ html, body {
         margin-bottom: 12px;
     }
 
-    /* Insight cards: 2-col */
-    .row .col-xl-3.col-md-6 .insight-card {
+    /* Insight cards: stack icon above text */
+    .insight-card {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
     }
+
+    /* Tables: compact */
+    .table thead th {
+        font-size: .68rem !important;
+        padding: .6rem .5rem !important;
+    }
+
+    .table tbody td {
+        padding: .6rem .5rem !important;
+        font-size: .82rem !important;
+    }
+
+    /* Forms: full width */
+    .col-md-6, .col-md-4, .col-md-3, .col-md-5 {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Cards: slimmer */
+    .card-body { padding: 1rem !important; }
+    .card-header { padding: .75rem 1rem !important; }
+
+    /* Buttons */
+    .btn { padding: .5rem .9rem !important; }
+
+    /* Auth pages */
+    .col-md-5 { max-width: 100% !important; flex: 0 0 100% !important; }
 }
 
 /* ==================================================================
@@ -518,6 +545,48 @@ html, body {
 
 .table-responsive {
     max-width: 100%;
+}
+
+/* ── Force table borders to use theme colors ───────────────────── */
+.table-bordered td,
+.table-bordered th {
+    border-color: var(--theme-border, var(--border)) !important;
+}
+
+/* ── Ensure all tables respect theme on dark mode ──────────────── */
+.table {
+    --bs-table-bg: transparent !important;
+}
+
+/* ==================================================================
+   STAT CARDS: 3-col layout (col-4) needs responsive on phone
+   ================================================================== */
+
+@media (max-width: 576px) {
+    .row .col-4 {
+        flex: 0 0 33.333% !important;
+        max-width: 33.333% !important;
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+
+    /* Inside stat rows, make numbers smaller */
+    .row .col-4 .stat-number,
+    .row .col-4 .insight-value {
+        font-size: .85rem !important;
+    }
+
+    .row .col-4 .stat-title,
+    .row .col-4 .insight-label {
+        font-size: .6rem !important;
+    }
+
+    .row .col-4 .stat-icon,
+    .row .col-4 .insight-icon {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 14px !important;
+    }
 }
 
 /* ==================================================================
