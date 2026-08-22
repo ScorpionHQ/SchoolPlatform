@@ -22,9 +22,9 @@
 
         if (meta) meta.setAttribute("content", theme === "dark" ? "#0F172A" : "#6C5CE7");
 
-        document.querySelectorAll(".theme-toggle").forEach(function (btn) {
+        document.querySelectorAll(".theme-toggle, .topbar-theme").forEach(function (btn) {
 
-            var icon = btn.querySelector(".theme-icon");
+            var icon = btn.querySelector(".theme-icon, .topbar-theme-icon");
 
             if (!icon) return;
 
@@ -51,7 +51,7 @@
 
     document.addEventListener("click", function (e) {
 
-        var btn = e.target.closest(".theme-toggle");
+        var btn = e.target.closest(".theme-toggle, .topbar-theme");
 
         if (btn) {
 
