@@ -164,7 +164,7 @@ html, body {
     }
 
     /* Forms: full width */
-    .col-md-6, .col-md-4, .col-md-3, .col-md-5 {
+    .col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-md-2 {
         flex: 0 0 100% !important;
         max-width: 100% !important;
     }
@@ -446,7 +446,7 @@ html, body {
     }
 
     /* ── Forms: force full-width columns ───────────────────── */
-    .col-md-6, .col-md-4, .col-md-3, .col-md-5 {
+    .col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-md-2 {
         flex: 0 0 100% !important;
         max-width: 100% !important;
     }

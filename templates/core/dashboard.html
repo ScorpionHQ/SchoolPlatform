@@ -160,65 +160,7 @@
 
 </div>
 
-<script>
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const ctx = document.getElementById("attendanceChart");
-
-    if (!ctx) return;
-
-    new Chart(ctx, {
-
-        type: "line",
-
-        data: {
-
-            labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-
-            datasets: [{
-
-                label: "Attendance",
-
-                data: [88, 91, 87, 95, 93, 97],
-
-                borderColor: "#f59e0b",
-
-                backgroundColor: "rgba(245,158,11,.15)",
-
-                fill: true,
-
-                tension: .4,
-
-                pointRadius: 4
-
-            }]
-
-        },
-
-        options: {
-
-            responsive: true,
-
-            maintainAspectRatio: false,
-
-            plugins: {
-
-                legend: {
-
-                    display: false
-
-                }
-
-            }
-
-        }
-
-    });
-
-});
-
-</script>
+</div>
 
 <div class="row mt-4">
 
@@ -328,5 +270,38 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
 </div>
 
+
+{% block chart_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var ctx = document.getElementById("attendanceChart");
+    if (!ctx) return;
+    new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+            datasets: [{
+                label: "Attendance",
+                data: [88, 91, 87, 95, 93, 97],
+                borderColor: "#f59e0b",
+                backgroundColor: "rgba(245,158,11,.15)",
+                fill: true,
+                tension: .4,
+                pointRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } }
+        }
+    });
+});
+</script>
+{% endblock %}
 
 {% endblock %}

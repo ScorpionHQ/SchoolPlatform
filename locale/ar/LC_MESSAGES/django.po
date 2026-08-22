@@ -1913,3 +1913,6 @@ msgstr "تم إنشاء هذا المستند تلقائيًا بواسطة ال
 
 msgid "Could not generate the PDF file. Please try again."
 msgstr "تعذّر إنشاء ملف PDF. يرجى المحاولة مرة أخرى."
+
+msgid "e.g. STU000001 or TCH000001"
+msgstr "مثال: STU000001 أو TCH000001"
