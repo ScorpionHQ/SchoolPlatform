@@ -97,11 +97,46 @@ html[data-theme="dark"] .table tbody tr:hover {
     background: rgba(79, 70, 229, .10);
 }
 
-/* ── Navbar ────────────────────────────────────────────────────── */
-html[data-theme="dark"] .navbar {
-    background: rgba(20, 23, 34, .92) !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+/* ── Topbar ────────────────────────────────────────────────────── */
+html[data-theme="dark"] .topbar {
+    background: rgba(15, 17, 24, .92) !important;
     border-color: rgba(255, 255, 255, .06);
+}
+
+html[data-theme="dark"] .topbar-title {
+    color: #E6E8F0;
+}
+
+html[data-theme="dark"] .topbar-icon {
+    color: #9AA1B5;
+}
+
+html[data-theme="dark"] .topbar-icon:hover {
+    background: rgba(129, 140, 248, .12);
+    color: #A5B4FC;
+}
+
+html[data-theme="dark"] .topbar-chip {
+    background: #1B1F2B;
+    border-color: #333849;
+    color: #E6E8F0;
+}
+
+html[data-theme="dark"] .topbar-chip:hover {
+    background: rgba(129, 140, 248, .12);
+    border-color: #6366F1;
+    color: #A5B4FC;
+}
+
+html[data-theme="dark"] .topbar-pill {
+    background: rgba(129, 140, 248, .14);
+    border-color: #6366F1;
+    color: #A5B4FC;
+}
+
+html[data-theme="dark"] .topbar-pill:hover {
+    background: #6366F1;
+    color: #0F1118;
 }
 
 /* ── Sidebar ───────────────────────────────────────────────────── */
@@ -144,19 +179,7 @@ html[data-theme="dark"] .btn-outline-primary {
     border-color: #4F46E5;
 }
 
-html[data-theme="dark"] .navbar-lang {
-    background: rgba(129, 140, 248, .14);
-    border-color: #6366F1;
-    color: #A5B4FC;
-    box-shadow: none;
-}
 
-html[data-theme="dark"] .navbar-lang:hover,
-html[data-theme="dark"] .navbar-lang:focus {
-    background: var(--theme-primary);
-    border-color: var(--theme-primary);
-    color: #0F1118;
-}
 
 /* ── Progress donut ────────────────────────────────────────────── */
 html[data-theme="dark"] .progress-donut::before {

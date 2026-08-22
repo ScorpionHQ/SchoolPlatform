@@ -59,11 +59,11 @@
 /* ================================================================== */
 
 /* Hide the base app sidebar + remove margin when assistant page is active */
-.app-layout:has(.assistant-page) > .sidebar {
+.app-body:has(.assistant-page) > .sidebar {
     display: none !important;
 }
 
-.app-layout:has(.assistant-page) > .content-area {
+.app-body:has(.assistant-page) > .content-area {
     margin-left: 0 !important;
     margin-right: 0 !important;
 }
@@ -74,7 +74,7 @@
 
 .assistant-page {
     display: flex;
-    height: calc(100vh - var(--navbar-height, 72px));
+    height: calc(100vh - var(--topbar-height, 60px));
     overflow: hidden;
     background: var(--assistant-bg);
     border-radius: 0;
@@ -1167,7 +1167,7 @@
 
 @media (max-width: 575.98px) {
     .assistant-page {
-        height: calc(100vh - var(--navbar-height-mobile, 56px));
+        height: calc(100vh - var(--topbar-height-mobile, 56px));
     }
 
     .assistant-chat-head {

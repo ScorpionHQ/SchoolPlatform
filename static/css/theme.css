@@ -29,10 +29,9 @@ body {
     background-attachment: fixed;
 }
 
-/* ── Navbar theme ──────────────────────────────────────────────── */
-.navbar {
-    background: var(--theme-navbar) !important;
-    border-bottom: 1px solid var(--theme-border);
+/* ── Topbar theme ──────────────────────────────────────────────── */
+.topbar {
+    background: var(--theme-topbar, rgba(255, 255, 255, .95)) !important;
 }
 
 /* ── Sidebar theme ─────────────────────────────────────────────── */

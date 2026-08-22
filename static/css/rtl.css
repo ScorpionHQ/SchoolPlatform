@@ -26,12 +26,12 @@
     border-radius: 6px 0 0 6px;
 }
 
-/* ── Navbar actions: reverse order in RTL ──────────────────────── */
-[dir="rtl"] .navbar-inner {
+/* ── Topbar: flip left/right groups ────────────────────────────── */
+[dir="rtl"] .topbar-left {
     flex-direction: row-reverse;
 }
 
-[dir="rtl"] .navbar-actions {
+[dir="rtl"] .topbar-right {
     flex-direction: row-reverse;
 }
 
@@ -42,23 +42,19 @@
 }
 
 /* ── Sidebar toggle ────────────────────────────────────────────── */
-[dir="rtl"] .sidebar-toggle {
+[dir="rtl"] .topbar-toggle {
     margin-right: 0;
-    margin-left: var(--space-2);
+    margin-left: 4px;
 }
 
-/* ── Navbar brand text alignment ───────────────────────────────── */
-[dir="rtl"] .navbar-brand-text {
-    text-align: right;
+/* ── Avatar ────────────────────────────────────────────────────── */
+[dir="rtl"] .topbar-avatar {
+    padding-right: 2px;
+    padding-left: 6px;
 }
 
-/* ── Avatar name alignment ─────────────────────────────────────── */
-[dir="rtl"] .navbar-avatar-name {
-    text-align: right;
-}
-
-/* ── Institution btn ───────────────────────────────────────────── */
-[dir="rtl"] .navbar-institution-btn {
+/* ── Institution chip ──────────────────────────────────────────── */
+[dir="rtl"] .topbar-chip {
     flex-direction: row-reverse;
 }
 

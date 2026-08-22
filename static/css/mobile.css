@@ -9,30 +9,22 @@ html, body {
 }
 
 @supports (padding: env(safe-area-inset-top)) {
-    .navbar {
-        padding-left: max(0.75rem, env(safe-area-inset-left));
-        padding-right: max(0.75rem, env(safe-area-inset-right));
-        padding-top: env(safe-area-inset-top);
-    }
+    .topbar { padding-top: env(safe-area-inset-top); }
     .sidebar { padding-bottom: env(safe-area-inset-bottom); }
     .content-wrapper { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
 }
 
 /* TABLET (<=992px) */
 @media (max-width: 992px) {
-    .navbar { padding: 0 var(--space-4) !important; }
-    .navbar-brand-text small { display: none !important; }
-    .brand-logo { height: 30px !important; }
-    .navbar-brand-text span { font-size: .9rem !important; }
-    .navbar-actions { gap: var(--space-2) !important; }
-    .navbar-action { width: 38px !important; height: 38px !important; font-size: .95rem !important; }
-    .navbar-lang { min-width: 38px !important; padding: 0 7px !important; font-size: .72rem !important; }
-    .navbar-badge { min-width: 14px; height: 14px; font-size: .5rem; line-height: 14px; top: 2px; right: 2px; }
-    .navbar-avatar-btn { padding: 2px !important; width: auto !important; height: 38px !important; }
-    .navbar-avatar-btn .avatar-nav,
-    .navbar-avatar-btn .avatar-circle { width: 30px !important; height: 30px !important; font-size: .7rem !important; }
-    .navbar-avatar-name { display: none !important; }
-    .navbar-institution-btn span { display: none !important; }
+    .topbar-title { font-size: .85rem !important; }
+    .topbar-logo { height: 26px !important; }
+    .topbar-right { gap: 4px !important; }
+    .topbar-icon { width: 34px !important; height: 34px !important; font-size: .95rem !important; }
+    .topbar-pill { height: 28px !important; min-width: 28px !important; font-size: .65rem !important; padding: 0 6px !important; }
+    .topbar-dot { min-width: 14px; height: 14px; font-size: .5rem; line-height: 14px; top: 3px; right: 3px; }
+    .topbar-avatar { height: 34px !important; padding: 2px !important; }
+    .topbar-avatar-img, .topbar-avatar-fallback { width: 28px !important; height: 28px !important; }
+    .topbar-chip { display: none !important; }
     .sidebar-menu a, .sidebar-link-btn { padding: 12px 14px !important; font-size: .88rem !important; min-height: 44px; }
     .sidebar-menu a:active, .sidebar-link-btn:active { background: rgba(255, 255, 255, .12) !important; transform: scale(.97) !important; }
     .sidebar-header { padding: 22px 18px !important; }
@@ -55,20 +47,15 @@ html, body {
 /* PHONE (<=576px) */
 @media (max-width: 576px) {
     .content-wrapper { padding: var(--space-3) var(--space-3) var(--space-6) !important; }
-
-    /* Navbar */
-    .navbar { padding: 0 var(--space-3) !important; }
-    .navbar-inner { gap: var(--space-2) !important; }
-    .navbar-actions { gap: 4px !important; }
-    .navbar-action { width: 36px !important; height: 36px !important; font-size: .9rem !important; }
-    .navbar-lang { min-width: 36px !important; padding: 0 6px !important; font-size: .68rem !important; }
-    .navbar-badge { min-width: 12px; height: 12px; font-size: .45rem; line-height: 12px; top: 2px; right: 2px; padding: 0 3px; }
-    .navbar-avatar-btn { padding: 2px !important; height: 36px !important; }
-    .navbar-avatar-btn .avatar-nav,
-    .navbar-avatar-btn .avatar-circle { width: 28px !important; height: 28px !important; }
-    .navbar-institution-btn { display: none !important; }
-    .brand-logo { height: 26px !important; }
-    .navbar-brand-text span { font-size: .85rem !important; }
+    .topbar-inner { padding: 0 10px !important; gap: 6px !important; }
+    .topbar-right { gap: 2px !important; }
+    .topbar-icon { width: 32px !important; height: 32px !important; font-size: .88rem !important; }
+    .topbar-pill { height: 26px !important; min-width: 26px !important; font-size: .6rem !important; padding: 0 5px !important; }
+    .topbar-dot { min-width: 12px; height: 12px; font-size: .45rem; line-height: 12px; padding: 0 3px; }
+    .topbar-avatar { height: 32px !important; padding: 1px !important; }
+    .topbar-avatar-img, .topbar-avatar-fallback { width: 26px !important; height: 26px !important; font-size: .65rem !important; }
+    .topbar-logo { height: 22px !important; }
+    .topbar-title { font-size: .8rem !important; }
 
     /* Stat cards */
     .stat-card { padding: 14px 12px !important; gap: 8px !important; border-radius: var(--radius-md) !important; }
@@ -179,7 +166,8 @@ html, body {
 }
 
 /* GLOBAL SAFETY */
-.app-layout { overflow-x: hidden; width: 100%; }
+.app-shell { overflow-x: hidden; width: 100%; }
+.app-body { overflow-x: hidden; }
 .content-area { min-width: 0; overflow-x: hidden; }
 .table-responsive { max-width: 100%; }
 .table-bordered td, .table-bordered th { border-color: var(--theme-border, var(--border)) !important; }
