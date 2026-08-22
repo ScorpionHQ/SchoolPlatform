@@ -1,7 +1,7 @@
 ﻿{% load i18n %}
 {% load static %}
 
-<nav class="navbar navbar-expand-lg bg-white shadow-sm px-4 py-3">
+<nav class="navbar navbar-expand-lg px-4 py-2">
 
     <div class="container-fluid">
 
@@ -23,7 +23,7 @@
                     {% trans "SchoolPlatform" %}
                 </div>
 
-                <small class="text-muted">
+                <small class="text-muted d-none d-md-inline">
                     {% trans "School Management System" %}
                 </small>
 
@@ -31,13 +31,11 @@
 
         </a>
 
-        <div class="d-flex align-items-center gap-3">
-
-            
+        <div class="navbar-actions">
 
             {% if current_institution or user_institutions %}
 
-                <div class="dropdown">
+                <div class="dropdown d-none d-lg-block">
 
                     <button
                         class="btn btn-outline-primary d-flex align-items-center gap-2"
@@ -45,7 +43,7 @@
 
                         <i class="bi bi-building"></i>
 
-                        <span class="d-none d-lg-inline">
+                        <span>
 
                             {% if current_institution %}
 
@@ -128,21 +126,25 @@
 
             {% endif %}
 
-            
+            <a href="{% url 'notifications:list' %}"
+               class="navbar-action"
+               aria-label="{% trans 'Notifications' %}">
 
-            <button
-                type="button"
-                class="btn btn-light rounded-circle theme-toggle"
-                aria-label="Toggle theme"
-                title="{% trans 'Toggle theme' %}">
+                <i class="bi bi-bell"></i>
 
-                <i class="bi bi-moon-stars-fill theme-icon"></i>
+                {% if unread_notifications_count %}
 
-            </button>
+                    <span class="navbar-badge">
 
-            
+                        {{ unread_notifications_count }}
 
-            <form action="{% url 'set_language' %}" method="post">
+                    </span>
+
+                {% endif %}
+
+            </a>
+
+            <form action="{% url 'set_language' %}" method="post" class="d-inline">
 
                 {% csrf_token %}
 
@@ -158,7 +160,7 @@
                            name="language"
                            value="en">
 
-                    <button class="btn btn-sm lang-toggle">
+                    <button class="navbar-action navbar-lang" type="submit">
                         EN
                     </button>
 
@@ -168,39 +170,28 @@
                            name="language"
                            value="ar">
 
-                    <button class="btn btn-sm lang-toggle">
-                        العربية
+                    <button class="navbar-action navbar-lang" type="submit">
+                        AR
                     </button>
 
                 {% endif %}
 
             </form>
 
-            
+            <button
+                type="button"
+                class="navbar-action navbar-theme-btn"
+                aria-label="Toggle theme"
+                title="{% trans 'Toggle theme' %}">
 
-            <a href="{% url 'notifications:list' %}"
-               class="btn btn-light rounded-circle position-relative">
+                <i class="bi bi-moon-stars-fill theme-icon"></i>
 
-                <i class="bi bi-bell fs-5"></i>
-
-                {% if unread_notifications_count %}
-
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-
-                        {{ unread_notifications_count }}
-
-                    </span>
-
-                {% endif %}
-
-            </a>
-
-            
+            </button>
 
             <div class="dropdown">
 
                 <button
-                    class="btn btn-light d-flex align-items-center gap-2"
+                    class="navbar-action navbar-avatar-btn d-flex align-items-center gap-2"
                     data-bs-toggle="dropdown">
 
                     {% if request.user.profile_image %}
@@ -229,7 +220,7 @@
 
                     </div>
 
-                    <i class="bi bi-chevron-down small"></i>
+                    <i class="bi bi-chevron-down small d-none d-lg-inline"></i>
 
                 </button>
 

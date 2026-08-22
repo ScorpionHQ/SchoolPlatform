@@ -143,15 +143,15 @@ html[data-theme="dark"] .btn-outline-primary {
     border-color: #4F46E5;
 }
 
-html[data-theme="dark"] .lang-toggle {
+html[data-theme="dark"] .navbar-lang {
     background: rgba(129, 140, 248, .14);
     border-color: #6366F1;
     color: #A5B4FC;
     box-shadow: none;
 }
 
-html[data-theme="dark"] .lang-toggle:hover,
-html[data-theme="dark"] .lang-toggle:focus {
+html[data-theme="dark"] .navbar-lang:hover,
+html[data-theme="dark"] .navbar-lang:focus {
     background: var(--theme-primary);
     border-color: var(--theme-primary);
     color: #0F1118;

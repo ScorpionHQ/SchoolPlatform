@@ -3,598 +3,179 @@
    Breakpoints: 992px (tablet), 768px (small tablet), 576px (phone)
    ================================================================== */
 
-/* ── Global mobile safety ──────────────────────────────────────── */
 html, body {
     overflow-x: hidden;
     -webkit-text-size-adjust: 100%;
 }
 
-/* ── Safe area for notched devices ─────────────────────────────── */
 @supports (padding: env(safe-area-inset-top)) {
     .navbar {
         padding-left: max(0.75rem, env(safe-area-inset-left));
         padding-right: max(0.75rem, env(safe-area-inset-right));
         padding-top: env(safe-area-inset-top);
     }
-    .sidebar {
-        padding-bottom: env(safe-area-inset-bottom);
-    }
-    .content-wrapper {
-        padding-bottom: max(1rem, env(safe-area-inset-bottom));
-    }
+    .sidebar { padding-bottom: env(safe-area-inset-bottom); }
+    .content-wrapper { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
 }
 
 /* ==================================================================
-   TABLET (≤992px) — Sidebar becomes drawer, navbar shrinks
+   TABLET
    ================================================================== */
-
 @media (max-width: 992px) {
-
-    /* ── Navbar ──────────────────────────────────────────────── */
     .navbar {
         padding: 0 .6rem !important;
         min-height: var(--navbar-height-mobile);
     }
-
-    /* Brand: compact */
-    .navbar .navbar-brand {
-        font-size: .88rem !important;
-        gap: .4rem !important;
-    }
-    .navbar .navbar-brand small { display: none !important; }
+    .navbar .navbar-brand { font-size: .88rem !important; gap: .4rem !important; }
     .navbar .navbar-brand .brand-logo { height: 24px !important; }
-
-    /* Right actions: icon row */
-    .navbar .d-flex.align-items-center.gap-3 {
-        gap: .25rem !important;
-        flex-shrink: 0;
-        flex-wrap: nowrap;
-    }
-
-    /* Institution btn: icon only */
-    .navbar .btn-outline-primary {
-        padding: .3rem .4rem !important;
-        border-radius: var(--radius-sm) !important;
-        min-width: 0;
-    }
-    .navbar .btn-outline-primary .d-none.d-lg-inline,
-    .navbar .btn-outline-primary .bi-chevron-down { display: none !important; }
-    .navbar .btn-outline-primary .bi-building { font-size: 1rem; }
-
-    /* Theme toggle */
-    .navbar .theme-toggle {
-        width: 34px !important;
-        height: 34px !important;
-        display: flex !important;
-        align-items: center;
-        justify-content: center;
-        padding: 0 !important;
-        border-radius: var(--radius-sm) !important;
-        font-size: .9rem;
-    }
-
-    /* Language toggle */
-    .navbar .lang-toggle {
-        padding: .25rem .5rem !important;
-        font-size: .7rem !important;
-        font-weight: 800 !important;
-        border-radius: 8px !important;
-        min-width: 0;
-    }
-
-    /* Notification bell */
-    .navbar .position-relative {
-        width: 34px !important;
-        height: 34px !important;
-        display: flex !important;
-        align-items: center;
-        justify-content: center;
-        padding: 0 !important;
-        border-radius: var(--radius-sm) !important;
-    }
-    .navbar .position-relative .bi-bell { font-size: .95rem !important; }
-
-    /* User dropdown: avatar only */
-    .navbar .dropdown > .btn-light.d-flex {
-        padding: .15rem !important;
-        border-radius: 50% !important;
-    }
-    .navbar .dropdown > .btn-light.d-flex img,
-    .navbar .dropdown > .btn-light.d-flex .avatar-circle {
-        width: 30px !important;
-        height: 30px !important;
-        border-radius: 50% !important;
-    }
-    .navbar .dropdown > .btn-light.d-flex .d-none.d-lg-block,
-    .navbar .dropdown > .btn-light.d-flex .bi-chevron-down { display: none !important; }
-
-    /* Sidebar links */
-    .sidebar-menu a,
-    .sidebar-link-btn {
-        padding: 12px 14px !important;
-        font-size: .88rem !important;
-        min-height: 44px;
-    }
-
-    .sidebar-menu a:active,
-    .sidebar-link-btn:active {
-        background: rgba(255, 255, 255, .12) !important;
-        transform: scale(.97) !important;
-    }
-
-    /* Sidebar header */
+    .navbar .navbar-brand .text-muted { display: none !important; }
+    .navbar-actions { gap: 4px !important; }
+    .navbar-action { width: 34px !important; height: 34px !important; font-size: .95rem !important; border-radius: var(--radius-sm) !important; }
+    .navbar-lang { width: auto !important; min-width: 34px !important; padding: 0 6px !important; font-size: .7rem !important; }
+    .navbar-badge { min-width: 14px; height: 14px; font-size: .5rem; line-height: 14px; top: 1px; right: 1px; }
+    .navbar-avatar-btn { padding: 2px !important; width: auto !important; height: 34px !important; }
+    .navbar-avatar-btn .avatar-nav { width: 28px !important; height: 28px !important; }
+    .sidebar-menu a, .sidebar-link-btn { padding: 12px 14px !important; font-size: .88rem !important; min-height: 44px; }
+    .sidebar-menu a:active, .sidebar-link-btn:active { background: rgba(255, 255, 255, .12) !important; transform: scale(.97) !important; }
     .sidebar-header { padding: 22px 18px !important; }
     .sidebar-menu { padding: 12px !important; }
 }
 
 /* ==================================================================
-   SMALL TABLET (≤768px)
+   SMALL TABLET
    ================================================================== */
-
 @media (max-width: 768px) {
-
-    /* Content */
     .content-wrapper { padding: var(--space-4) !important; }
-
-    /* Stat cards: 2-col grid */
-    .row .col-xl-3.col-md-6 {
-        flex: 0 0 50% !important;
-        max-width: 50% !important;
-        padding-left: 6px;
-        padding-right: 6px;
-        margin-bottom: 12px;
-    }
-
-    /* Insight cards: stack icon above text */
-    .insight-card {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
-
-    /* Tables: compact */
-    .table thead th {
-        font-size: .68rem !important;
-        padding: .6rem .5rem !important;
-    }
-
-    .table tbody td {
-        padding: .6rem .5rem !important;
-        font-size: .82rem !important;
-    }
-
-    /* Forms: full width */
-    .col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-md-2 {
-        flex: 0 0 100% !important;
-        max-width: 100% !important;
-    }
-
-    /* Cards: slimmer */
+    .row .col-xl-3.col-md-6 { flex: 0 0 50% !important; max-width: 50% !important; padding-left: 6px; padding-right: 6px; margin-bottom: 12px; }
+    .insight-card { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .table thead th { font-size: .68rem !important; padding: .6rem .5rem !important; }
+    .table tbody td { padding: .6rem .5rem !important; font-size: .82rem !important; }
+    .col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-md-2 { flex: 0 0 100% !important; max-width: 100% !important; }
     .card-body { padding: 1rem !important; }
     .card-header { padding: .75rem 1rem !important; }
-
-    /* Buttons */
     .btn { padding: .5rem .9rem !important; }
-
-    /* Auth pages */
     .col-md-5 { max-width: 100% !important; flex: 0 0 100% !important; }
 }
 
 /* ==================================================================
-   PHONE (≤576px) — Full mobile redesign
+   PHONE
    ================================================================== */
-
 @media (max-width: 576px) {
-
-    /* ── Content area ──────────────────────────────────────── */
-    .content-wrapper {
-        padding: var(--space-3) !important;
-    }
-
-    /* ── Stat cards: compact 2-col ─────────────────────────── */
-    .stat-card {
-        padding: 14px 12px !important;
-        gap: 8px !important;
-        border-radius: var(--radius-md) !important;
-    }
-
-    .stat-number {
-        font-size: 1.3rem !important;
-        font-weight: 800;
-    }
-
-    .stat-title {
-        font-size: .68rem !important;
-        line-height: 1.3;
-    }
-
-    .stat-icon {
-        width: 38px !important;
-        height: 38px !important;
-        font-size: 16px !important;
-        border-radius: 10px !important;
-    }
-
-    /* ── Dashboard hero ────────────────────────────────────── */
-    .dashboard-hero {
-        padding: 18px 16px !important;
-        border-radius: var(--radius-lg) !important;
-    }
-
+    .content-wrapper { padding: var(--space-3) var(--space-3) var(--space-6) !important; }
+    .navbar-actions { gap: 2px !important; }
+    .navbar-action { width: 32px !important; height: 32px !important; font-size: .9rem !important; }
+    .navbar-lang { min-width: 32px !important; padding: 0 5px !important; font-size: .68rem !important; }
+    .navbar-avatar-btn { height: 32px !important; padding: 1px !important; }
+    .navbar-avatar-btn .avatar-nav { width: 26px !important; height: 26px !important; }
+    .stat-card { padding: 14px 12px !important; gap: 8px !important; border-radius: var(--radius-md) !important; }
+    .stat-number { font-size: 1.3rem !important; }
+    .stat-title { font-size: .68rem !important; line-height: 1.3; }
+    .stat-icon { width: 38px !important; height: 38px !important; font-size: 16px !important; border-radius: 10px !important; }
+    .dashboard-hero { padding: 18px 16px !important; border-radius: var(--radius-lg) !important; }
     .dashboard-hero::after { display: none !important; }
-
-    .hero-title {
-        font-size: 1rem !important;
-        font-weight: 700;
-    }
-
-    .hero-subtitle {
-        font-size: .78rem !important;
-    }
-
-    .hero-date {
-        font-size: .68rem !important;
-    }
-
-    .hero-actions {
-        flex-direction: column !important;
-        align-items: stretch !important;
-        gap: .4rem !important;
-        margin-top: .5rem !important;
-    }
-
-    .hero-actions .btn {
-        text-align: center !important;
-        justify-content: center;
-        padding: .5rem .8rem !important;
-        font-size: .82rem !important;
-    }
-
-    /* ── Insight cards ─────────────────────────────────────── */
-    .insight-card {
-        padding: 10px 12px !important;
-        gap: 10px !important;
-    }
-
-    .insight-icon {
-        width: 36px !important;
-        height: 36px !important;
-        font-size: 16px !important;
-    }
-
+    .hero-title { font-size: 1rem !important; }
+    .hero-subtitle { font-size: .78rem !important; }
+    .hero-date { font-size: .68rem !important; }
+    .hero-actions { flex-direction: column !important; align-items: stretch !important; gap: .4rem !important; margin-top: .5rem !important; }
+    .hero-actions .btn { text-align: center !important; justify-content: center; padding: .5rem .8rem !important; font-size: .82rem !important; }
+    .insight-card { padding: 10px 12px !important; gap: 10px !important; }
+    .insight-icon { width: 36px !important; height: 36px !important; font-size: 16px !important; }
     .insight-value { font-size: .9rem !important; }
     .insight-label { font-size: .68rem !important; }
-
-    /* ── Cards ─────────────────────────────────────────────── */
-    .card, .card-custom {
-        border-radius: var(--radius-md) !important;
-    }
-
+    .card, .card-custom { border-radius: var(--radius-md) !important; }
     .card-body { padding: .85rem !important; }
-
-    .card-header {
-        padding: .65rem .85rem !important;
-    }
-
-    .card-header h5,
-    .card-header h4 {
-        font-size: .85rem !important;
-    }
-
-    /* ── Tables ────────────────────────────────────────────── */
-    .table thead th {
-        font-size: .62rem !important;
-        padding: .5rem .45rem !important;
-    }
-
-    .table tbody td {
-        padding: .5rem .45rem !important;
-        font-size: .78rem !important;
-        white-space: nowrap;
-    }
-
-    /* ── Buttons ───────────────────────────────────────────── */
-    .btn {
-        padding: .5rem .8rem !important;
-        font-size: .82rem !important;
-        min-height: 38px;
-    }
-
+    .card-header { padding: .65rem .85rem !important; }
+    .card-header h5, .card-header h4 { font-size: .85rem !important; }
+    .table thead th { font-size: .62rem !important; padding: .5rem .45rem !important; }
+    .table tbody td { padding: .5rem .45rem !important; font-size: .78rem !important; white-space: nowrap; }
+    .btn { padding: .5rem .8rem !important; font-size: .82rem !important; min-height: 38px; }
     .btn:active { transform: scale(.96) !important; }
-
-    .btn-sm {
-        padding: .35rem .6rem !important;
-        font-size: .75rem !important;
-        min-height: 32px;
-    }
-
-    /* ── Forms ─────────────────────────────────────────────── */
-    .form-control,
-    .form-select {
-        padding: .55rem .75rem !important;
-        font-size: .88rem !important;
-        min-height: 42px;
-    }
-
-    .form-control:focus,
-    .form-select:focus {
-        box-shadow: 0 0 0 .15rem rgba(108, 92, 231, .10) !important;
-    }
-
-    .form-label {
-        font-size: .82rem !important;
-    }
-
-    /* Stack form columns */
-    .row .col-md-6,
-    .row .col-md-4,
-    .row .col-md-3 {
-        flex: 0 0 100% !important;
-        max-width: 100% !important;
-    }
-
-    /* ── Page header ───────────────────────────────────────── */
-    .page-header {
-        flex-direction: column !important;
-        align-items: stretch !important;
-        gap: .5rem !important;
-    }
-
+    .btn-sm { padding: .35rem .6rem !important; font-size: .75rem !important; min-height: 32px; }
+    .form-control, .form-select { padding: .55rem .75rem !important; font-size: .88rem !important; min-height: 42px; }
+    .form-control:focus, .form-select:focus { box-shadow: 0 0 0 .15rem rgba(108, 92, 231, .10) !important; }
+    .form-label { font-size: .82rem !important; }
+    .row .col-md-6, .row .col-md-4, .row .col-md-3 { flex: 0 0 100% !important; max-width: 100% !important; }
+    .page-header { flex-direction: column !important; align-items: stretch !important; gap: .5rem !important; }
     .page-header h4 { font-size: .95rem !important; }
-
-    /* ── Progress donut ────────────────────────────────────── */
-    .progress-donut {
-        width: 80px !important;
-        height: 80px !important;
-    }
-
+    .progress-donut { width: 80px !important; height: 80px !important; }
     .progress-donut .donut-value { font-size: 1.1rem !important; }
     .progress-donut .donut-label { font-size: .52rem !important; }
-
-    /* ── Badges ────────────────────────────────────────────── */
-    .badge-soft {
-        font-size: .65rem !important;
-        padding: .25em .5em !important;
-    }
-
-    /* ── Empty state ───────────────────────────────────────── */
+    .badge-soft { font-size: .65rem !important; padding: .25em .5em !important; }
     .empty-state { padding: 24px 14px !important; }
     .empty-state .empty-icon { font-size: 32px !important; }
     .empty-state p { font-size: .82rem !important; }
-
-    /* ── Section titles ────────────────────────────────────── */
     .section-title { font-size: 1.05rem !important; }
     .section-subtitle { font-size: .78rem !important; }
-
-    /* ── Upload box ────────────────────────────────────────── */
     .upload-box { padding: 20px 14px !important; }
     .upload-icon { font-size: 34px !important; }
-
-    /* ── Auth pages ────────────────────────────────────────── */
-    .col-md-5,
-    .col-md-6 {
-        max-width: 100% !important;
-        flex: 0 0 100% !important;
-    }
-
-    .card.shadow,
-    .card.shadow-lg {
-        border-radius: var(--radius-lg) !important;
-        border: 1px solid var(--theme-border);
-    }
-
-    /* ── Modals ────────────────────────────────────────────── */
-    .modal-dialog {
-        margin: .5rem !important;
-        max-width: calc(100vw - 1rem) !important;
-    }
-
-    .modal-content {
-        border-radius: var(--radius-lg) !important;
-        border: none;
-    }
-
+    .col-md-5, .col-md-6 { max-width: 100% !important; flex: 0 0 100% !important; }
+    .card.shadow, .card.shadow-lg { border-radius: var(--radius-lg) !important; border: 1px solid var(--theme-border); }
+    .modal-dialog { margin: .5rem !important; max-width: calc(100vw - 1rem) !important; }
+    .modal-content { border-radius: var(--radius-lg) !important; border: none; }
     .modal-body { padding: 1rem !important; }
-
-    /* ── Dropdowns ─────────────────────────────────────────── */
-    .dropdown-menu {
-        border-radius: var(--radius-sm) !important;
-        box-shadow: 0 8px 28px rgba(0, 0, 0, .12) !important;
-        padding: .3rem !important;
-    }
-
-    .dropdown-item {
-        padding: .5rem .7rem !important;
-        font-size: .84rem !important;
-        border-radius: 8px !important;
-    }
-
-    /* ── Pagination ────────────────────────────────────────── */
+    .dropdown-menu { border-radius: var(--radius-sm) !important; box-shadow: 0 8px 28px rgba(0, 0, 0, .12) !important; padding: .3rem !important; }
+    .dropdown-item { padding: .5rem .7rem !important; font-size: .84rem !important; border-radius: 8px !important; }
     .pagination { gap: .2rem; }
-
-    .page-link {
-        padding: .35rem .55rem !important;
-        font-size: .75rem !important;
-        border-radius: 8px !important;
-        min-width: 32px;
-        text-align: center;
-    }
-
-    /* ── Scrollbar ─────────────────────────────────────────── */
+    .page-link { padding: .35rem .55rem !important; font-size: .75rem !important; border-radius: 8px !important; min-width: 32px; text-align: center; }
     ::-webkit-scrollbar { width: 3px; height: 3px; }
     ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, .12); border-radius: 10px; }
-
-    /* ── Notification badge ────────────────────────────────── */
-    .navbar .badge.rounded-pill {
-        font-size: .5rem !important;
-        padding: .2em .4em !important;
-        top: 2px !important;
-        start: 82% !important;
-    }
-
-    /* ── Progress bars ─────────────────────────────────────── */
-    .progress {
-        height: 8px !important;
-        border-radius: 8px !important;
-    }
+    .progress { height: 8px !important; border-radius: 8px !important; }
     .progress-bar { border-radius: 8px !important; }
-
-    /* ── Tables: force responsive ──────────────────────────── */
-    .table-bordered td,
-    .table-bordered th {
-        border-color: var(--theme-border, var(--border)) !important;
-    }
-
-    /* ── Forms: force full-width columns ───────────────────── */
-    .col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-md-2 {
-        flex: 0 0 100% !important;
-        max-width: 100% !important;
-    }
-
-    /* ── Avatar sizes ──────────────────────────────────────── */
+    .table-bordered td, .table-bordered th { border-color: var(--theme-border, var(--border)) !important; }
+    .col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-md-2 { flex: 0 0 100% !important; max-width: 100% !important; }
     .avatar-sm { width: 32px !important; height: 32px !important; font-size: .7rem !important; }
-    .avatar-nav { width: 30px !important; height: 30px !important; }
-
-    /* ── List groups ───────────────────────────────────────── */
+    .avatar-nav { width: 26px !important; height: 26px !important; }
     .list-group-item { padding: .6rem .75rem !important; }
-
-    /* ── Tabs ──────────────────────────────────────────────── */
-    .nav-tabs .nav-link {
-        padding: .45rem .65rem !important;
-        font-size: .76rem !important;
-    }
-
-    /* ── Typography ────────────────────────────────────────── */
+    .nav-tabs .nav-link { padding: .45rem .65rem !important; font-size: .76rem !important; }
     h1 { font-size: 1.2rem !important; }
     h2 { font-size: 1.05rem !important; }
     h3 { font-size: .95rem !important; }
     h4 { font-size: .88rem !important; }
-
     p { line-height: 1.55; }
-
-    /* ── Quick action cards: 2-col ─────────────────────────── */
-    .row .col-md-3 {
-        flex: 0 0 50% !important;
-        max-width: 50% !important;
-        padding-left: 6px;
-        padding-right: 6px;
-        margin-bottom: 8px;
-    }
+    .row .col-md-3 { flex: 0 0 50% !important; max-width: 50% !important; padding-left: 6px; padding-right: 6px; margin-bottom: 8px; }
 }
 
 /* ==================================================================
-   TOUCH FEEDBACK — only on touch devices
+   TOUCH FEEDBACK
    ================================================================== */
-
 @media (hover: none) and (pointer: coarse) {
-    .stat-card:active,
-    .insight-card:active {
-        transform: scale(.97);
-        transition: transform .1s ease;
-    }
-
-    .sidebar-menu a:active,
-    .sidebar-link-btn:active {
-        background: rgba(255, 255, 255, .12);
-        transform: scale(.97);
-    }
-
-    .card:active {
-        transform: scale(.98);
-    }
-
-    .btn:active {
-        transform: scale(.96);
-    }
+    .stat-card:active, .insight-card:active { transform: scale(.97); transition: transform .1s ease; }
+    .sidebar-menu a:active, .sidebar-link-btn:active { background: rgba(255, 255, 255, .12); transform: scale(.97); }
+    .card:active { transform: scale(.98); }
+    .btn:active { transform: scale(.96); }
 }
 
 /* ==================================================================
    SMOOTH ANIMATIONS
    ================================================================== */
-
 @media (max-width: 992px) {
-    .card,
-    .stat-card,
-    .insight-card {
-        transition: transform .2s var(--ease-out), box-shadow .2s var(--ease-out) !important;
-    }
-
-    .content-wrapper {
-        animation: fadeInUp .3s var(--ease-out);
-    }
-
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(6px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
+    .card, .stat-card, .insight-card { transition: transform .2s var(--ease-out), box-shadow .2s var(--ease-out) !important; }
+    .content-wrapper { animation: fadeInUp .3s var(--ease-out); }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 }
 
 /* ==================================================================
-   GLOBAL SAFETY — prevent horizontal overflow everywhere
+   GLOBAL SAFETY
    ================================================================== */
-
-.app-layout {
-    overflow-x: hidden;
-    width: 100%;
-}
-
-.content-area {
-    min-width: 0;
-    overflow-x: hidden;
-}
-
-.table-responsive {
-    max-width: 100%;
-}
-
-/* ── Force table borders to use theme colors ───────────────────── */
-.table-bordered td,
-.table-bordered th {
-    border-color: var(--theme-border, var(--border)) !important;
-}
-
-/* ── Ensure all tables respect theme on dark mode ──────────────── */
-.table {
-    --bs-table-bg: transparent !important;
-}
+.app-layout { overflow-x: hidden; width: 100%; }
+.content-area { min-width: 0; overflow-x: hidden; }
+.table-responsive { max-width: 100%; }
+.table-bordered td, .table-bordered th { border-color: var(--theme-border, var(--border)) !important; }
+.table { --bs-table-bg: transparent !important; }
 
 /* ==================================================================
-   STAT CARDS: 3-col layout (col-4) needs responsive on phone
+   STAT CARDS: col-4 on phone
    ================================================================== */
-
 @media (max-width: 576px) {
-    .row .col-4 {
-        flex: 0 0 33.333% !important;
-        max-width: 33.333% !important;
-        padding-left: 4px;
-        padding-right: 4px;
-    }
-
-    /* Inside stat rows, make numbers smaller */
-    .row .col-4 .stat-number,
-    .row .col-4 .insight-value {
-        font-size: .85rem !important;
-    }
-
-    .row .col-4 .stat-title,
-    .row .col-4 .insight-label {
-        font-size: .6rem !important;
-    }
-
-    .row .col-4 .stat-icon,
-    .row .col-4 .insight-icon {
-        width: 30px !important;
-        height: 30px !important;
-        font-size: 14px !important;
-    }
+    .row .col-4 { flex: 0 0 33.333% !important; max-width: 33.333% !important; padding-left: 4px; padding-right: 4px; }
+    .row .col-4 .stat-number, .row .col-4 .insight-value { font-size: .85rem !important; }
+    .row .col-4 .stat-title, .row .col-4 .insight-label { font-size: .6rem !important; }
+    .row .col-4 .stat-icon, .row .col-4 .insight-icon { width: 30px !important; height: 30px !important; font-size: 14px !important; }
 }
 
 /* ==================================================================
-   LARGE SCREENS (≥1400px) — Wider content
+   LARGE SCREENS
    ================================================================== */
-
 @media (min-width: 1400px) {
-    .content-wrapper {
-        padding: var(--space-10) var(--space-8);
-    }
+    .content-wrapper { padding: var(--space-10) var(--space-8); }
 }

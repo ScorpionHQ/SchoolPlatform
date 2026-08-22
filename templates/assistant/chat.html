@@ -22,15 +22,25 @@
      data-max-files="{{ max_files }}"
      data-max-size-mb="{{ max_file_size_mb }}">
 
+    <div class="assistant-sidebar-backdrop" id="assistant-sidebar-backdrop"></div>
+
     <aside class="assistant-sidebar" id="assistant-sidebar">
         <div class="assistant-sidebar-header">
             <h3>{% if LANGUAGE_CODE == 'ar' %}المحادثات{% else %}Conversations{% endif %}</h3>
-            <button type="button"
-                    class="assistant-new-chat-btn"
-                    id="assistant-new-chat-btn"
-                    title="{% if LANGUAGE_CODE == 'ar' %}محادثة جديدة{% else %}New chat{% endif %}">
-                <i class="bi bi-plus-lg"></i>
-            </button>
+            <div class="d-flex align-items-center gap-1">
+                <button type="button"
+                        class="assistant-new-chat-btn"
+                        id="assistant-new-chat-btn"
+                        title="{% if LANGUAGE_CODE == 'ar' %}محادثة جديدة{% else %}New chat{% endif %}">
+                    <i class="bi bi-plus-lg"></i>
+                </button>
+                <button type="button"
+                        class="assistant-new-chat-btn d-lg-none"
+                        id="assistant-sidebar-close"
+                        title="{% if LANGUAGE_CODE == 'ar' %}إغلاق القائمة{% else %}Close menu{% endif %}">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
         </div>
         <div class="assistant-sidebar-list" id="assistant-sidebar-list">
             <div class="assistant-sidebar-empty">

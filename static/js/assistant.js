@@ -798,14 +798,43 @@
         updateFileButtons();
 
         // --------------------------------------------------------------
-        // Sidebar toggle
+        // Sidebar toggle — drawer pattern for mobile
         // --------------------------------------------------------------
         var sidebarToggle = document.getElementById("assistant-sidebar-toggle");
         var sidebar = document.getElementById("assistant-sidebar");
+        var sidebarBackdrop = document.getElementById("assistant-sidebar-backdrop");
+        var sidebarClose = document.getElementById("assistant-sidebar-close");
+
+        function openSidebar() {
+            if (!sidebar) return;
+            sidebar.classList.add("assistant-sidebar-open");
+            sidebar.classList.remove("assistant-sidebar-collapsed");
+            if (sidebarBackdrop) sidebarBackdrop.classList.add("active");
+        }
+
+        function closeSidebar() {
+            if (!sidebar) return;
+            sidebar.classList.remove("assistant-sidebar-open");
+            sidebar.classList.add("assistant-sidebar-collapsed");
+            if (sidebarBackdrop) sidebarBackdrop.classList.remove("active");
+        }
+
         if (sidebarToggle && sidebar) {
             sidebarToggle.addEventListener("click", function () {
-                sidebar.classList.toggle("assistant-sidebar-collapsed");
+                if (sidebar.classList.contains("assistant-sidebar-open")) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
             });
+        }
+
+        if (sidebarClose) {
+            sidebarClose.addEventListener("click", closeSidebar);
+        }
+
+        if (sidebarBackdrop) {
+            sidebarBackdrop.addEventListener("click", closeSidebar);
         }
 
         // --------------------------------------------------------------
