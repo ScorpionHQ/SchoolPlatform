@@ -215,15 +215,14 @@
 .navbar {
     height: var(--navbar-height);
     min-height: var(--navbar-height);
-    max-height: var(--navbar-height);
-    background: var(--theme-navbar, rgba(255, 255, 255, .88));
-    box-shadow: 0 1px 0 rgba(255, 255, 255, .6) inset, 0 4px 16px -8px rgba(76, 64, 160, .10);
+    background: var(--theme-navbar, rgba(255, 255, 255, .92));
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .06);
     position: sticky;
     top: 0;
     z-index: var(--z-navbar);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--theme-border, var(--border));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, .06);
     padding: 0 var(--space-5);
     overflow: hidden;
     flex-shrink: 0;
@@ -543,7 +542,6 @@
     .navbar {
         height: var(--navbar-height-mobile);
         min-height: var(--navbar-height-mobile);
-        max-height: var(--navbar-height-mobile);
         padding: 0 var(--space-4);
     }
 }

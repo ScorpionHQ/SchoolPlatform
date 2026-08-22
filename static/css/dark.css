@@ -99,8 +99,9 @@ html[data-theme="dark"] .table tbody tr:hover {
 
 /* ── Navbar ────────────────────────────────────────────────────── */
 html[data-theme="dark"] .navbar {
-    background: #141722 !important;
-    border-color: #272B38;
+    background: rgba(20, 23, 34, .92) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+    border-color: rgba(255, 255, 255, .06);
 }
 
 /* ── Sidebar ───────────────────────────────────────────────────── */
