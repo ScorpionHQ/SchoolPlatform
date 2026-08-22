@@ -16,8 +16,8 @@ html, body {
 
 /* TABLET (<=992px) */
 @media (max-width: 992px) {
-    .topbar-title { font-size: .85rem !important; }
-    .topbar-logo { height: 26px !important; }
+    .topbar-title { font-size: .78rem !important; }
+    .topbar-logo { height: 22px !important; }
     .topbar-right { gap: 4px !important; }
     .topbar-icon { width: 34px !important; height: 34px !important; font-size: .95rem !important; }
     .topbar-pill { height: 28px !important; min-width: 28px !important; font-size: .65rem !important; padding: 0 6px !important; }
@@ -54,8 +54,8 @@ html, body {
     .topbar-dot { min-width: 12px; height: 12px; font-size: .45rem; line-height: 12px; padding: 0 3px; }
     .topbar-avatar { height: 32px !important; padding: 1px !important; }
     .topbar-avatar-img, .topbar-avatar-fallback { width: 26px !important; height: 26px !important; font-size: .65rem !important; }
-    .topbar-logo { height: 22px !important; }
-    .topbar-title { font-size: .8rem !important; }
+    .topbar-logo { height: 20px !important; }
+    .topbar-title { font-size: .75rem !important; }
 
     /* Stat cards */
     .stat-card { padding: 14px 12px !important; gap: 8px !important; border-radius: var(--radius-md) !important; }

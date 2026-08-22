@@ -8,6 +8,7 @@ html[data-theme="dark"] {
     --theme-hover:         #6366F1;
     --theme-soft:          #2E2A5E;
 
+    --theme-topbar:        rgba(15, 17, 24, .95);
     --theme-background:    #0F1118;
     --theme-card:          #171A23;
     --theme-text:          #E6E8F0;
@@ -99,7 +100,6 @@ html[data-theme="dark"] .table tbody tr:hover {
 
 /* ── Topbar ────────────────────────────────────────────────────── */
 html[data-theme="dark"] .topbar {
-    background: rgba(15, 17, 24, .92) !important;
     border-color: rgba(255, 255, 255, .06);
 }
 
