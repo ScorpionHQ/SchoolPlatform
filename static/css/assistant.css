@@ -1167,7 +1167,7 @@
 
 @media (max-width: 575.98px) {
     .assistant-page {
-        height: calc(100vh - var(--navbar-height-mobile, 60px));
+        height: calc(100vh - var(--navbar-height-mobile, 52px));
     }
 
     .assistant-chat-head {

@@ -589,13 +589,17 @@
     width: 36px;
     height: 36px;
     font-size: .75rem;
+    border-radius: 50%;
+    object-fit: cover;
     box-shadow: none;
+    flex-shrink: 0;
 }
 
 .avatar-nav img {
     width: 36px;
     height: 36px;
     object-fit: cover;
+    border-radius: 50%;
 }
 
 .avatar-sm {

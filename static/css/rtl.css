@@ -26,10 +26,13 @@
     border-radius: 6px 0 0 6px;
 }
 
-/* ── Navbar brand ──────────────────────────────────────────────── */
-[dir="rtl"] .navbar-brand {
-    margin-left: 1rem;
-    margin-right: 0;
+/* ── Navbar actions: reverse order in RTL ──────────────────────── */
+[dir="rtl"] .navbar-inner {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .navbar-actions {
+    flex-direction: row-reverse;
 }
 
 /* ── Dropdown ──────────────────────────────────────────────────── */
@@ -41,7 +44,22 @@
 /* ── Sidebar toggle ────────────────────────────────────────────── */
 [dir="rtl"] .sidebar-toggle {
     margin-right: 0;
-    margin-left: .5rem;
+    margin-left: var(--space-2);
+}
+
+/* ── Navbar brand text alignment ───────────────────────────────── */
+[dir="rtl"] .navbar-brand-text {
+    text-align: right;
+}
+
+/* ── Avatar name alignment ─────────────────────────────────────── */
+[dir="rtl"] .navbar-avatar-name {
+    text-align: right;
+}
+
+/* ── Institution btn ───────────────────────────────────────────── */
+[dir="rtl"] .navbar-institution-btn {
+    flex-direction: row-reverse;
 }
 
 /* ==================================================================

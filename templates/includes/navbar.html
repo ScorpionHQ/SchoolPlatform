@@ -1,321 +1,159 @@
 ﻿{% load i18n %}
 {% load static %}
 
-<nav class="navbar navbar-expand-lg px-4">
+<nav class="navbar">
+    <div class="navbar-inner">
 
-    <div class="container-fluid">
-
-        <button class="btn btn-light sidebar-toggle d-lg-none me-2"
+        <button class="sidebar-toggle d-lg-none"
                 type="button"
                 aria-label="Toggle sidebar">
-            <i class="bi bi-list fs-4"></i>
+            <i class="bi bi-list"></i>
         </button>
 
-        <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'dashboard' %}">
-
+        <a class="navbar-brand" href="{% url 'dashboard' %}">
             <img src="{% static 'pwa/logo.png' %}?v=4"
                  alt="SchoolPlatform"
-                 class="brand-logo me-2">
-
-            <div>
-
-                <div class="fw-bold">
-                    {% trans "SchoolPlatform" %}
-                </div>
-
-                <small class="text-muted d-none d-md-inline">
-                    {% trans "School Management System" %}
-                </small>
-
+                 class="brand-logo"
+                 onerror="this.style.display='none'">
+            <div class="navbar-brand-text">
+                <span class="fw-bold">{% trans "SchoolPlatform" %}</span>
+                <small class="d-none d-md-inline">{% trans "School Management System" %}</small>
             </div>
-
         </a>
 
         <div class="navbar-actions">
 
             {% if current_institution or user_institutions %}
-
-                <div class="dropdown d-none d-lg-block">
-
-                    <button
-                        class="btn btn-outline-primary d-flex align-items-center gap-2"
+            <div class="dropdown d-none d-lg-block">
+                <button class="btn btn-outline-primary navbar-institution-btn"
                         data-bs-toggle="dropdown">
-
-                        <i class="bi bi-building"></i>
-
-                        <span>
-
-                            {% if current_institution %}
-
-                                {{ current_institution.name }}
-
-                            {% else %}
-
-                                {% trans "Select Institution" %}
-
-                            {% endif %}
-
-                        </span>
-
-                        <i class="bi bi-chevron-down small"></i>
-
-                    </button>
-
-                    <ul class="dropdown-menu dropdown-menu-end shadow">
-
-                        {% if user_institutions %}
-
-                            {% for institution in user_institutions %}
-
-                            <li>
-
-                                <form action="{% url 'institutions:switch' %}" method="post">
-
-                                    {% csrf_token %}
-
-                                    <input type="hidden"
-                                           name="institution_id"
-                                           value="{{ institution.pk }}">
-
-                                    <input type="hidden"
-                                           name="next"
-                                           value="{{ request.get_full_path }}">
-
-                                    <button type="submit"
-                                            class="dropdown-item {% if current_institution and current_institution.pk == institution.pk %}active{% endif %}">
-
-                                        <i class="bi bi-building me-2"></i>
-
-                                        {{ institution.name }}
-
-                                    </button>
-
-                                </form>
-
-                            </li>
-
-                            {% endfor %}
-
-                            {% if request.user.role == "system_admin" %}
-
-                            <li><hr class="dropdown-divider"></li>
-
-                            {% endif %}
-
-                        {% endif %}
-
-                        {% if request.user.role == "system_admin" %}
-
+                    <i class="bi bi-building"></i>
+                    <span class="d-none d-xl-inline">
+                        {% if current_institution %}{{ current_institution.name }}{% else %}{% trans "Select Institution" %}{% endif %}
+                    </span>
+                    <i class="bi bi-chevron-down small"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end shadow">
+                    {% if user_institutions %}
+                        {% for institution in user_institutions %}
                         <li>
-
-                            <a class="dropdown-item" href="{% url 'institutions:select' %}">
-
-                                <i class="bi bi-collection me-2"></i>
-
-                                {% trans "All Institutions" %}
-
-                            </a>
-
+                            <form action="{% url 'institutions:switch' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="institution_id" value="{{ institution.pk }}">
+                                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                <button type="submit"
+                                        class="dropdown-item {% if current_institution and current_institution.pk == institution.pk %}active{% endif %}">
+                                    <i class="bi bi-building me-2"></i>
+                                    {{ institution.name }}
+                                </button>
+                            </form>
                         </li>
-
+                        {% endfor %}
+                        {% if request.user.role == "system_admin" %}
+                        <li><hr class="dropdown-divider"></li>
                         {% endif %}
-
-                    </ul>
-
-                </div>
-
+                    {% endif %}
+                    {% if request.user.role == "system_admin" %}
+                    <li>
+                        <a class="dropdown-item" href="{% url 'institutions:select' %}">
+                            <i class="bi bi-collection me-2"></i>
+                            {% trans "All Institutions" %}
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
             {% endif %}
 
             <a href="{% url 'notifications:list' %}"
                class="navbar-action"
                aria-label="{% trans 'Notifications' %}">
-
                 <i class="bi bi-bell"></i>
-
                 {% if unread_notifications_count %}
-
-                    <span class="navbar-badge">
-
-                        {{ unread_notifications_count }}
-
-                    </span>
-
+                    <span class="navbar-badge">{{ unread_notifications_count }}</span>
                 {% endif %}
-
             </a>
 
             <form action="{% url 'set_language' %}" method="post" class="d-inline">
-
                 {% csrf_token %}
-
-                <input type="hidden"
-                       name="next"
-                       value="{{ request.get_full_path }}">
-
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
                 {% get_current_language as LANGUAGE_CODE %}
-
                 {% if LANGUAGE_CODE == "ar" %}
-
-                    <input type="hidden"
-                           name="language"
-                           value="en">
-
-                    <button class="navbar-action navbar-lang" type="submit">
-                        EN
-                    </button>
-
+                    <input type="hidden" name="language" value="en">
+                    <button class="navbar-action navbar-lang" type="submit">EN</button>
                 {% else %}
-
-                    <input type="hidden"
-                           name="language"
-                           value="ar">
-
-                    <button class="navbar-action navbar-lang" type="submit">
-                        AR
-                    </button>
-
+                    <input type="hidden" name="language" value="ar">
+                    <button class="navbar-action navbar-lang" type="submit">AR</button>
                 {% endif %}
-
             </form>
 
-            <button
-                type="button"
-                class="navbar-action navbar-theme-btn"
-                aria-label="Toggle theme"
-                title="{% trans 'Toggle theme' %}">
-
+            <button type="button"
+                    class="navbar-action navbar-theme-btn"
+                    aria-label="Toggle theme"
+                    title="{% trans 'Toggle theme' %}">
                 <i class="bi bi-moon-stars-fill theme-icon"></i>
-
             </button>
 
             <div class="dropdown">
-
-                <button
-                    class="navbar-action navbar-avatar-btn d-flex align-items-center gap-2"
-                    data-bs-toggle="dropdown">
-
+                <button class="navbar-action navbar-avatar-btn"
+                        data-bs-toggle="dropdown">
                     {% if request.user.profile_image %}
-                    <img src="{{ request.user.profile_image.url }}"
-                         class="rounded-circle avatar-nav"
-                         alt="">
+                        <img src="{{ request.user.profile_image.url }}"
+                             class="avatar-nav"
+                             alt=""
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                        <span class="avatar-circle avatar-nav" style="display:none">
+                            {{ request.user.first_name.0|default:request.user.username.0|upper }}{{ request.user.last_name.0|default:""|upper }}
+                        </span>
                     {% else %}
-                    <span class="avatar-circle avatar-nav">
-                        {{ request.user.first_name.0|default:request.user.username.0|upper }}{{ request.user.last_name.0|default:""|upper }}
+                        <span class="avatar-circle avatar-nav">
+                            {{ request.user.first_name.0|default:request.user.username.0|upper }}{{ request.user.last_name.0|default:""|upper }}
+                        </span>
+                    {% endif %}
+                    <span class="navbar-avatar-name d-none d-lg-inline">
+                        <span class="fw-semibold">{{ request.user.get_full_name|default:request.user.username }}</span>
+                        <small>{{ request.user.get_role_display }}</small>
                     </span>
-                    {% endif %}
-
-                    <div class="text-start d-none d-lg-block">
-
-                        <div class="fw-semibold">
-
-                            {{ request.user.get_full_name|default:request.user.username }}
-
-                        </div>
-
-                        <small class="text-muted">
-
-                            {{ request.user.get_role_display }}
-
-                        </small>
-
-                    </div>
-
                     <i class="bi bi-chevron-down small d-none d-lg-inline"></i>
-
                 </button>
-
                 <ul class="dropdown-menu dropdown-menu-end shadow">
-
                     <li>
-
                         <div class="dropdown-item-text">
-
-                            <strong>
-
-                                {{ request.user.get_full_name|default:request.user.username }}
-
-                            </strong>
-
+                            <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
                             <br>
-
-                            <small class="text-muted">
-
-                                {{ request.user.login_code }}
-
-                            </small>
-
+                            <small class="text-muted">{{ request.user.login_code }}</small>
                         </div>
-
                     </li>
-
                     <li><hr class="dropdown-divider"></li>
-
                     <li>
-
                         <a class="dropdown-item" href="{% url 'profile' %}">
-
-                            <i class="bi bi-person me-2"></i>
-
-                            {% trans "Profile" %}
-
+                            <i class="bi bi-person me-2"></i>{% trans "Profile" %}
                         </a>
-
                     </li>
-
                     <li>
-
                         <a class="dropdown-item" href="{% url 'change_password' %}">
-
-                            <i class="bi bi-gear me-2"></i>
-
-                            {% trans "Change Password" %}
-
+                            <i class="bi bi-gear me-2"></i>{% trans "Change Password" %}
                         </a>
-
                     </li>
-
                     {% if request.user.role == "system_admin" %}
-
                     <li>
-
                         <a class="dropdown-item" href="{% url 'administration:dashboard' %}">
-
-                            <i class="bi bi-shield-lock me-2"></i>
-
-                            {% trans "Administration" %}
-
+                            <i class="bi bi-shield-lock me-2"></i>{% trans "Administration" %}
                         </a>
-
                     </li>
-
                     {% endif %}
-
                     <li><hr class="dropdown-divider"></li>
-
                     <li>
-
                         <form action="{% url 'logout' %}" method="post">
-
                             {% csrf_token %}
-
                             <button type="submit" class="dropdown-item text-danger">
-
-                                <i class="bi bi-box-arrow-right me-2"></i>
-
-                                {% trans "Logout" %}
-
+                                <i class="bi bi-box-arrow-right me-2"></i>{% trans "Logout" %}
                             </button>
-
                         </form>
-
                     </li>
-
                 </ul>
-
             </div>
 
         </div>
-
     </div>
-
 </nav>

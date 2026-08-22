@@ -97,6 +97,6 @@
     /* ── Sidebar ────────────────────────────────────────────────── */
     --sidebar-width:    270px;
     --sidebar-width-mobile: 280px;
-    --navbar-height:    72px;
-    --navbar-height-mobile: 60px;
+    --navbar-height:    64px;
+    --navbar-height-mobile: 52px;
 }
