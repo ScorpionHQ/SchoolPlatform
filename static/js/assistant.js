@@ -90,7 +90,18 @@
     }
 
     function scrollToBottom(el) {
-        el.scrollTop = el.scrollHeight;
+        requestAnimationFrame(function () {
+            el.scrollTop = el.scrollHeight;
+        });
+    }
+
+    // ------------------------------------------------------------------
+    // Auto-resize textarea
+    // ------------------------------------------------------------------
+
+    function autoResize(textarea) {
+        textarea.style.height = "auto";
+        textarea.style.height = Math.min(textarea.scrollHeight, 200) + "px";
     }
 
     // ------------------------------------------------------------------
@@ -112,8 +123,6 @@
                 this.emotions = {};
             }
         }
-
-        var self = this;
 
         this.setEmotion = function (emotion, animate) {
             if (!this.img) return;
@@ -176,6 +185,9 @@
             if (!text) return;
             self.busy = true;
             self.inputEl.value = "";
+            if (self.inputEl.tagName === "TEXTAREA") {
+                autoResize(self.inputEl);
+            }
             hideSuggestions();
             self.append(text, "user");
             var typing = makeTypingBubble(self.botAvatar);
@@ -198,9 +210,7 @@
                 body: JSON.stringify(body)
             })
                 .then(function (response) {
-                    if (!response.ok) {
-                        throw new Error("request failed");
-                    }
+                    if (!response.ok) throw new Error("request failed");
                     return response.json();
                 })
                 .then(function (data) {
@@ -213,14 +223,11 @@
                 })
                 .catch(function () {
                     typing.remove();
-                    var msg = "خطأ في الشبكة. حاول مرة أخرى.";
-                    if (
-                        window.__assistantErrors &&
-                        window.__assistantErrors.network
-                    ) {
+                    var msg = "Network error. Please try again.";
+                    if (window.__assistantErrors && window.__assistantErrors.network) {
                         msg = window.__assistantErrors.network;
                     }
-                    self.append("⚠️ " + msg, "assistant");
+                    self.append(msg, "assistant");
                     if (self.character) self.character.setEmotion("wonder", true);
                 })
                 .finally(function () {
@@ -245,10 +252,13 @@
         }
         if (this.inputEl) {
             this.inputEl.addEventListener("keydown", function (event) {
-                if (event.key === "Enter") {
+                if (event.key === "Enter" && !event.shiftKey) {
                     event.preventDefault();
                     doSend();
                 }
+            });
+            this.inputEl.addEventListener("input", function () {
+                autoResize(self.inputEl);
             });
         }
     }
@@ -332,7 +342,6 @@
             });
         }
 
-        // Global API used by error pages and the full chat page.
         window.AssistantApp = {
             open: open,
             close: close,
@@ -341,7 +350,6 @@
             }
         };
 
-        // Show a hint when the page contains an error.
         function showHint(text, question) {
             hintEl.textContent = text;
             hintEl.dataset.question = question || "";
@@ -355,15 +363,15 @@
         if (errorCode) {
             var hints = {
                 "404": {
-                    text: "🔍 " + (window.__assistantErrors && window.__assistantErrors.page404 || "هذه الصفحة غير موجودة. يمكنني المساعدة."),
+                    text: (window.__assistantErrors && window.__assistantErrors.page404) || "This page does not exist.",
                     question: "404"
                 },
                 "403": {
-                    text: "🚫 " + (window.__assistantErrors && window.__assistantErrors.page403 || "تم رفض الوصول. يمكنني المساعدة."),
+                    text: (window.__assistantErrors && window.__assistantErrors.page403) || "Access denied.",
                     question: "403"
                 },
                 "500": {
-                    text: "⚠️ " + (window.__assistantErrors && window.__assistantErrors.page500 || "حدث خطأ ما. يمكنني المساعدة."),
+                    text: (window.__assistantErrors && window.__assistantErrors.page500) || "Something went wrong.",
                     question: "500"
                 }
             };
@@ -377,7 +385,7 @@
             showHint(
                 window.__assistantErrors && window.__assistantErrors.form
                     ? window.__assistantErrors.form
-                    : "📝 " + "يبدو أن هناك خطأ في النموذج. يمكنني مساعدتك في إصلاحه.",
+                    : "There seems to be a form error. I can help you fix it.",
                 "help me fix a form error"
             );
         }
@@ -461,16 +469,10 @@
                 chip.className = "assistant-file-chip";
                 chip.innerHTML =
                     '<i class="bi ' + fileIcon(file.kind) + '"></i>' +
-                    '<span class="assistant-file-chip-name">' +
-                        escapeHtml(file.name) +
-                    '</span>' +
-                    '<span class="assistant-file-chip-size">' +
-                        escapeHtml(file.size_human || "") +
-                    '</span>' +
-                    '<button type="button" class="assistant-file-chip-remove" ' +
-                            'aria-label="Remove" data-index="' + index + '">' +
-                        '<i class="bi bi-x-lg"></i>' +
-                    '</button>';
+                    '<span class="assistant-file-chip-name">' + escapeHtml(file.name) + '</span>' +
+                    '<span class="assistant-file-chip-size">' + escapeHtml(file.size_human || "") + '</span>' +
+                    '<button type="button" class="assistant-file-chip-remove" aria-label="Remove" data-index="' + index + '">' +
+                    '<i class="bi bi-x-lg"></i></button>';
                 attachList.appendChild(chip);
             });
 
@@ -492,7 +494,6 @@
             if (!fileList || !fileList.length || !uploadEndpoint) return;
 
             var formData = new FormData();
-
             var accepted = [];
             var skipped = [];
 
@@ -514,11 +515,9 @@
 
             if (!accepted.length) {
                 if (skipped.length) {
-                    var msg = "تم التخطي: " + skipped.join(", ");
-                    if (window.__assistantStrings && window.__assistantStrings.uploadError) {
-                        msg = window.__assistantStrings.uploadError + " " + skipped.join(", ");
-                    }
-                    pageChat.append("⚠️ " + msg, "assistant");
+                    var msg = (window.__assistantStrings && window.__assistantStrings.uploadError) ||
+                        "Upload failed for: " + skipped.join(", ");
+                    pageChat.append(msg, "assistant");
                 }
                 if (fileInput) fileInput.value = "";
                 return;
@@ -530,9 +529,7 @@
 
             fetch(uploadEndpoint, {
                 method: "POST",
-                headers: {
-                    "X-CSRFToken": pageRoot.dataset.csrf
-                },
+                headers: { "X-CSRFToken": pageRoot.dataset.csrf },
                 credentials: "same-origin",
                 body: formData
             })
@@ -543,42 +540,30 @@
                 })
                 .then(function (result) {
                     var data = result.data || {};
-
                     if (data.files) {
-                        data.files.forEach(function (item) {
-                            selectedFiles.push(item);
-                        });
+                        data.files.forEach(function (item) { selectedFiles.push(item); });
                     }
-
                     if (data.errors && data.errors.length) {
-                        var errorNames = data.errors
-                            .map(function (err) { return err.name; })
-                            .join(", ");
+                        var errorNames = data.errors.map(function (err) { return err.name; }).join(", ");
                         pageChat.append(
-                            "⚠️ " +
-                            ((window.__assistantStrings && window.__assistantStrings.uploadError) ||
-                                "تعذّر رفع بعض الملفات.") +
+                            ((window.__assistantStrings && window.__assistantStrings.uploadError) || "Upload failed.") +
                             " " + errorNames,
                             "assistant"
                         );
                     }
-
                     renderFiles();
-
                     if (data.files && data.files.length) {
                         pageChat.append(
-                            (window.__assistantStrings && window.__assistantStrings.summarize) ||
-                            "تلخيص",
+                            (window.__assistantStrings && window.__assistantStrings.summarize) || "Files uploaded.",
                             "user"
                         );
                     }
-
                     if (pageCharacter) pageCharacter.setEmotion("happy", true);
                 })
                 .catch(function () {
                     var msg = (window.__assistantStrings && window.__assistantStrings.uploadError) ||
-                        "تعذّر رفع الملفات. حاول مرة أخرى.";
-                    pageChat.append("⚠️ " + msg, "assistant");
+                        "Upload failed. Please try again.";
+                    pageChat.append(msg, "assistant");
                     if (pageCharacter) pageCharacter.setEmotion("wonder", true);
                 })
                 .finally(function () {
@@ -594,12 +579,10 @@
                 attachment_ids: selectedFiles.map(function (f) { return f.id; }),
                 task: task
             };
-
             if (question) body.question = question;
 
             btnSummarize.disabled = true;
             btnAnalyze.disabled = true;
-
             if (pageCharacter) pageCharacter.setThinking();
 
             var typing = makeTypingBubble(pageBotAvatar);
@@ -623,15 +606,13 @@
                     typing.remove();
                     pageChat.conversationId = data.conversation_id || pageChat.conversationId;
                     pageChat.append(data.reply || "", "assistant", data.sources);
-                    if (pageCharacter) {
-                        pageCharacter.setEmotion(data.emotion || "happy", true);
-                    }
+                    if (pageCharacter) pageCharacter.setEmotion(data.emotion || "happy", true);
                 })
                 .catch(function () {
                     typing.remove();
                     var msg = (window.__assistantStrings && window.__assistantStrings.analyzeError) ||
-                        "تعذّر تحليل الملفات. حاول مرة أخرى.";
-                    pageChat.append("⚠️ " + msg, "assistant");
+                        "Analysis failed. Please try again.";
+                    pageChat.append(msg, "assistant");
                     if (pageCharacter) pageCharacter.setEmotion("wonder", true);
                 })
                 .finally(function () {
@@ -648,7 +629,6 @@
             var lastAssistant = pageChat.messagesEl.querySelector(
                 ".assistant-msg-row.assistant-row-assistant .assistant-msg-text"
             );
-
             var notes = lastAssistant ? lastAssistant.textContent : "";
 
             fetch(reportEndpoint, {
@@ -680,8 +660,8 @@
                 })
                 .catch(function () {
                     var msg = (window.__assistantStrings && window.__assistantStrings.analyzeError) ||
-                        "تعذّر إنشاء تقرير PDF.";
-                    pageChat.append("⚠️ " + msg, "assistant");
+                        "Report generation failed.";
+                    pageChat.append(msg, "assistant");
                     if (pageCharacter) pageCharacter.setEmotion("wonder", true);
                 })
                 .finally(function () {
@@ -717,44 +697,14 @@
             btnReport.addEventListener("click", generateReport);
         }
 
-        var originalSend = pageChat.sendBtn ? pageChat.sendBtn.click.bind(pageChat.sendBtn) : null;
-
-        if (pageChat.sendBtn) {
-            pageChat.sendBtn.addEventListener("click", function () {
-                var text = (pageChat.inputEl && pageChat.inputEl.value || "").trim();
-                if (selectedFiles.length && text) {
-                    var body = {
-                        message: text,
-                        attachment_ids: selectedFiles.map(function (f) { return f.id; })
-                    };
-                    if (pageChat.conversationId) body.conversation_id = pageChat.conversationId;
-                    doChatWithFiles(body);
-                }
-            });
-        }
-
-        if (pageChat.inputEl) {
-            pageChat.inputEl.addEventListener("keydown", function (event) {
-                if (event.key === "Enter") {
-                    var text = (pageChat.inputEl.value || "").trim();
-                    if (selectedFiles.length && text) {
-                        event.preventDefault();
-                        var body = {
-                            message: text,
-                            attachment_ids: selectedFiles.map(function (f) { return f.id; })
-                        };
-                        if (pageChat.conversationId) body.conversation_id = pageChat.conversationId;
-                        doChatWithFiles(body);
-                    }
-                }
-            });
-        }
-
         function doChatWithFiles(body) {
             if (pageChat.busy) return;
             pageChat.busy = true;
             var text = body.message;
             pageChat.inputEl.value = "";
+            if (pageChat.inputEl.tagName === "TEXTAREA") {
+                autoResize(pageChat.inputEl);
+            }
             pageChat.append(text, "user");
             var typing = makeTypingBubble(pageBotAvatar);
             pageChat.messagesEl.appendChild(typing);
@@ -778,15 +728,13 @@
                     typing.remove();
                     pageChat.conversationId = data.conversation_id || pageChat.conversationId;
                     pageChat.append(data.reply || "", "assistant", data.sources);
-                    if (pageCharacter) {
-                        pageCharacter.setEmotion(data.emotion || "happy", true);
-                    }
+                    if (pageCharacter) pageCharacter.setEmotion(data.emotion || "happy", true);
                 })
                 .catch(function () {
                     typing.remove();
                     var msg = (window.__assistantStrings && window.__assistantStrings.analyzeError) ||
                         "Network error. Please try again.";
-                    pageChat.append("⚠️ " + msg, "assistant");
+                    pageChat.append(msg, "assistant");
                     if (pageCharacter) pageCharacter.setEmotion("wonder", true);
                 })
                 .finally(function () {
@@ -795,11 +743,43 @@
                 });
         }
 
+        if (pageChat.sendBtn) {
+            pageChat.sendBtn.addEventListener("click", function () {
+                var text = (pageChat.inputEl && pageChat.inputEl.value || "").trim();
+                if (selectedFiles.length && text) {
+                    var body = {
+                        message: text,
+                        attachment_ids: selectedFiles.map(function (f) { return f.id; })
+                    };
+                    if (pageChat.conversationId) body.conversation_id = pageChat.conversationId;
+                    doChatWithFiles(body);
+                }
+            });
+        }
+
+        if (pageChat.inputEl) {
+            pageChat.inputEl.addEventListener("keydown", function (event) {
+                if (event.key === "Enter" && !event.shiftKey) {
+                    var text = (pageChat.inputEl.value || "").trim();
+                    if (selectedFiles.length && text) {
+                        event.preventDefault();
+                        var body = {
+                            message: text,
+                            attachment_ids: selectedFiles.map(function (f) { return f.id; })
+                        };
+                        if (pageChat.conversationId) body.conversation_id = pageChat.conversationId;
+                        doChatWithFiles(body);
+                    }
+                }
+            });
+        }
+
         updateFileButtons();
 
-        // --------------------------------------------------------------
-        // Sidebar toggle — drawer pattern for mobile
-        // --------------------------------------------------------------
+        // ------------------------------------------------------------------
+        // Sidebar toggle
+        // ------------------------------------------------------------------
+
         var sidebarToggle = document.getElementById("assistant-sidebar-toggle");
         var sidebar = document.getElementById("assistant-sidebar");
         var sidebarBackdrop = document.getElementById("assistant-sidebar-backdrop");
@@ -837,27 +817,25 @@
             sidebarBackdrop.addEventListener("click", closeSidebar);
         }
 
-        // --------------------------------------------------------------
+        // ------------------------------------------------------------------
         // New chat button
-        // --------------------------------------------------------------
+        // ------------------------------------------------------------------
+
         var newChatBtn = document.getElementById("assistant-new-chat-btn");
         if (newChatBtn) {
             newChatBtn.addEventListener("click", function () {
                 pageChat.conversationId = null;
                 pageChat.messagesEl.innerHTML = "";
                 if (pageCharacter) pageCharacter.setEmotion("happy", true);
-                pageChat.append(
-                    (window.__assistantStrings && window.__assistantStrings.welcome) ||
-                    "مرحباً! كيف يمكنني مساعدتك؟",
-                    "assistant"
-                );
+                closeSidebar();
                 if (pageChat.inputEl) pageChat.inputEl.focus();
             });
         }
 
-        // --------------------------------------------------------------
+        // ------------------------------------------------------------------
         // Drag-and-drop file upload
-        // --------------------------------------------------------------
+        // ------------------------------------------------------------------
+
         var dropZone = document.getElementById("assistant-drop-zone");
         var chatCard = pageRoot.querySelector(".assistant-chat-card");
         var dragCounter = 0;
@@ -892,9 +870,10 @@
             });
         }
 
-        // --------------------------------------------------------------
-        // Empty-state suggestion chips (delegated)
-        // --------------------------------------------------------------
+        // ------------------------------------------------------------------
+        // Empty-state suggestion chips
+        // ------------------------------------------------------------------
+
         var messagesEl = document.getElementById("assistant-chat-messages");
         if (messagesEl) {
             messagesEl.addEventListener("click", function (e) {

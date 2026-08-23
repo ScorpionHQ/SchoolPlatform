@@ -3,7 +3,7 @@
 
 {% if assistant_config %}
 
-    <link rel="stylesheet" href="{% static 'css/assistant.css' %}?v=7">
+    <link rel="stylesheet" href="{% static 'css/assistant.css' %}?v=10">
 
 <div id="assistant-root"
      data-endpoint="{% url 'assistant:api_chat' %}"
@@ -184,6 +184,6 @@
     };
 </script>
 
-    <script src="{% static 'js/assistant.js' %}?v=5"></script>
+    <script src="{% static 'js/assistant.js' %}?v=10"></script>
 
 {% endif %}
