@@ -7,6 +7,18 @@
         return div.innerHTML;
     }
 
+    function renderMarkdown(text) {
+        if (typeof marked !== "undefined" && typeof DOMPurify !== "undefined") {
+            try {
+                var raw = marked.parse(text || "");
+                return DOMPurify.sanitize(raw);
+            } catch (e) {
+                return escapeHtml(text);
+            }
+        }
+        return escapeHtml(text);
+    }
+
     function userAvatarEl() {
         var ava = document.createElement("span");
         ava.className = "assistant-avatar is-user";
@@ -43,7 +55,11 @@
 
         var body = document.createElement("div");
         body.className = "assistant-msg-text";
-        body.innerHTML = escapeHtml(text);
+        if (role === "assistant") {
+            body.innerHTML = renderMarkdown(text);
+        } else {
+            body.innerHTML = escapeHtml(text);
+        }
         el.appendChild(body);
 
         if (sources && sources.length) {

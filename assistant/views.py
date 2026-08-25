@@ -28,10 +28,10 @@ def chat_page(request):
         .first()
     )
 
-    messages = []
+    chat_messages = []
 
     if conversation:
-        messages = conversation.messages.all()
+        chat_messages = conversation.messages.all()
 
     conversations = (
         Conversation.objects
@@ -44,7 +44,7 @@ def chat_page(request):
         {
             "conversation": conversation,
             "current_pk": conversation.pk if conversation else None,
-            "messages": messages,
+            "chat_messages": chat_messages,
             "conversations": conversations,
             "max_files": getattr(settings, "ASSISTANT_MAX_FILES", 10),
             "max_file_size_mb": getattr(

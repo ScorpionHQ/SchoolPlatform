@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/assistant.css' %}?v=7">
+<link rel="stylesheet" href="{% static 'css/assistant.css' %}?v=8">
 {% endblock %}
 
 {% block content %}
@@ -93,7 +93,7 @@
             <div class="assistant-chat-messages"
                  id="assistant-chat-messages">
 
-                {% for message in messages %}
+                {% for message in chat_messages %}
                     <div class="assistant-msg-row assistant-row-{{ message.role }}">
                         {% if message.role != "system" %}
                             {% if message.role == "assistant" and assistant_config.emotions.calm %}
@@ -116,9 +116,11 @@
                         {% endif %}
 
                         <div class="assistant-msg {{ message.role }}">
-                            <div class="assistant-msg-text">
+                            <div class="assistant-msg-text" data-raw-content="{{ message.content|escape }}">
                                 {% if message.role == "system" %}
                                     <em>{{ message.content }}</em>
+                                {% elif message.role == "assistant" %}
+                                    {{ message.content|linebreaksbr }}
                                 {% else %}
                                     {{ message.content }}
                                 {% endif %}
@@ -276,6 +278,8 @@
     };
 </script>
 
-<script src="{% static 'js/assistant.js' %}?v=6"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+<script src="{% static 'js/assistant.js' %}?v=8"></script>
 
 {% endblock %}
