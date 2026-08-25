@@ -25,29 +25,14 @@
 
         <hr>
 
-        {% if request.user.role == "system_admin" %}
+        <a href="{% url 'institutions:list' %}"
+           class="{% if request.resolver_match.namespace == 'institutions' and request.resolver_match.url_name != 'select' %}active{% endif %}">
 
-            <a href="{% url 'institutions:list' %}"
-               class="{% if request.resolver_match.namespace == 'institutions' and request.resolver_match.url_name != 'select' %}active{% endif %}">
+            <i class="bi bi-building"></i>
 
-                <i class="bi bi-building"></i>
+            <span>{% trans "Institutions" %}</span>
 
-                <span>{% trans "Institutions" %}</span>
-
-            </a>
-
-        {% else %}
-
-            <a href="{% url 'institutions:select' %}"
-               class="{% if request.resolver_match.url_name == 'select' %}active{% endif %}">
-
-                <i class="bi bi-collection"></i>
-
-                <span>{% trans "Select Institution" %}</span>
-
-            </a>
-
-        {% endif %}
+        </a>
 
         <a href="{% url 'classes:list' %}"
            class="{% if request.resolver_match.namespace == 'classes' %}active{% endif %}">

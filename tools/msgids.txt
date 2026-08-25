@@ -473,6 +473,7 @@ Student {name} ({code}) has been added to {institution}.
 Student {name} has been removed.
 Students
 Students At Risk
+Absent Students Today
 Students With Parents
 Students imported
 Students must change their password on their first login.

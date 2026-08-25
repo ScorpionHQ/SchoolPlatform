@@ -19,6 +19,7 @@
 
         <div class="topbar-right">
 
+            {% if request.user.role == "system_admin" %}
             {% if current_institution or user_institutions %}
             <div class="dropdown d-none d-lg-block">
                 <button class="topbar-chip" data-bs-toggle="dropdown">
@@ -42,19 +43,16 @@
                             </form>
                         </li>
                         {% endfor %}
-                        {% if request.user.role == "system_admin" %}
                         <li><hr class="dropdown-divider"></li>
-                        {% endif %}
                     {% endif %}
-                    {% if request.user.role == "system_admin" %}
                     <li>
                         <a class="dropdown-item" href="{% url 'institutions:select' %}">
                             <i class="bi bi-collection me-2"></i>{% trans "All Institutions" %}
                         </a>
                     </li>
-                    {% endif %}
                 </ul>
             </div>
+            {% endif %}
             {% endif %}
 
             <a href="{% url 'notifications:list' %}" class="topbar-icon" aria-label="{% trans 'Notifications' %}">

@@ -1556,7 +1556,10 @@ msgid "Student {name} has been removed."
 msgstr "تم حذف الطالب {name}."
 
 msgid "Students At Risk"
-msgstr "الطلاب المعرّضون للخطر"
+msgstr "الطلاب الغائبين اليوم"
+
+msgid "Absent Students Today"
+msgstr "الطلاب الغائبين اليوم"
 
 msgid "Students With Parents"
 msgstr "الطلاب المرتبطون بأولياء الأمور"

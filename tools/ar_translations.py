@@ -632,7 +632,9 @@ AR = {
     "Student {name} has been removed.":
         "تم حذف الطالب {name}.",
     "Students At Risk":
-        "الطلاب المعرّضون للخطر",
+        "الطلاب الغائبين اليوم",
+    "Absent Students Today":
+        "الطلاب الغائبين اليوم",
     "Students With Parents":
         "الطلاب المرتبطون بأولياء الأمور",
     "Students imported":
