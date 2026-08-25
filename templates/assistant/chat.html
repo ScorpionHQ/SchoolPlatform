@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/assistant.css' %}?v=10">
+<link rel="stylesheet" href="{% static 'css/assistant.css' %}?v=7">
 {% endblock %}
 
 {% block content %}
@@ -24,21 +24,23 @@
 
     <div class="assistant-sidebar-backdrop" id="assistant-sidebar-backdrop"></div>
 
-    <aside class="assistant-sidebar assistant-sidebar-collapsed" id="assistant-sidebar">
+    <aside class="assistant-sidebar" id="assistant-sidebar">
         <div class="assistant-sidebar-header">
-            <button type="button"
-                    class="assistant-new-chat-btn"
-                    id="assistant-new-chat-btn"
-                    title="{% if LANGUAGE_CODE == 'ar' %}محادثة جديدة{% else %}New chat{% endif %}">
-                <i class="bi bi-plus-lg"></i>
-                <span>{% if LANGUAGE_CODE == 'ar' %}محادثة جديدة{% else %}New chat{% endif %}</span>
-            </button>
-            <button type="button"
-                    class="assistant-sidebar-close d-lg-none"
-                    id="assistant-sidebar-close"
-                    title="{% if LANGUAGE_CODE == 'ar' %}إغلاق القائمة{% else %}Close menu{% endif %}">
-                <i class="bi bi-x-lg"></i>
-            </button>
+            <h3>{% if LANGUAGE_CODE == 'ar' %}المحادثات{% else %}Conversations{% endif %}</h3>
+            <div class="d-flex align-items-center gap-1">
+                <button type="button"
+                        class="assistant-new-chat-btn"
+                        id="assistant-new-chat-btn"
+                        title="{% if LANGUAGE_CODE == 'ar' %}محادثة جديدة{% else %}New chat{% endif %}">
+                    <i class="bi bi-plus-lg"></i>
+                </button>
+                <button type="button"
+                        class="assistant-new-chat-btn d-lg-none"
+                        id="assistant-sidebar-close"
+                        title="{% if LANGUAGE_CODE == 'ar' %}إغلاق القائمة{% else %}Close menu{% endif %}">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
         </div>
         <div class="assistant-sidebar-list" id="assistant-sidebar-list">
             <div class="assistant-sidebar-empty">
@@ -60,14 +62,16 @@
                 </button>
 
                 {% if assistant_config.emotions.calm %}
-                    <span class="assistant-chat-avatar" data-character>
+                    <span class="assistant-chat-avatar"
+                          data-character>
                         <img src="{{ assistant_config.emotions.calm }}"
                              alt="{{ assistant_config.name }}"
                              id="assistant-chat-character-img">
                     </span>
                 {% elif assistant_config.avatar_exists %}
                     <span class="assistant-chat-avatar">
-                        <img src="{{ assistant_config.avatar_url }}" alt="{{ assistant_config.name }}">
+                        <img src="{{ assistant_config.avatar_url }}"
+                             alt="{{ assistant_config.name }}">
                     </span>
                 {% else %}
                     <span class="assistant-chat-avatar assistant-chat-avatar-emoji">🤖</span>
@@ -86,7 +90,8 @@
                 </div>
             </div>
 
-            <div class="assistant-chat-messages" id="assistant-chat-messages">
+            <div class="assistant-chat-messages"
+                 id="assistant-chat-messages">
 
                 {% for message in messages %}
                     <div class="assistant-msg-row assistant-row-{{ message.role }}">
@@ -149,61 +154,75 @@
                             {% endif %}
                         </div>
                         <h3 class="assistant-empty-title">
-                            {% if LANGUAGE_CODE == 'ar' %}كيف يمكنني مساعدتك اليوم؟{% else %}How can I help you today?{% endif %}
+                            {% if LANGUAGE_CODE == 'ar' %}مرحباً! كيف يمكنني مساعدتك؟{% else %}Hello! How can I help you?{% endif %}
                         </h3>
                         <p class="assistant-empty-desc">
                             {% if LANGUAGE_CODE == 'ar' %}
-                                أسألني عن الدرجات، الحضور، الإحصائيات، أو أي خطأ تواجهه في المنصة. يمكنك أيضًا رفع ملفات PDF أو Word أو Excel أو صور وسأقوم بتحليلها وإنشاء تقرير لك.
+                                اسألني عن الدرجات، الحضور، الإحصائيات، أو أي خطأ تواجهه في المنصة. يمكنك أيضًا رفع ملفات PDF أو Word أو Excel أو صور وسأقوم بتلخيصها وتحليلها وإنشاء تقرير PDF لك.
                             {% else %}
-                                Ask me about grades, attendance, statistics, or any issue you face. You can also upload PDF, Word, Excel or image files and I will analyze them and create a report for you.
+                                Ask me about grades, attendance, statistics, or any error you face. You can also upload PDF, Word, Excel or image files and I will summarize, analyze and export a PDF report for you.
                             {% endif %}
                         </p>
                         <div class="assistant-empty-chips">
                             <button type="button" class="assistant-chip" data-q="{% if LANGUAGE_CODE == 'ar' %}عرض إحصائيات الحضور{% else %}Show attendance statistics{% endif %}">
-                                <span class="chip-ico"><i class="bi bi-bar-chart-line"></i></span>
-                                <span>{% if LANGUAGE_CODE == 'ar' %}إحصائيات الحضور{% else %}Attendance statistics{% endif %}</span>
+                                <i class="bi bi-bar-chart-line chip-ico"></i>
+                                {% if LANGUAGE_CODE == 'ar' %}إحصائيات الحضور{% else %}Attendance stats{% endif %}
                             </button>
                             <button type="button" class="assistant-chip" data-q="{% if LANGUAGE_CODE == 'ar' %}ما هي الدرجات المتاحة؟{% else %}What grades are available?{% endif %}">
-                                <span class="chip-ico"><i class="bi bi-journal-text"></i></span>
-                                <span>{% if LANGUAGE_CODE == 'ar' %}عرض الدرجات{% else %}Show grades{% endif %}</span>
+                                <i class="bi bi-journal-text chip-ico"></i>
+                                {% if LANGUAGE_CODE == 'ar' %}الدرجات{% else %}Grades{% endif %}
                             </button>
                             <button type="button" class="assistant-chip" data-q="{% if LANGUAGE_CODE == 'ar' %}حل مشكلة في تسجيل الدخول{% else %}Help me fix a login issue{% endif %}">
-                                <span class="chip-ico"><i class="bi bi-tools"></i></span>
-                                <span>{% if LANGUAGE_CODE == 'ar' %}حل المشاكل{% else %}Fix issues{% endif %}</span>
+                                <i class="bi bi-tools chip-ico"></i>
+                                {% if LANGUAGE_CODE == 'ar' %}حل مشاكل{% else %}Fix issues{% endif %}
                             </button>
                             <button type="button" class="assistant-chip" data-q="{% if LANGUAGE_CODE == 'ar' %}تقرير عن الطلاب{% else %}Generate a student report{% endif %}">
-                                <span class="chip-ico"><i class="bi bi-file-earmark-pdf"></i></span>
-                                <span>{% if LANGUAGE_CODE == 'ar' %}تقرير طلاب{% else %}Student report{% endif %}</span>
+                                <i class="bi bi-file-earmark-pdf chip-ico"></i>
+                                {% if LANGUAGE_CODE == 'ar' %}تقرير طلاب{% else %}Student report{% endif %}
                             </button>
                         </div>
                     </div>
                 {% endfor %}
             </div>
 
-            <div class="assistant-drop-zone" id="assistant-drop-zone" hidden>
+            <div class="assistant-drop-zone"
+                 id="assistant-drop-zone"
+                 hidden>
                 <div class="assistant-drop-zone-inner">
                     <i class="bi bi-cloud-arrow-up"></i>
                     <p>{% if LANGUAGE_CODE == 'ar' %}أفلت الملفات هنا{% else %}Drop files here{% endif %}</p>
                 </div>
             </div>
 
-            <div class="assistant-attachments" id="assistant-attachments" hidden>
+            <div class="assistant-attachments"
+                 id="assistant-attachments"
+                 hidden>
                 <div class="assistant-attachments-label">
                     <i class="bi bi-paperclip"></i>
                     {% if LANGUAGE_CODE == 'ar' %}الملفات المرفقة{% else %}Attached files{% endif %}
                 </div>
-                <div class="assistant-attachments-list" id="assistant-attachments-list"></div>
+                <div class="assistant-attachments-list"
+                     id="assistant-attachments-list"></div>
                 <div class="assistant-attachments-actions">
-                    <button type="button" class="btn btn-sm btn-outline-primary" id="assistant-btn-summarize" disabled>
+                    <button type="button"
+                            class="btn btn-sm btn-outline-primary"
+                            id="assistant-btn-summarize"
+                            disabled>
                         <i class="bi bi-card-text"></i>
                         {% if LANGUAGE_CODE == 'ar' %}تلخيص{% else %}Summarize{% endif %}
                     </button>
-                    <button type="button" class="btn btn-sm btn-outline-primary" id="assistant-btn-analyze" disabled>
+                    <button type="button"
+                            class="btn btn-sm btn-outline-primary"
+                            id="assistant-btn-analyze"
+                            disabled>
                         <i class="bi bi-search"></i>
                         {% if LANGUAGE_CODE == 'ar' %}تحليل{% else %}Analyze{% endif %}
                     </button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary" id="assistant-btn-report" disabled
-                            title="{% if LANGUAGE_CODE == 'ar' %}إنشاء تقرير PDF{% else %}Generate PDF report{% endif %}">
+                    <button type="button"
+                            class="btn btn-sm btn-outline-secondary"
+                            id="assistant-btn-report"
+                            disabled
+                            title="{% if LANGUAGE_CODE == 'ar' %}إنشاء تقرير PDF من الملفات والتحليل{% else %}Generate a PDF report from the files and analysis{% endif %}">
                         <i class="bi bi-file-earmark-pdf"></i>
                         {% if LANGUAGE_CODE == 'ar' %}تقرير PDF{% else %}PDF report{% endif %}
                     </button>
@@ -211,24 +230,30 @@
             </div>
 
             <div class="assistant-chat-input">
-                <input type="file" id="assistant-file-input"
+                <input type="file"
+                       id="assistant-file-input"
                        accept=".pdf,.docx,.xlsx,.txt,.md,.csv,.png,.jpg,.jpeg,.webp"
-                       multiple hidden>
+                       multiple
+                       hidden>
 
-                <button type="button" id="assistant-attach-btn" class="assistant-input-icon-btn"
+                <button type="button"
+                        id="assistant-attach-btn"
+                        class="assistant-input-icon-btn"
                         title="{% if LANGUAGE_CODE == 'ar' %}إرفاق ملفات{% else %}Attach files{% endif %}">
                     <i class="bi bi-paperclip"></i>
                 </button>
 
-                <textarea id="assistant-chat-input"
-                          class="assistant-chat-input-field"
-                          rows="1"
-                          placeholder="{% if LANGUAGE_CODE == 'ar' %}اكتب رسالتك...{% else %}Message...{% endif %}"
-                          autocomplete="off"
-                          aria-label="{% if LANGUAGE_CODE == 'ar' %}اكتب رسالتك{% else %}Type your message{% endif %}"></textarea>
+                <input type="text"
+                       id="assistant-chat-input"
+                       class="assistant-chat-input-field"
+                       placeholder="{% if LANGUAGE_CODE == 'ar' %}اكتب رسالتك...{% else %}Type your message...{% endif %}"
+                       autocomplete="off"
+                       aria-label="{% if LANGUAGE_CODE == 'ar' %}اكتب رسالتك{% else %}Type your message{% endif %}">
 
-                <button type="button" id="assistant-chat-send" class="assistant-send-btn">
-                    <i class="bi bi-arrow-up"></i>
+                <button type="button"
+                        id="assistant-chat-send"
+                        class="assistant-send-btn">
+                    <i class="bi bi-send-fill"></i>
                 </button>
             </div>
 
@@ -251,6 +276,6 @@
     };
 </script>
 
-<script src="{% static 'js/assistant.js' %}?v=10"></script>
+<script src="{% static 'js/assistant.js' %}?v=6"></script>
 
 {% endblock %}
