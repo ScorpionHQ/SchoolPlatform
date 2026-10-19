@@ -19,4 +19,8 @@ if os.environ.get("DJANGO_DEBUG_HOSTS"):
         if host.strip()
     )
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://desktop-du12on1.tailab0205.ts.net",
+]
+
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
