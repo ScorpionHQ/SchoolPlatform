@@ -389,6 +389,23 @@ class PasswordResetTests(TestCase):
             mail.outbox[0].body,
         )
 
+    def test_failed_delivery_does_not_expose_the_error(self):
+
+        broken = mock.patch(
+            "accounts.views.send_mail",
+            side_effect=OSError("smtp is down"),
+        )
+
+        with broken:
+
+            response = self._request_reset()
+
+        self.assertRedirects(
+            response,
+            reverse("login"),
+            fetch_redirect_response=False,
+        )
+
     def test_unknown_code_sends_nothing(self):
 
         response = self._request_reset(login_code="SYS999999")

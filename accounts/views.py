@@ -1,3 +1,4 @@
+import logging
 from io import BytesIO
 
 from django.conf import settings
@@ -38,6 +39,8 @@ LOGIN_MAX_ATTEMPTS = 5
 LOGIN_LOCKOUT_SECONDS = 15 * 60
 
 LOGIN_IP_MULTIPLIER = 5
+
+logger = logging.getLogger(__name__)
 
 
 def _login_max_attempts():
@@ -412,21 +415,32 @@ def password_reset_request(request):
                 )
             )
 
-            send_mail(
-                subject=str(_("Reset your password")),
-                message=str(
-                    _(
-                        "Hello {name}, use this link to set a new password: "
-                        "{link} If you did not request this, ignore this email."
-                    )
-                ).format(
-                    name=user.get_full_name() or user.username,
-                    link=reset_url,
-                ),
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[user.email],
-                fail_silently=True,
-            )
+            try:
+
+                send_mail(
+                    subject=str(_("Reset your password")),
+                    message=str(
+                        _(
+                            "Hello {name}, use this link to set a new "
+                            "password: {link} If you did not request this, "
+                            "ignore this email."
+                        )
+                    ).format(
+                        name=user.get_full_name() or user.username,
+                        link=reset_url,
+                    ),
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[user.email],
+                    fail_silently=False,
+                )
+
+            except Exception:
+                # The page must not reveal whether the address exists, but a
+                # broken SMTP configuration has to be visible in the logs.
+                logger.exception(
+                    "Password reset email failed for user %s",
+                    user.pk,
+                )
 
         messages.success(
             request,
