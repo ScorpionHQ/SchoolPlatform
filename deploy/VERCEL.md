@@ -99,21 +99,30 @@ Invoke-RestMethod -Uri 'https://api.vercel.com/v11/projects' -Method Post -Heade
   `includeSubDomains`). إن انتقلت إلى نطاق جديد فالنطاق القديم يبقى مثبّتاً في
   المتصفحات التي زارته — وهذا مقصود. لإيقافه مؤقتاً اضبط القيمة على `0`.
 
-## 8) البريد (استعادة كلمة المرور)
+## 8) البريد (استعادة كلمة المرور) — مفعّل
 
-بدون SMTP تُطبَع الرسائل في سجلات Vercel فقط، والمستخدم لا يستلم شيئاً.
-أي مزوّد SMTP مجاني يعمل، ومثال **Brevo** (300 رسالة/يوم، بلا بطاقة):
+البريد يعمل الآن عبر **Brevo** (مجاني، 300 رسالة/يوم، بلا بطاقة). المتغيّرات
+مضبوطة على Vercel وقيم المفتاح مشفّرة هناك فقط — لا توجد في الكود ولا في Git.
 
 | المتغيّر | القيمة |
 |---|---|
 | `EMAIL_HOST` | `smtp-relay.brevo.com` |
 | `EMAIL_PORT` | `587` |
 | `EMAIL_USE_TLS` | `1` |
-| `EMAIL_HOST_USER` | بريد الحساب في Brevo |
-| `EMAIL_HOST_PASSWORD` | مفتاح SMTP من Brevo (SMTP key) |
-| `DEFAULT_FROM_EMAIL` | `SchoolPlatform <no-reply@نطاقك>` |
+| `EMAIL_HOST_USER` | `c15211001@smtp-brevo.com` (SMTP login من Brevo، وليس بريدك العادي) |
+| `EMAIL_HOST_PASSWORD` | مفتاح SMTP (`xsmtpsib-...`)، مشفّر |
+| `DEFAULT_FROM_EMAIL` | `SchoolPlatform <scorpionhq26@gmail.com>` |
 
-بعد إضافة المتغيّرات وإعادة النشر، اختبر:
+نقاط مهمة:
+
+- **عنوان المُرسِل يجب أن يكون موثّقاً في Brevo** (Senders)، وإلا يرفض الإرسال.
+  لتوثيق نطاق المدرسة لاحقاً: Brevo → Domains → إضافة سجلات DNS.
+- **نموذج الاستعادة يطلب «كود الدخول» لا البريد** (مثل `SYS000001`).
+- حساب `SYS000001` مربوط بالبريد `scorpionhq26@gmail.com`؛ بدون بريد مسجّل
+  لا تُرسل أي رسالة (الصفحة تُظهر نفس الرسالة في كل الأحوال لمنع كشف الحسابات).
+- فشل الإرسال يُسجَّل في سجلات Vercel بدل أن يُبتلع بصمت.
+
+اختبار الإرسال محلياً (يتطلب نفس متغيّرات البيئة):
 
 ```bash
 python manage.py send_test_email you@example.com
