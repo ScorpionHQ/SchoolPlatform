@@ -13,7 +13,7 @@ Vercel يستضيف Django أصلاً (Python runtime) ويكتشف `manage.py` 
 | <https://schoolplatform-beta.vercel.app> | الرابط الذي أنشأه Vercel تلقائياً |
 
 المشروع على Vercel: `schoolplatform` (id: `prj_KUKYs6FB4vYas7Y8VbQYw5OvYnLH`).
-آخر نشر ناجح: `dpl_6HJrAGDP5aAx5WQEGUNQT72V5T32`.
+آخر نشر ناجح: `dpl_8jv1GkvY4xPVefi4RSGpqq5K4XLa`.
 
 > التحديثات المستقبلية: لا يوجد ربط Git بعد، لذا بعد كل `git push` أعد تشغيل سكربت
 > النشر (`deploy_vercel_files.ps1`) أو اربط المستودع من **Project → Settings → Git**
@@ -95,7 +95,74 @@ Invoke-RestMethod -Uri 'https://api.vercel.com/v11/projects' -Method Post -Heade
   وغيّرها فوراً.
 - أضف نطاقك: **Project → Settings → Domains** ثم أضف النطاق إلى
   `DJANGO_ALLOWED_HOSTS`.
-- فعّل HSTS بعد ثبات النطاق: `DJANGO_SECURE_HSTS_SECONDS=31536000`.
+- HSTS مفعّل حالياً سنة كاملة (`DJANGO_SECURE_HSTS_SECONDS=31536000`, مع
+  `includeSubDomains`). إن انتقلت إلى نطاق جديد فالنطاق القديم يبقى مثبّتاً في
+  المتصفحات التي زارته — وهذا مقصود. لإيقافه مؤقتاً اضبط القيمة على `0`.
+
+## 8) البريد (استعادة كلمة المرور)
+
+بدون SMTP تُطبَع الرسائل في سجلات Vercel فقط، والمستخدم لا يستلم شيئاً.
+أي مزوّد SMTP مجاني يعمل، ومثال **Brevo** (300 رسالة/يوم، بلا بطاقة):
+
+| المتغيّر | القيمة |
+|---|---|
+| `EMAIL_HOST` | `smtp-relay.brevo.com` |
+| `EMAIL_PORT` | `587` |
+| `EMAIL_USE_TLS` | `1` |
+| `EMAIL_HOST_USER` | بريد الحساب في Brevo |
+| `EMAIL_HOST_PASSWORD` | مفتاح SMTP من Brevo (SMTP key) |
+| `DEFAULT_FROM_EMAIL` | `SchoolPlatform <no-reply@نطاقك>` |
+
+بعد إضافة المتغيّرات وإعادة النشر، اختبر:
+
+```bash
+python manage.py send_test_email you@example.com
+```
+
+## 9) التخزين المؤقت المشترك
+
+حد المحاولات يستخدم قاعدة البيانات (`DatabaseCache`) لأن Vercel يشغّل عدة
+نسخ من الدالة، ولكل نسخة ذاكرة مستقلة. جدول `django_cache` يُنشأ تلقائياً في
+أمر البناء عبر `python manage.py createcachetable` (idempotent).
+تغيير اسم الجدول: `DJANGO_CACHE_TABLE`.
+
+## 10) مسار لوحة الإدارة
+
+`DJANGO_ADMIN_URL` يحدد مسار لوحة Django. القيمة الحالية سرية ومخزّنة في
+متغيّرات البيئة (وليست في الكود)، و`/admin/` لم يعد يعمل.
+لتغييرها: عدّل المتغيّر ثم أعد النشر.
+
+## 11) النسخ الاحتياطي
+
+```powershell
+$env:NEON_API_KEY="napi_..."
+$env:NEON_PROJECT_ID="frosty-dawn-46163110"
+python deploy\neon_backup.py
+```
+
+ينشئ فرعاً باسم `backup-YYYYMMDD-HHMM` (نسخة فورية copy-on-write داخل Neon)
+ويحذف الأقدم تلقائياً مع إبقاء 5 نسخ (`NEON_BACKUP_KEEP`).
+
+أول نسخة أُنشئت: `backup-20261103-1712` (الفرع الأساسي `main`).
+
+للجدولة الأسبوعية على Windows:
+
+```powershell
+schtasks /Create /SC WEEKLY /D SUN /TN "SchoolPlatformBackup" /TR "python E:\Desktop\SchoolPlatform\deploy\neon_backup.py" /ST 03:00
+```
+
+الاستعادة: أنشئ رابط اتصال من فرع النسخة في لوحة Neon وضعه في `DATABASE_URL`
+ثم أعد النشر (أو انسخ البيانات إلى الفرع الأساسي).
+
+## 12) المراقبة والنشر التلقائي
+
+- **المراقبة:** `.github/workflows/uptime.yml` يفحص صفحة الدخول كل 30 دقيقة
+  ويفشل عند أي رد غير 200 (فعّل إشعارات GitHub ليصلك بريد).
+- **النشر التلقائي:** اربط GitHub مرة واحدة من
+  <https://vercel.com/account/settings/authentication> → **Login Connections →
+  GitHub**، ثم **Project → Settings → Git → Connect Git Repository**. بعدها كل
+  `git push` إلى `main` يُنشر وحده. قبل ذلك، أعد تشغيل سكربت النشر يدوياً.
+
 
 ## حدود الخطة المجانية
 

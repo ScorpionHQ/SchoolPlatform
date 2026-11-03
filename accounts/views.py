@@ -10,6 +10,7 @@ from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.core.mail import send_mail
+from django.db import DatabaseError
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
@@ -76,6 +77,16 @@ def _login_cache_keys(request, login_code):
     )
 
 
+def _login_cache_get(key, default=0):
+    """Read a counter, tolerating a database cache that is not set up yet."""
+
+    try:
+        return cache.get(key, default)
+
+    except DatabaseError:
+        return default
+
+
 def _is_login_locked(request, login_code):
     """True when this code or IP has too many recent failures."""
 
@@ -83,10 +94,10 @@ def _is_login_locked(request, login_code):
 
     limit = _login_max_attempts()
 
-    if cache.get(code_key, 0) >= limit:
+    if _login_cache_get(code_key) >= limit:
         return True
 
-    return cache.get(ip_key, 0) >= limit * LOGIN_IP_MULTIPLIER
+    return _login_cache_get(ip_key) >= limit * LOGIN_IP_MULTIPLIER
 
 
 def _register_login_failure(request, login_code):
@@ -97,16 +108,27 @@ def _register_login_failure(request, login_code):
     for key in _login_cache_keys(request, login_code):
 
         try:
-            cache.incr(key)
 
-        except ValueError:
-            cache.set(key, 1, timeout)
+            try:
+                cache.incr(key)
+
+            except ValueError:
+                cache.set(key, 1, timeout)
+
+        except DatabaseError:
+            # A missing cache table must not break the login page.
+            return
 
 
 def _clear_login_failures(request, login_code):
 
     for key in _login_cache_keys(request, login_code):
-        cache.delete(key)
+
+        try:
+            cache.delete(key)
+
+        except DatabaseError:
+            return
 
 
 def _too_many_attempts_message():

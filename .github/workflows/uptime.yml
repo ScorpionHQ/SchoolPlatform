@@ -1,0 +1,19 @@
+name: Uptime
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: The login page responds
+        run: |
+          set -euo pipefail
+          url="https://schoolplatform-iq.vercel.app/accounts/login/"
+          code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 25 "$url")
+          echo "status=$code"
+          test "$code" = "200"

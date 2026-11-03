@@ -9,6 +9,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core import mail
 from django.core.cache import cache
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.db import DatabaseError
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils.encoding import force_bytes
@@ -257,6 +258,81 @@ class LoginRateLimitTests(TestCase):
         response = self._post()
 
         self.assertEqual(response.status_code, 429)
+
+
+class LoginCacheFailureTests(TestCase):
+    """A cache backend that is not ready must not break the login page."""
+
+    def setUp(self):
+
+        self.institution = Institution.objects.create(
+            name="Cache Failure School",
+            short_name="CF",
+        )
+
+        self.user = User.objects.create_user(
+            username="cache-failure-user",
+            password="correctpass123",
+            role=User.Role.SYSTEM_ADMIN,
+        )
+
+    def test_login_survives_a_missing_cache_table(self):
+
+        broken = mock.patch(
+            "accounts.views.cache.get",
+            side_effect=DatabaseError("cache table is missing"),
+        )
+
+        broken_set = mock.patch(
+            "accounts.views.cache.set",
+            side_effect=DatabaseError("cache table is missing"),
+        )
+
+        with broken, broken_set:
+
+            failed = self.client.post(
+                reverse("login"),
+                {
+                    "login_code": self.user.login_code,
+                    "password": "wrong-password",
+                },
+            )
+
+            self.assertEqual(failed.status_code, 200)
+
+            success = self.client.post(
+                reverse("login"),
+                {
+                    "login_code": self.user.login_code,
+                    "password": "correctpass123",
+                },
+            )
+
+        self.assertEqual(success.status_code, 302)
+
+
+@override_settings(
+    EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+)
+class SendTestEmailCommandTests(TestCase):
+
+    def test_sends_one_message(self):
+
+        from io import StringIO
+
+        from django.core.management import call_command
+
+        out = StringIO()
+
+        call_command(
+            "send_test_email",
+            "admin@example.com",
+            stdout=out,
+        )
+
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, ["admin@example.com"])
+        self.assertIn("Test message sent", out.getvalue())
 
 
 @override_settings(

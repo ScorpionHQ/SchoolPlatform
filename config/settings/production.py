@@ -87,6 +87,18 @@ if "pooler" in DATABASE_URL:
     DATABASES["default"]["DISABLE_SERVER_SIDE_CURSORS"] = True
 
 # ---------------------------------------------------------------------------
+# Cache (shared by every serverless instance, used for login rate limiting)
+# ---------------------------------------------------------------------------
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": os.environ.get("DJANGO_CACHE_TABLE", "django_cache"),
+        "TIMEOUT": 300,
+    }
+}
+
+# ---------------------------------------------------------------------------
 # Static files (WhiteNoise) and media files (Neon Object Storage)
 # ---------------------------------------------------------------------------
 
@@ -223,6 +235,14 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "").strip()
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 
 EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "1") == "1"
+
+EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL", "0") == "1"
+
+EMAIL_TIMEOUT = int(os.environ.get("EMAIL_TIMEOUT", "10"))
+
+# TLS and SSL cannot be enabled together.
+if EMAIL_USE_SSL:
+    EMAIL_USE_TLS = False
 
 DEFAULT_FROM_EMAIL = os.environ.get(
     "DEFAULT_FROM_EMAIL",

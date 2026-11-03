@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "python manage.py migrate --noinput && python manage.py bootstrap_admin",
+  "buildCommand": "python manage.py migrate --noinput && python manage.py createcachetable && python manage.py bootstrap_admin",
   "regions": ["fra1"],
   "functions": {
     "config/wsgi.py": {
