@@ -150,6 +150,8 @@ python manage.py compilemessages
 
 ### نشر مجاني سريع (Vercel + Neon)
 
+**النسخة المنشورة حالياً:** <https://schoolplatform-iq.vercel.app> (بديل: <https://schoolplatform-app.vercel.app>)
+
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ScorpionHQ/SchoolPlatform&env=DJANGO_SETTINGS_MODULE,DJANGO_SECRET_KEY,DJANGO_ALLOWED_HOSTS,DATABASE_URL,BOOTSTRAP_ADMIN_PASSWORD&envDefaults=%7B%22DJANGO_SETTINGS_MODULE%22%3A%22config.settings.production%22%2C%22DJANGO_ALLOWED_HOSTS%22%3A%22.vercel.app%22%7D)
 
 1. أنشئ قاعدة مجانية على [neon.tech](https://neon.tech) (تسجيل عبر GitHub، بلا بطاقة بنكية) وانسخ **Pooled connection string**.

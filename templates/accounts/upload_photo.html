@@ -96,21 +96,72 @@
 <script>
 document.getElementById('photo-input').addEventListener('change', function(e) {
 
-    var file = e.target.files[0];
+    var input = e.target;
+    var file = input.files[0];
 
     if (!file) {
         return;
     }
 
-    var reader = new FileReader();
+    var preview = document.getElementById('preview-img');
+    var container = document.getElementById('preview-container');
 
-    reader.onload = function(ev) {
-        var img = document.getElementById('preview-img');
-        img.src = ev.target.result;
-        document.getElementById('preview-container').style.display = 'block';
+    function show(source) {
+        preview.src = source;
+        container.style.display = 'block';
+    }
+
+    // Small files are uploaded as they are.
+    if (file.size <= 1.5 * 1024 * 1024) {
+        show(URL.createObjectURL(file));
+        return;
+    }
+
+    // Large phone photos are downscaled in the browser, because serverless
+    // hosts reject request bodies above 4.5 MB before Django sees them.
+    var source = URL.createObjectURL(file);
+    var image = new Image();
+
+    image.onload = function() {
+
+        var maxSide = 1200;
+        var scale = Math.min(1, maxSide / Math.max(image.width, image.height));
+        var canvas = document.createElement('canvas');
+
+        canvas.width = Math.round(image.width * scale);
+        canvas.height = Math.round(image.height * scale);
+        canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
+
+        canvas.toBlob(function(blob) {
+
+            if (!blob) {
+                show(source);
+                return;
+            }
+
+            var name = file.name.replace(/\.[^.]+$/, '') + '.jpg';
+            var compressed = new File([blob], name, { type: 'image/jpeg' });
+
+            try {
+                var transfer = new DataTransfer();
+                transfer.items.add(compressed);
+                input.files = transfer.files;
+            } catch (error) {
+                // Browsers without DataTransfer still upload the original.
+            }
+
+            show(URL.createObjectURL(compressed));
+            URL.revokeObjectURL(source);
+
+        }, 'image/jpeg', 0.85);
+
     };
 
-    reader.readAsDataURL(file);
+    image.onerror = function() {
+        show(source);
+    };
+
+    image.src = source;
 });
 </script>
 {% endblock %}

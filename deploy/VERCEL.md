@@ -4,6 +4,21 @@ Vercel يستضيف Django أصلاً (Python runtime) ويكتشف `manage.py` 
 `collectstatic` بنفسه. لا يحتاج بطاقة، ويعطي رابطاً دائماً `*.vercel.app` مع إمكانية
 ربط نطاقك الخاص مجاناً.
 
+## الرابط الحالي (منشور ويعمل)
+
+| الرابط | ملاحظة |
+|---|---|
+| <https://schoolplatform-iq.vercel.app> | الرابط الأساسي |
+| <https://schoolplatform-app.vercel.app> | رابط بديل |
+| <https://schoolplatform-beta.vercel.app> | الرابط الذي أنشأه Vercel تلقائياً |
+
+المشروع على Vercel: `schoolplatform` (id: `prj_KUKYs6FB4vYas7Y8VbQYw5OvYnLH`).
+آخر نشر ناجح: `dpl_FtNpAeLTqCp1YZLUttBg2MdYe77Q`.
+
+> التحديثات المستقبلية: لا يوجد ربط Git بعد، لذا بعد كل `git push` أعد تشغيل سكربت
+> النشر (`deploy_vercel_files.ps1`) أو اربط المستودع من **Project → Settings → Git**
+> ليصبح النشر تلقائياً.
+
 ## 1) قاعدة البيانات (تمّت)
 
 قاعدة Neon المجانية أُنشئت فعلاً:
@@ -51,8 +66,8 @@ Vercel يشغّل `collectstatic` تلقائياً لأن `STATIC_ROOT` مضبو
 
 قرص Vercel مؤقت للقراءة فقط، لذا `config/settings/production.py` يستخدم
 `core.storage.DatabaseStorage` تلقائياً عند غياب إعدادات S3. الصور تُخزَّن في
-قاعدة Neon وتُخدَم عبر `/media/...` (بحد أقصى 4.5MB للطلب الواحد، والصور
-تُصغَّر إلى 800px مسبقاً).
+قاعدة Neon وتُخدَم عبر `/media/...`. الصور الكبيرة تُصغَّر داخل المتصفح قبل
+الإرسال (حد Vercel للطلب 4.5MB)، ثم تُصغَّر مرة أخرى إلى 800px على الخادم.
 
 ## 5) النشر من لوحة Vercel
 
