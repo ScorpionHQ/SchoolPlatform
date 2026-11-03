@@ -3,8 +3,9 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.files.storage import default_storage
 from django.db.models import Avg, Count, Q, Sum
-from django.http import FileResponse
+from django.http import FileResponse, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
@@ -22,6 +23,8 @@ from institutions.models import Institution
 from parents.models import Parent
 from students.models import Student
 from subjects.models import Subject
+
+from .storage import media_content_type
 
 try:
     from teachers.models import Teacher
@@ -979,4 +982,30 @@ def service_worker(request):
     )
     response["Service-Worker-Allowed"] = "/"
     response["Cache-Control"] = "no-cache"
+    return response
+
+
+def serve_media(request, path):
+    """Serve an uploaded file from whichever storage backend is active."""
+
+    try:
+        exists = default_storage.exists(path)
+    except Exception:
+        exists = False
+
+    if not exists:
+        raise Http404("File not found")
+
+    try:
+        file = default_storage.open(path, "rb")
+    except Exception:
+        raise Http404("File not found")
+
+    response = FileResponse(
+        file,
+        content_type=media_content_type(path),
+    )
+
+    response["Cache-Control"] = "public, max-age=86400"
+
     return response

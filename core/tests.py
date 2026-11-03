@@ -1,7 +1,8 @@
 from datetime import date
 
 from django.contrib.auth.models import AnonymousUser
-from django.test import RequestFactory, TestCase
+from django.core.files.base import ContentFile
+from django.test import RequestFactory, TestCase, override_settings
 from django.urls import reverse
 
 from accounts.models import User
@@ -11,6 +12,8 @@ from institutions.models import Institution
 from parents.models import Parent
 from students.models import Student
 from subjects.models import Subject
+
+from .storage import DatabaseStorage
 
 
 class ManagerDashboardTests(TestCase):
@@ -269,3 +272,88 @@ class ErrorHandlerViewFunctionTests(TestCase):
             "⚠️",
             status_code=500,
         )
+
+
+@override_settings(
+    MEDIA_URL="/media/",
+)
+class DatabaseStorageTests(TestCase):
+
+    def setUp(self):
+
+        self.storage = DatabaseStorage()
+
+    def test_save_and_read_round_trip(self):
+
+        name = self.storage.save(
+            "profiles/photo.jpg",
+            ContentFile(b"fake-jpeg-bytes", name="photo.jpg"),
+        )
+
+        self.assertTrue(self.storage.exists(name))
+        self.assertEqual(self.storage.size(name), 15)
+
+        with self.storage.open(name, "rb") as handle:
+            self.assertEqual(handle.read(), b"fake-jpeg-bytes")
+
+    def test_url_is_served_under_media(self):
+
+        name = self.storage.save(
+            "profiles/photo.jpg",
+            ContentFile(b"x", name="photo.jpg"),
+        )
+
+        self.assertEqual(
+            self.storage.url(name),
+            "/media/profiles/photo.jpg",
+        )
+
+    def test_delete_removes_the_row(self):
+
+        name = self.storage.save(
+            "profiles/photo.jpg",
+            ContentFile(b"x", name="photo.jpg"),
+        )
+
+        self.storage.delete(name)
+
+        self.assertFalse(self.storage.exists(name))
+
+    def test_media_view_streams_the_file(self):
+
+        self.storage.save(
+            "profiles/public.png",
+            ContentFile(b"png-bytes", name="public.png"),
+        )
+
+        with override_settings(
+            STORAGES={
+                "default": {
+                    "BACKEND": "core.storage.DatabaseStorage",
+                },
+                "staticfiles": {
+                    "BACKEND": (
+                        "django.contrib.staticfiles.storage."
+                        "StaticFilesStorage"
+                    ),
+                },
+            },
+        ):
+
+            response = self.client.get("/media/profiles/public.png")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            b"".join(response.streaming_content),
+            b"png-bytes",
+        )
+        self.assertEqual(
+            response.headers["Content-Type"],
+            "image/png",
+        )
+
+    def test_missing_file_returns_404(self):
+
+        response = self.client.get("/media/profiles/missing.jpg")
+
+        self.assertEqual(response.status_code, 404)

@@ -1,7 +1,9 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
+
+from core.views import serve_media
 
 urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
@@ -33,6 +35,15 @@ urlpatterns += static(
     settings.MEDIA_URL,
     document_root=settings.MEDIA_ROOT,
 )
+
+# Works in production too, where the storage backend may be the database.
+urlpatterns += [
+    re_path(
+        r"^media/(?P<path>.*)$",
+        serve_media,
+        name="media",
+    ),
+]
 
 handler400 = "core.views.error_400"
 handler403 = "core.views.error_403"

@@ -147,6 +147,14 @@ if USE_REMOTE_MEDIA:
         },
     }
 
+# Without S3, keep uploads in Postgres so they survive a redeploy on hosts
+# with an ephemeral disk.
+elif os.environ.get("MEDIA_IN_DATABASE", "1") == "1":
+
+    STORAGES["default"] = {
+        "BACKEND": "core.storage.DatabaseStorage",
+    }
+
 # ---------------------------------------------------------------------------
 # HTTPS / proxy (Render terminates TLS in front of the app)
 # ---------------------------------------------------------------------------
