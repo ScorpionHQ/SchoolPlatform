@@ -141,24 +141,25 @@ python manage.py compilemessages
 
 - `DEBUG=False` افتراضياً، و`config/wsgi.py` و`config/asgi.py` يثبّتان إعدادات **الإنتاج** افتراضياً (وليس التطوير).
 - `SECRET_KEY` من `DJANGO_SECRET_KEY` مع رفض المفاتيح القصيرة أو الضعيفة.
-- `ALLOWED_HOSTS` من `DJANGO_ALLOWED_HOSTS` (قيم مفصولة بفواصل). على Render يُضاف نطاق الخدمة تلقائياً.
+- `ALLOWED_HOSTS` من `DJANGO_ALLOWED_HOSTS` (قيم مفصولة بفواصل). على Vercel وRender يُضاف نطاق الخدمة تلقائياً.
 - سياسات أمان HTTPS مفعلة: إعادة توجيه SSL، كوكيز آمنة، `SECURE_PROXY_SSL_HEADER`، منع XSS و clickjacking. HSTS **مُعطَّل عن قصد** حتى تثبيت النطاق النهائي.
 - قاعدة البيانات **PostgreSQL إلزامية** عبر `DATABASE_URL` (Neon أو أي مزوّد). لا يوجد fallback إلى SQLite في الإنتاج.
-- الملفات المرفوعة تُخزَّن في Neon Object Storage (أي S3 متوافق) عند ضبط `AWS_*`، وإلا فعلى قرص الخدمة المؤقت.
+- الملفات المرفوعة تُخزَّن في أي S3 متوافق عند ضبط `AWS_*`، وإلا ففي قاعدة البيانات (لأن أقراص الاستضافات المجانية مؤقتة). تُخدَم عبر `/media/...`.
 - البريد (استعادة كلمة المرور) عبر `EMAIL_HOST` وأخواته. عند تركه فارغاً تُطبَع الرسائل في سجلات الخادم.
 - `gunicorn` و`whitenoise` و`dj-database-url` و`psycopg` مضمّنة في `requirements.txt`.
 
-### نشر مجاني سريع (Render + Neon)
+### نشر مجاني سريع (Vercel + Neon)
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/ScorpionHQ/SchoolPlatform)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ScorpionHQ/SchoolPlatform&env=DJANGO_SETTINGS_MODULE,DJANGO_SECRET_KEY,DJANGO_ALLOWED_HOSTS,DATABASE_URL,BOOTSTRAP_ADMIN_PASSWORD&envDefaults=%7B%22DJANGO_SETTINGS_MODULE%22%3A%22config.settings.production%22%2C%22DJANGO_ALLOWED_HOSTS%22%3A%22.vercel.app%22%7D)
 
 1. أنشئ قاعدة مجانية على [neon.tech](https://neon.tech) (تسجيل عبر GitHub، بلا بطاقة بنكية) وانسخ **Pooled connection string**.
-2. اضغط الزر أعلاه، وسجّل الدخول إلى Render عبر GitHub، ثم الصق الرابط في `DATABASE_URL`.
-3. انتظر 3–6 دقائق. رابطك سيكون: `https://schoolplatform-xxxx.onrender.com`.
-4. ينشئ الخادم مدير النظام تلقائياً من `BOOTSTRAP_ADMIN_PASSWORD` عند أول تشغيل، ثم سجّل الدخول وغيّر كلمة المرور.
-5. أضف نطاقك المخصص من **Settings → Custom Domains** وحدّث `DJANGO_ALLOWED_HOSTS`.
+2. اضغط الزر أعلاه، وسجّل الدخول إلى Vercel عبر GitHub، ثم الصق `DATABASE_URL` وبقية القيم.
+3. انتظر 2–4 دقائق. رابطك سيكون: `https://schoolplatform-xxxx.vercel.app`.
+4. ينشئ البناء مدير النظام تلقائياً من `BOOTSTRAP_ADMIN_PASSWORD`، ثم سجّل الدخول وغيّر كلمة المرور.
+5. أضف نطاقك المخصص من **Settings → Domains** وحدّث `DJANGO_ALLOWED_HOSTS`.
 
-> الدليل العربي الكامل خطوة بخطوة (بما فيه Ping كل 12 دقيقة لتجنّب استهلاك حصة Neon): `deploy/RENDER_NEON.md`.
+> Vercel يكتشف Django تلقائياً ويشغّل `collectstatic` بنفسه؛ لا حاجة لإعداد خادم أو بطاقة.
+> الدليل العربي الكامل: `deploy/VERCEL.md`. (دليل Render يبقى في `deploy/RENDER_NEON.md` لكن Render صار يطلب بيانات دفع حتى للخطة المجانية.)
 
 ### حزمة النشر الجاهزة `deploy/`
 

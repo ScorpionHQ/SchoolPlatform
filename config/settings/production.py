@@ -48,6 +48,15 @@ RENDER_EXTERNAL_HOSTNAME = os.environ.get(
 if RENDER_EXTERNAL_HOSTNAME and RENDER_EXTERNAL_HOSTNAME not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
+# Vercel sets VERCEL_URL to the deployment hostname (no scheme).
+VERCEL_URL = os.environ.get("VERCEL_URL", "").strip()
+
+if VERCEL_URL and VERCEL_URL not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(VERCEL_URL)
+
+if os.environ.get("VERCEL") and ".vercel.app" not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(".vercel.app")
+
 if not ALLOWED_HOSTS:
     raise ImproperlyConfigured(
         "DJANGO_ALLOWED_HOSTS must list at least one host."
@@ -190,6 +199,16 @@ if RENDER_EXTERNAL_HOSTNAME:
 
     if render_origin not in CSRF_TRUSTED_ORIGINS:
         CSRF_TRUSTED_ORIGINS.append(render_origin)
+
+if VERCEL_URL:
+
+    vercel_origin = f"https://{VERCEL_URL}"
+
+    if vercel_origin not in CSRF_TRUSTED_ORIGINS:
+        CSRF_TRUSTED_ORIGINS.append(vercel_origin)
+
+if os.environ.get("VERCEL") and "https://*.vercel.app" not in CSRF_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS.append("https://*.vercel.app")
 
 # ---------------------------------------------------------------------------
 # Email (password reset)
