@@ -155,7 +155,7 @@ python manage.py compilemessages
 1. أنشئ قاعدة مجانية على [neon.tech](https://neon.tech) (تسجيل عبر GitHub، بلا بطاقة بنكية) وانسخ **Pooled connection string**.
 2. اضغط الزر أعلاه، وسجّل الدخول إلى Render عبر GitHub، ثم الصق الرابط في `DATABASE_URL`.
 3. انتظر 3–6 دقائق. رابطك سيكون: `https://schoolplatform-xxxx.onrender.com`.
-4. أنشئ مدير النظام من تبويب **Shell**: `python manage.py createsuperuser`.
+4. ينشئ الخادم مدير النظام تلقائياً من `BOOTSTRAP_ADMIN_PASSWORD` عند أول تشغيل، ثم سجّل الدخول وغيّر كلمة المرور.
 5. أضف نطاقك المخصص من **Settings → Custom Domains** وحدّث `DJANGO_ALLOWED_HOSTS`.
 
 > الدليل العربي الكامل خطوة بخطوة (بما فيه Ping كل 12 دقيقة لتجنّب استهلاك حصة Neon): `deploy/RENDER_NEON.md`.

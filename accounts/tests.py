@@ -1,6 +1,8 @@
+import os
 import shutil
 import tempfile
 from io import BytesIO
+from unittest import mock
 
 from django.contrib.messages import get_messages
 from django.contrib.auth.tokens import default_token_generator
@@ -374,6 +376,57 @@ class PasswordResetTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "غير صالح")
+
+
+class BootstrapAdminCommandTests(TestCase):
+
+    def _run(self, **env):
+
+        from io import StringIO
+
+        from django.core.management import call_command
+
+        out = StringIO()
+
+        with mock.patch.dict(os.environ, env, clear=False):
+
+            call_command(
+                "bootstrap_admin",
+                stdout=out,
+            )
+
+        return out.getvalue()
+
+    def test_creates_the_first_system_admin(self):
+
+        output = self._run(BOOTSTRAP_ADMIN_PASSWORD="TempPass!2026")
+
+        user = User.objects.get(role=User.Role.SYSTEM_ADMIN)
+
+        self.assertEqual(user.username, "admin")
+        self.assertTrue(user.login_code.startswith("SYS"))
+        self.assertTrue(user.is_superuser)
+        self.assertTrue(user.must_change_password)
+        self.assertTrue(user.check_password("TempPass!2026"))
+        self.assertIn("Created", output)
+
+    def test_does_nothing_without_a_password(self):
+
+        self._run()
+
+        self.assertFalse(
+            User.objects.filter(role=User.Role.SYSTEM_ADMIN).exists()
+        )
+
+    def test_is_idempotent(self):
+
+        self._run(BOOTSTRAP_ADMIN_PASSWORD="TempPass!2026")
+        self._run(BOOTSTRAP_ADMIN_PASSWORD="AnotherPass!2026")
+
+        self.assertEqual(
+            User.objects.filter(role=User.Role.SYSTEM_ADMIN).count(),
+            1,
+        )
 
 
 class MissingProfileMiddlewareTests(TestCase):

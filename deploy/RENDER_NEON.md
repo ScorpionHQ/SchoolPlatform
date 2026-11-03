@@ -95,6 +95,9 @@ postgresql://USER:PASSWORD@ep-xxxx-pooler.eu-central-1.aws.neon.tech/neondb?sslm
 | `DATABASE_URL` | رابط Neon من الخطوة 1 |
 | `PYTHON_VERSION` | `3.12.0` |
 | `WEB_CONCURRENCY` | `1` |
+| `BOOTSTRAP_ADMIN_PASSWORD` | كلمة مرور مؤقتة قوية للحساب الأول |
+
+> `BOOTSTRAP_ADMIN_PASSWORD` تُستخدم **مرة واحدة فقط** عند أول تشغيل لإنشاء مدير النظام (`admin`)، ثم يتجاهلها الأمر في كل نشر لاحق. الحساب يُجبَر على تغييرها عند أول دخول. يمكنك حذف المتغيّر بعد نجاح النشر.
 
 توليد مفتاح سري قوي (شغّله على جهازك):
 
@@ -144,25 +147,15 @@ python -c "import secrets; print(secrets.token_urlsafe(64))"
 1. اضغط **Create Web Service**. سيبدأ البناء (3–6 دقائق).
 2. راقب **Logs**. أول سطر يجب أن يكون تنفيذ `migrate` بلا أخطاء.
 3. عند ظهور `Your service is live`، افتح الرابط.
-4. أنشئ حساب المدير:
+4. يُنشئ `startCommand` حساب المدير تلقائياً من `BOOTSTRAP_ADMIN_PASSWORD` (اسم المستخدم `admin`، ويُطلب تغييرها فور أول دخول).
 
-   **الطريقة الأولى (من Render):** تبويب **Shell** ثم:
+   **يدوياً (اختياري):** تبويب **Shell** ثم:
 
    ```bash
    python manage.py createsuperuser
    ```
 
-   **الطريقة الثانية (من جهازك):**
-
-   ```powershell
-   $env:DATABASE_URL="postgresql://...neon.tech/neondb?sslmode=require"
-   $env:DJANGO_SETTINGS_MODULE="config.settings.production"
-   $env:DJANGO_SECRET_KEY="أي-نص-طويل-مؤقت"
-   $env:DJANGO_ALLOWED_HOSTS="localhost"
-   python manage.py createsuperuser
-   ```
-
-5. سجّل الدخول وابدأ بإعداد المدرسة من لوحة الإدارة.
+5. سجّل الدخول برمز الدخول الظاهر في السجلات (`SYS000001` عادةً) وابدأ بإعداد المدرسة من لوحة الإدارة.
 
 > الطالب/المعلم يدخل برمز الدخول (مثل `STU000001`). بعد أول دخول، يجب تغيير كلمة المرور، والصورة الشخصية اختيارية.
 
