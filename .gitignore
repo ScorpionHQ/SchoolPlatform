@@ -43,3 +43,5 @@ local_settings.py
 
 # Browser session export that may contain login cookies
 cookies.txt
+# Vercel CLI
+.vercel/
