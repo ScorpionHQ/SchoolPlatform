@@ -140,14 +140,25 @@ python manage.py compilemessages
 إعدادات الإنتاج معدة مسبقاً عبر `config.settings.production`:
 
 - `DEBUG=False` افتراضياً، و`config/wsgi.py` و`config/asgi.py` يثبّتان إعدادات **الإنتاج** افتراضياً (وليس التطوير).
-- `SECRET_KEY` من متغير البيئة `DJANGO_SECRET_KEY` (لا تنشر أبداً المفتاح الافتراضي).
-- `ALLOWED_HOSTS` من متغير البيئة `DJANGO_ALLOWED_HOSTS` (قيم مفصولة بفواصل)، وافتراضياً `localhost, 127.0.0.1`.
-- سياسات أمان HTTPS مفعلة: إعادة توجيه SSL (مع `SECURE_PROXY_SSL_HEADER` لتعمل خلف nginx بدون حلقات)، كوكيز آمنة، HSTS، منع XSS و clickjacking.
-- لوحة الإدارة Django على رابط مخصص عبر `DJANGO_ADMIN_URL` (يفضل قيمة سرية، الافتراضي `admin/`).
-- قاعدة البيانات SQLite افتراضياً. للتبديل إلى **PostgreSQL** اضبط المتغيرات التالية:
-  `DJANGO_DB_NAME` / `DJANGO_DB_USER` / `DJANGO_DB_PASSWORD` / `DJANGO_DB_HOST` (اختياري `DJANGO_DB_PORT`).
-- لإعادة توجيه HTTPS افتراضياً: `DJANGO_SECURE_SSL_REDIRECT=True`.
-- `gunicorn` مضمّن في `requirements.txt` (يُثبَّت تلقائياً على Linux فقط).
+- `SECRET_KEY` من `DJANGO_SECRET_KEY` مع رفض المفاتيح القصيرة أو الضعيفة.
+- `ALLOWED_HOSTS` من `DJANGO_ALLOWED_HOSTS` (قيم مفصولة بفواصل). على Render يُضاف نطاق الخدمة تلقائياً.
+- سياسات أمان HTTPS مفعلة: إعادة توجيه SSL، كوكيز آمنة، `SECURE_PROXY_SSL_HEADER`، منع XSS و clickjacking. HSTS **مُعطَّل عن قصد** حتى تثبيت النطاق النهائي.
+- قاعدة البيانات **PostgreSQL إلزامية** عبر `DATABASE_URL` (Neon أو أي مزوّد). لا يوجد fallback إلى SQLite في الإنتاج.
+- الملفات المرفوعة تُخزَّن في Neon Object Storage (أي S3 متوافق) عند ضبط `AWS_*`، وإلا فعلى قرص الخدمة المؤقت.
+- البريد (استعادة كلمة المرور) عبر `EMAIL_HOST` وأخواته. عند تركه فارغاً تُطبَع الرسائل في سجلات الخادم.
+- `gunicorn` و`whitenoise` و`dj-database-url` و`psycopg` مضمّنة في `requirements.txt`.
+
+### نشر مجاني سريع (Render + Neon)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/ScorpionHQ/SchoolPlatform)
+
+1. أنشئ قاعدة مجانية على [neon.tech](https://neon.tech) (تسجيل عبر GitHub، بلا بطاقة بنكية) وانسخ **Pooled connection string**.
+2. اضغط الزر أعلاه، وسجّل الدخول إلى Render عبر GitHub، ثم الصق الرابط في `DATABASE_URL`.
+3. انتظر 3–6 دقائق. رابطك سيكون: `https://schoolplatform-xxxx.onrender.com`.
+4. أنشئ مدير النظام من تبويب **Shell**: `python manage.py createsuperuser`.
+5. أضف نطاقك المخصص من **Settings → Custom Domains** وحدّث `DJANGO_ALLOWED_HOSTS`.
+
+> الدليل العربي الكامل خطوة بخطوة (بما فيه Ping كل 12 دقيقة لتجنّب استهلاك حصة Neon): `deploy/RENDER_NEON.md`.
 
 ### حزمة النشر الجاهزة `deploy/`
 
