@@ -1,6 +1,5 @@
 from pathlib import Path
 import os
-from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -125,8 +124,11 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = "ar"
 
 LANGUAGES = [
-    ("ar", _("Arabic")),
-    ("en", _("English")),
+    # Plain strings on purpose: Vercel serialises the settings module to JSON
+    # before the app registry is ready, and a lazy gettext value would raise
+    # AppRegistryNotReady at that point.
+    ("ar", "العربية"),
+    ("en", "English"),
 ]
 
 TIME_ZONE = "Asia/Baghdad"
