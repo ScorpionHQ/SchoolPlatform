@@ -13,7 +13,7 @@ Vercel يستضيف Django أصلاً (Python runtime) ويكتشف `manage.py` 
 | <https://schoolplatform-beta.vercel.app> | الرابط الذي أنشأه Vercel تلقائياً |
 
 المشروع على Vercel: `schoolplatform` (id: `prj_KUKYs6FB4vYas7Y8VbQYw5OvYnLH`).
-آخر نشر ناجح: `dpl_FtNpAeLTqCp1YZLUttBg2MdYe77Q`.
+آخر نشر ناجح: `dpl_6HJrAGDP5aAx5WQEGUNQT72V5T32`.
 
 > التحديثات المستقبلية: لا يوجد ربط Git بعد، لذا بعد كل `git push` أعد تشغيل سكربت
 > النشر (`deploy_vercel_files.ps1`) أو اربط المستودع من **Project → Settings → Git**
