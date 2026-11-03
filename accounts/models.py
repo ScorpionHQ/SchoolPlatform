@@ -116,3 +116,59 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.get_full_name() or self.username
+
+
+class AuditLog(models.Model):
+    """A simple, append-only record of security-relevant actions."""
+
+    class Action(models.TextChoices):
+        LOGIN = "login", _("Login")
+        LOGOUT = "logout", _("Logout")
+        CREATE = "create", _("Create")
+        UPDATE = "update", _("Update")
+        DELETE = "delete", _("Delete")
+        PASSWORD = "password", _("Password change")
+
+    user = models.ForeignKey(
+        "accounts.User",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="audit_logs",
+    )
+
+    action = models.CharField(
+        max_length=20,
+        choices=Action.choices,
+    )
+
+    model_name = models.CharField(
+        max_length=100,
+        blank=True,
+    )
+
+    object_id = models.CharField(
+        max_length=50,
+        blank=True,
+    )
+
+    description = models.TextField(
+        blank=True,
+    )
+
+    ip_address = models.GenericIPAddressField(
+        null=True,
+        blank=True,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    class Meta:
+        ordering = ["-created_at", "-id"]
+        verbose_name = _("Audit log")
+        verbose_name_plural = _("Audit logs")
+
+    def __str__(self):
+        return f"{self.user} - {self.action} - {self.created_at:%Y-%m-%d %H:%M}"

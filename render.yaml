@@ -3,8 +3,10 @@ services:
     name: schoolplatform
     runtime: python
     plan: free
+    region: frankfurt
     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
-    startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
+    startCommand: python manage.py migrate --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 120
+    healthCheckPath: /
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: config.settings.production
@@ -14,13 +16,35 @@ services:
         value: ".onrender.com"
       - key: PYTHON_VERSION
         value: "3.12.0"
+      - key: WEB_CONCURRENCY
+        value: "1"
+      # Neon Postgres (pooled connection string)
       - key: DATABASE_URL
-        fromDatabase:
-          name: schoolplatform-db
-          property: connectionString
-
-databases:
-  - name: schoolplatform-db
-    plan: free
-    databaseName: schoolplatform
-    user: schoolplatform
+        sync: false
+      # Neon Object Storage (optional; falls back to local disk when empty)
+      - key: AWS_STORAGE_BUCKET_NAME
+        sync: false
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_ENDPOINT_URL_S3
+        sync: false
+      - key: AWS_REGION
+        sync: false
+      # Optional
+      - key: OPENROUTER_API_KEY
+        sync: false
+      # Optional password-reset email (console logs when empty)
+      - key: EMAIL_HOST
+        sync: false
+      - key: EMAIL_PORT
+        value: "587"
+      - key: EMAIL_HOST_USER
+        sync: false
+      - key: EMAIL_HOST_PASSWORD
+        sync: false
+      - key: DEFAULT_FROM_EMAIL
+        sync: false
+      - key: DJANGO_SECURE_HSTS_SECONDS
+        value: "0"

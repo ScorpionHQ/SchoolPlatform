@@ -67,6 +67,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'accounts.middleware.ForcePasswordChangeMiddleware',
+    'accounts.middleware.RequireRoleProfileMiddleware',
     'accounts.middleware.ForceProfilePhotoMiddleware',
 
     'institutions.middleware.TenantMiddleware',

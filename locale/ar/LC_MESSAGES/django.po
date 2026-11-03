@@ -1919,3 +1919,129 @@ msgstr "تعذّر إنشاء ملف PDF. يرجى المحاولة مرة أخ�
 
 msgid "e.g. STU000001 or TCH000001"
 msgstr "مثال: STU000001 أو TCH000001"
+
+msgid "Add a profile photo so teachers and classmates can recognize you."
+msgstr "أضف صورة شخصية ليتعرف عليك معلموك وزملاؤك."
+
+msgid "Please choose an image first."
+msgstr "اختر صورة أولاً."
+
+msgid "The uploaded file is not a valid image."
+msgstr "الملف المرفوع ليس صورة صالحة."
+
+msgid "Only JPEG, PNG or WebP images are allowed."
+msgstr "يُسمح فقط بصور JPEG أو PNG أو WebP."
+
+msgid "Image must be less than 5 MB."
+msgstr "يجب أن تكون الصورة أقل من 5 ميغابايت."
+
+msgid "Profile photo uploaded successfully."
+msgstr "تم رفع الصورة الشخصية بنجاح."
+
+msgid "Upload Your Profile Photo"
+msgstr "ارفع صورتك الشخصية"
+
+msgid "A profile photo helps teachers and classmates recognize you. It is optional."
+msgstr "الصورة الشخصية تساعد معلميك وزملاءك على التعرف عليك، وهي اختيارية."
+
+msgid "Choose a photo (JPG, PNG or WebP, max 5 MB)"
+msgstr "اختر صورة (JPG أو PNG أو WebP، بحد أقصى 5 ميغابايت)"
+
+msgid "Upload Photo"
+msgstr "رفع الصورة"
+
+msgid "Skip for now"
+msgstr "تخطي الآن"
+
+msgid "Upload Profile Photo"
+msgstr "رفع الصورة الشخصية"
+
+msgid "This subject is not linked to a classroom."
+msgstr "هذه المادة غير مرتبطة بصف."
+
+msgid "Please provide a valid exam date."
+msgstr "يرجى إدخال تاريخ امتحان صالح."
+
+msgid "Please choose a valid attendance status for every student."
+msgstr "يرجى اختيار حالة حضور صالحة لكل طالب."
+
+msgid "Too many failed login attempts. Please try again in {minutes} minutes."
+msgstr "محاولات تسجيل الدخول الفاشلة كثيرة. يرجى المحاولة بعد {minutes} دقيقة."
+
+msgid "Your account is not linked to a school profile yet. Please contact the administration."
+msgstr "حسابك غير مرتبط بملف مدرسي بعد. يرجى مراجعة الإدارة."
+
+msgid "Reset Password"
+msgstr "استعادة كلمة المرور"
+
+msgid "Enter your login code and we will email you a reset link."
+msgstr "أدخل رمز الدخول وسنرسل إليك رابط إعادة التعيين بالبريد."
+
+msgid "The reset link is sent only if your account has an email address on file."
+msgstr "يُرسَل الرابط فقط إذا كان لحسابك بريد إلكتروني مسجّل."
+
+msgid "Send Reset Link"
+msgstr "إرسال رابط إعادة التعيين"
+
+msgid "Back to Login"
+msgstr "العودة لتسجيل الدخول"
+
+msgid "Set New Password"
+msgstr "تعيين كلمة مرور جديدة"
+
+msgid "Save New Password"
+msgstr "حفظ كلمة المرور الجديدة"
+
+msgid "This reset link is invalid or has already been used. Please request a new one."
+msgstr "رابط إعادة التعيين غير صالح أو استُخدم سابقاً. يرجى طلب رابط جديد."
+
+msgid "Request a New Link"
+msgstr "طلب رابط جديد"
+
+msgid "Forgot your password?"
+msgstr "نسيت كلمة المرور؟"
+
+msgid "Reset your password"
+msgstr "إعادة تعيين كلمة المرور"
+
+msgid "Hello {name}, use this link to set a new password: {link} If you did not request this, ignore this email."
+msgstr "مرحباً {name}، استخدم هذا الرابط لتعيين كلمة مرور جديدة: {link} إذا لم تطلب ذلك، تجاهل هذه الرسالة."
+
+msgid "If the account has an email address on file, a reset link has been sent. Please check the inbox."
+msgstr "إذا كان للحساب بريد إلكتروني مسجّل، فقد أُرسل رابط إعادة التعيين. يرجى مراجعة البريد الوارد."
+
+msgid "Your password has been reset. Please log in."
+msgstr "تمت إعادة تعيين كلمة المرور. يرجى تسجيل الدخول."
+
+msgid "Signed in"
+msgstr "تسجيل دخول"
+
+msgid "Signed out"
+msgstr "تسجيل خروج"
+
+msgid "Changed password"
+msgstr "تغيير كلمة المرور"
+
+msgid "Reset password"
+msgstr "إعادة تعيين كلمة المرور"
+
+msgid "Created user {username}"
+msgstr "إنشاء المستخدم {username}"
+
+msgid "Updated user {username}"
+msgstr "تحديث المستخدم {username}"
+
+msgid "Deleted user {username}"
+msgstr "حذف المستخدم {username}"
+
+msgid "Recorded payment of {amount} for {student}"
+msgstr "تسجيل دفعة {amount} للطالب {student}"
+
+msgid "Deleted payment of {amount} for {student}"
+msgstr "حذف دفعة {amount} للطالب {student}"
+
+msgid "Audit log"
+msgstr "سجل التدقيق"
+
+msgid "Audit logs"
+msgstr "سجلات التدقيق"

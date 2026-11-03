@@ -1,5 +1,7 @@
+from django.contrib import messages
 from django.shortcuts import redirect
-from django.urls import resolve, reverse
+from django.urls import resolve
+from django.utils.translation import gettext_lazy as _
 
 
 class ForcePasswordChangeMiddleware:
@@ -48,13 +50,20 @@ class ForcePasswordChangeMiddleware:
         return self.get_response(request)
 
 
-class ForceProfilePhotoMiddleware:
+class RequireRoleProfileMiddleware:
+    """Send users whose role profile is missing to a helpful page.
+
+    Creating a user from the administration panel creates only the login
+    account. A student/teacher account also needs its ``Student``/``Teacher``
+    record, and a parent needs a ``Parent`` record. Without this check those
+    users hit a 500/404 on their dashboard with no explanation.
+    """
 
     ALLOWED_URL_NAMES = {
-        "upload_photo",
+        "profile",
+        "change_password",
         "logout",
         "login",
-        "change_password",
     }
 
     ALLOWED_PATH_PREFIXES = (
@@ -63,8 +72,6 @@ class ForceProfilePhotoMiddleware:
         "/i18n/",
         "/admin/",
     )
-
-    FORCED_ROLES = ("student", "teacher")
 
     def __init__(self, get_response):
 
@@ -76,8 +83,8 @@ class ForceProfilePhotoMiddleware:
 
         if (
             user.is_authenticated
-            and user.role in self.FORCED_ROLES
-            and not user.profile_image
+            and self._wants_html(request)
+            and self._profile_is_missing(user)
         ):
 
             resolved = None
@@ -96,14 +103,97 @@ class ForceProfilePhotoMiddleware:
 
             if not is_allowed:
 
-                response = self.get_response(request)
+                messages.warning(
+                    request,
+                    _(
+                        "Your account is not linked to a school profile yet. "
+                        "Please contact the administration."
+                    ),
+                )
 
-                if response.status_code == 200:
-
-                    return redirect(
-                        f"{reverse('upload_photo')}?next={request.path}"
-                    )
-
-                return response
+                return redirect("profile")
 
         return self.get_response(request)
+
+    @staticmethod
+    def _profile_is_missing(user):
+        """True only for the roles that require a school profile."""
+
+        from parents.models import Parent
+        from students.models import Student
+        from teachers.models import Teacher
+
+        if user.role == "student":
+            return not Student.objects.filter(user=user).exists()
+
+        if user.role == "teacher":
+            return not Teacher.objects.filter(user=user).exists()
+
+        if user.role == "parent":
+            return not Parent.objects.filter(user=user).exists()
+
+        return False
+
+    @staticmethod
+    def _wants_html(request):
+        """Do not intercept JSON, AJAX or API clients."""
+
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
+            return False
+
+        accept = request.headers.get("accept", "")
+
+        return "text/html" in accept
+
+
+class ForceProfilePhotoMiddleware:
+    """Gently remind students and teachers to add a profile photo.
+
+    The photo is optional: this middleware never blocks a request. Blocking
+    used to redirect JSON/API responses and every page, and uploads may live
+    on storage that is reset when the server restarts.
+    """
+
+    REMINDER_SESSION_KEY = "profile_photo_reminder_shown"
+
+    REMINDER_ROLES = ("student", "teacher")
+
+    def __init__(self, get_response):
+
+        self.get_response = get_response
+
+    def __call__(self, request):
+
+        user = request.user
+
+        if (
+            request.method == "GET"
+            and user.is_authenticated
+            and user.role in self.REMINDER_ROLES
+            and not user.profile_image
+            and not request.session.get(self.REMINDER_SESSION_KEY)
+            and self._wants_html(request)
+        ):
+
+            messages.info(
+                request,
+                _(
+                    "Add a profile photo so teachers and classmates "
+                    "can recognize you."
+                ),
+            )
+
+            request.session[self.REMINDER_SESSION_KEY] = True
+
+        return self.get_response(request)
+
+    @staticmethod
+    def _wants_html(request):
+        """Do not touch JSON, AJAX or API clients."""
+
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
+            return False
+
+        accept = request.headers.get("accept", "")
+
+        return "text/html" in accept

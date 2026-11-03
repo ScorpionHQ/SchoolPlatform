@@ -384,6 +384,40 @@ class BillingServiceTests(TestCase):
                 user=self.manager,
             )
 
+    def test_record_payment_uses_fresh_balance_from_database(self):
+
+        student_fee = StudentFee.objects.create(
+            institution=self.institution,
+            student=self.student,
+            fee_type=self.fee,
+            amount=Decimal("100.00"),
+        )
+
+        stale_fee = StudentFee.objects.get(pk=student_fee.pk)
+
+        BillingService.record_payment(
+            student_fee,
+            "80.00",
+            user=self.manager,
+        )
+
+        # The stale instance still believes the whole balance is unpaid.
+        with self.assertRaises(BillingError):
+
+            BillingService.record_payment(
+                stale_fee,
+                "50.00",
+                user=self.manager,
+            )
+
+        student_fee.refresh_from_db()
+
+        self.assertEqual(student_fee.paid_amount, Decimal("80.00"))
+        self.assertEqual(
+            Payment.objects.filter(student_fee=student_fee).count(),
+            1,
+        )
+
     def test_record_payment_rejects_invalid_amount(self):
 
         student_fee = StudentFee.objects.create(
@@ -952,6 +986,15 @@ class BillingViewTests(TestCase):
 
         self.student_fee.refresh_from_db()
         self.assertEqual(self.student_fee.paid_amount, Decimal("0.00"))
+
+        from accounts.models import AuditLog
+
+        self.assertTrue(
+            AuditLog.objects.filter(
+                action=AuditLog.Action.DELETE,
+                model_name="Payment",
+            ).exists()
+        )
 
     def test_student_fee_delete(self):
 

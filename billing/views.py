@@ -5,7 +5,9 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
 
+from accounts.audit import log_action
 from accounts.decorators import login_required, manager_required
+from accounts.models import AuditLog
 from classes.models import ClassRoom
 from students.models import Student
 
@@ -310,6 +312,19 @@ def payment_create(request):
                     user=request.user,
                 )
 
+                log_action(
+                    request,
+                    AuditLog.Action.CREATE,
+                    obj=fee,
+                    model_name="Payment",
+                    description=str(
+                        _("Recorded payment of {amount} for {student}")
+                    ).format(
+                        amount=form.cleaned_data["amount"],
+                        student=fee.student,
+                    ),
+                )
+
                 messages.success(
                     request,
                     _("Payment recorded successfully."),
@@ -338,7 +353,24 @@ def payment_delete(request, pk):
 
     if request.method == "POST":
 
+        payment_pk = payment.pk
+        payment_amount = payment.amount
+        payment_student = payment.student
+
         BillingService.delete_payment(payment)
+
+        log_action(
+            request,
+            AuditLog.Action.DELETE,
+            model_name="Payment",
+            object_id=str(payment_pk),
+            description=str(
+                _("Deleted payment of {amount} for {student}")
+            ).format(
+                amount=payment_amount,
+                student=payment_student,
+            ),
+        )
 
         messages.success(request, _("Payment removed."))
 

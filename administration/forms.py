@@ -87,6 +87,20 @@ class UserAdminForm(forms.ModelForm):
             user.set_password(password)
 
         if commit:
+
             user.save()
 
+            self._ensure_parent_profile(user)
+
         return user
+
+    @staticmethod
+    def _ensure_parent_profile(user):
+        """A parent account needs a Parent record to open its dashboard."""
+
+        if user.role != User.Role.PARENT:
+            return
+
+        from parents.models import Parent
+
+        Parent.objects.get_or_create(user=user)

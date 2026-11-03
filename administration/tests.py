@@ -98,6 +98,67 @@ class AdministrationTests(TestCase):
         self.assertTrue(user.is_active)
         self.assertTrue(user.check_password("Test12345!"))
 
+        from accounts.models import AuditLog
+
+        self.assertTrue(
+            AuditLog.objects.filter(
+                action=AuditLog.Action.CREATE,
+                object_id=str(user.pk),
+            ).exists()
+        )
+
+    def test_creating_a_parent_also_creates_the_parent_profile(self):
+
+        from parents.models import Parent
+
+        self._login(self.admin)
+
+        self.client.post(
+            reverse("administration:user_create"),
+            {
+                "username": "new_parent",
+                "password": "Test12345!",
+                "first_name": "New",
+                "last_name": "Parent",
+                "role": "parent",
+                "gender": "",
+                "phone_number": "",
+                "is_active": "on",
+                "must_change_password": "",
+            },
+        )
+
+        user = get_user_model().objects.get(username="new_parent")
+
+        self.assertTrue(Parent.objects.filter(user=user).exists())
+
+    def test_creating_a_teacher_does_not_create_a_teacher_profile(self):
+
+        from teachers.models import Teacher
+
+        self._login(self.admin)
+
+        self.client.post(
+            reverse("administration:user_create"),
+            {
+                "username": "profile_less_teacher",
+                "password": "Test12345!",
+                "first_name": "Profile",
+                "last_name": "Less",
+                "role": "teacher",
+                "gender": "",
+                "phone_number": "",
+                "is_active": "on",
+                "must_change_password": "",
+            },
+        )
+
+        user = get_user_model().objects.get(
+            username="profile_less_teacher",
+        )
+
+        self.assertFalse(Teacher.objects.filter(user=user).exists())
+
     def test_user_create_requires_password(self):
 
         self._login(self.admin)

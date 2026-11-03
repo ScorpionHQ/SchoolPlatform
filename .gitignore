@@ -40,3 +40,6 @@ dist/
 
 # Local server secrets (API keys, etc.) - NEVER committed to git
 local_settings.py
+
+# Browser session export that may contain login cookies
+cookies.txt

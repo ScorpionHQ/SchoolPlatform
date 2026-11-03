@@ -6,6 +6,7 @@ from django.urls import reverse
 from openpyxl import Workbook
 
 from accounts.models import User
+from attendance.models import Attendance
 from classes.models import ClassRoom
 from grades.models import Grade
 from institutions.models import Institution
@@ -351,6 +352,22 @@ class EnterGradesPostTests(TestCase):
             student_code="S000002",
         )
 
+        self.third_classroom = ClassRoom.objects.create(
+            name="Grade 7",
+            institution=self.institution,
+        )
+
+        self.other_class_student = Student.objects.create(
+            user=User.objects.create_user(
+                username="other-class",
+                password="studentpass123",
+                role=User.Role.STUDENT,
+            ),
+            institution=self.institution,
+            classroom=self.third_classroom,
+            student_code="S000003",
+        )
+
         self.client.force_login(self.teacher_user)
 
     def _post(self, **overrides):
@@ -433,6 +450,41 @@ class EnterGradesPostTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Grade.objects.count(), 0)
 
+    def test_student_from_another_classroom_rejected(self):
+
+        response = self._post(student_id=self.other_class_student.pk)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Grade.objects.count(), 0)
+
+    def test_subject_without_classroom_rejected(self):
+
+        subject_without_classroom = Subject.objects.create(
+            name="Art",
+            institution=self.institution,
+            teacher=self.teacher,
+            classroom=None,
+        )
+
+        response = self._post(subject_id=subject_without_classroom.pk)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Grade.objects.count(), 0)
+
+    def test_invalid_exam_date_rejected(self):
+
+        response = self._post(exam_date="not-a-date")
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Grade.objects.count(), 0)
+
+    def test_missing_exam_date_rejected(self):
+
+        response = self._post(exam_date="")
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Grade.objects.count(), 0)
+
     def test_empty_exam_name_rejected(self):
 
         response = self._post(exam_name="   ")
@@ -473,6 +525,128 @@ class EnterGradesPostTests(TestCase):
         response = self._post(subject_id=self.other_subject.pk)
 
         self.assertEqual(response.status_code, 404)
+
+
+class AttendanceSaveTests(TestCase):
+
+    def setUp(self):
+
+        self.institution = Institution.objects.create(
+            name="Attendance School",
+            short_name="AS",
+        )
+
+        self.classroom = ClassRoom.objects.create(
+            name="Grade 4",
+            institution=self.institution,
+        )
+
+        self.teacher_user = User.objects.create_user(
+            username="attendance-teacher",
+            password="teacherpass123",
+            role=User.Role.TEACHER,
+        )
+
+        self.teacher = Teacher.objects.create(
+            user=self.teacher_user,
+            institution=self.institution,
+            employee_code="TCH000010",
+        )
+
+        self.subject = Subject.objects.create(
+            name="Arabic",
+            institution=self.institution,
+            teacher=self.teacher,
+            classroom=self.classroom,
+        )
+
+        self.other_teacher = Teacher.objects.create(
+            user=User.objects.create_user(
+                username="other-teacher",
+                password="teacherpass123",
+                role=User.Role.TEACHER,
+            ),
+            institution=self.institution,
+            employee_code="TCH000011",
+        )
+
+        self.other_subject = Subject.objects.create(
+            name="History",
+            institution=self.institution,
+            teacher=self.other_teacher,
+            classroom=self.classroom,
+        )
+
+        self.student = Student.objects.create(
+            user=User.objects.create_user(
+                username="attendance-student",
+                password="studentpass123",
+                role=User.Role.STUDENT,
+            ),
+            institution=self.institution,
+            classroom=self.classroom,
+            student_code="S000010",
+        )
+
+        self.client.force_login(self.teacher_user)
+
+    def _post(self, **overrides):
+
+        data = {
+            "subject": self.subject.pk,
+            "save_attendance": "1",
+            f"status_{self.student.pk}": Attendance.Status.ABSENT,
+        }
+
+        data.update(overrides)
+
+        return self.client.post(
+            reverse("teachers:take_attendance"),
+            data,
+        )
+
+    def test_valid_attendance_is_saved(self):
+
+        response = self._post()
+
+        self.assertEqual(response.status_code, 200)
+
+        record = Attendance.objects.get(
+            student=self.student,
+            subject=self.subject,
+        )
+
+        self.assertEqual(record.status, Attendance.Status.ABSENT)
+        self.assertEqual(record.teacher, self.teacher)
+        self.assertEqual(record.classroom, self.classroom)
+
+    def test_invalid_status_is_rejected(self):
+
+        response = self._post(**{f"status_{self.student.pk}": "hacked"})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Attendance.objects.count(), 0)
+        self.assertContains(response, "حالة حضور صالحة")
+
+    def test_missing_status_is_rejected(self):
+
+        response = self.client.post(
+            reverse("teachers:take_attendance"),
+            {
+                "subject": self.subject.pk,
+                "save_attendance": "1",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Attendance.objects.count(), 0)
+
+    def test_teacher_cannot_save_another_teachers_subject(self):
+
+        response = self._post(subject=self.other_subject.pk)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(Attendance.objects.count(), 0)
 
 
 class ExcelFileImportHelperTests(TestCase):

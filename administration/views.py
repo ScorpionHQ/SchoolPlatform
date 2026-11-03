@@ -5,8 +5,9 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
+from accounts.audit import log_action
 from accounts.decorators import role_required
-from accounts.models import User
+from accounts.models import AuditLog, User
 from institutions.models import Institution
 from parents.models import Parent
 from students.models import Student
@@ -133,6 +134,15 @@ def user_create(request):
 
             user = form.save()
 
+            log_action(
+                request,
+                AuditLog.Action.CREATE,
+                obj=user,
+                description=str(_("Created user {username}")).format(
+                    username=user.username,
+                ),
+            )
+
             messages.success(
                 request,
                 _("User {name} created successfully.").format(
@@ -180,6 +190,15 @@ def user_update(request, pk):
 
             user = form.save()
 
+            log_action(
+                request,
+                AuditLog.Action.UPDATE,
+                obj=user,
+                description=str(_("Updated user {username}")).format(
+                    username=user.username,
+                ),
+            )
+
             messages.success(
                 request,
                 _("User {name} updated successfully.").format(
@@ -220,6 +239,17 @@ def user_delete(request, pk):
     if request.method == "POST":
 
         display_name = user.get_full_name() or user.username
+
+        log_action(
+            request,
+            AuditLog.Action.DELETE,
+            obj=user,
+            user=request.user,
+            model_name="User",
+            description=str(_("Deleted user {username}")).format(
+                username=user.username,
+            ),
+        )
 
         user.delete()
 

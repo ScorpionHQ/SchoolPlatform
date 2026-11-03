@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.dateparse import parse_date
 from django.utils.translation import gettext_lazy as _
 
 from accounts.decorators import manager_required, teacher_required
@@ -371,65 +372,91 @@ def take_attendance(request):
 
                 from datetime import date
 
+                students = list(students)
+
+                valid_statuses = set(Attendance.Status.values)
+
+                statuses = {}
+
                 for student in students:
 
                     status = request.POST.get(
                         f"status_{student.id}",
                     )
 
-                    Attendance.objects.update_or_create(
+                    if status not in valid_statuses:
+                        statuses = None
+                        break
 
-                        student=student,
-                        subject=subject,
-                        date=date.today(),
+                    statuses[student.id] = status
 
-                        defaults={
-                            "teacher": teacher,
-                            "classroom": subject.classroom,
-                            "status": status,
-                        },
+                if statuses is None:
+
+                    messages.error(
+                        request,
+                        _(
+                            "Please choose a valid attendance status "
+                            "for every student."
+                        ),
                     )
 
-                for student in students:
+                else:
 
-                    NotificationService.student_and_parents(
-                        student,
-                        ntype=NotificationService.Type.ATTENDANCE,
-                        title=_("Attendance recorded"),
-                        message=_(
-                            "Your attendance on {date} was marked "
-                            "in {subject}."
-                        ).format(
+                    for student in students:
+
+                        Attendance.objects.update_or_create(
+
+                            student=student,
+                            subject=subject,
                             date=date.today(),
-                            subject=subject.name,
+
+                            defaults={
+                                "teacher": teacher,
+                                "classroom": subject.classroom,
+                                "status": statuses[student.id],
+                            },
+                        )
+
+                    for student in students:
+
+                        NotificationService.student_and_parents(
+                            student,
+                            ntype=NotificationService.Type.ATTENDANCE,
+                            title=_("Attendance recorded"),
+                            message=_(
+                                "Your attendance on {date} was marked "
+                                "in {subject}."
+                            ).format(
+                                date=date.today(),
+                                subject=subject.name,
+                            ),
+                            student_link="/students/attendance/",
+                            parent_link="/",
+                        )
+
+                    NotificationService.notify_institution_managers(
+                        subject.institution,
+                        ntype=NotificationService.Type.ATTENDANCE,
+                        title=_("Attendance session recorded"),
+                        message=_(
+                            "Attendance was recorded for {count} students "
+                            "in class {classroom} on {date}."
+                        ).format(
+                            count=len(students),
+                            classroom=getattr(
+                                subject.classroom,
+                                "name",
+                                "",
+                            ),
+                            date=date.today(),
                         ),
-                        student_link="/students/attendance/",
-                        parent_link="/",
+                        link="/attendance/",
                     )
 
-                NotificationService.notify_institution_managers(
-                    subject.institution,
-                    ntype=NotificationService.Type.ATTENDANCE,
-                    title=_("Attendance session recorded"),
-                    message=_(
-                        "Attendance was recorded for {count} students "
-                        "in class {classroom} on {date}."
-                    ).format(
-                        count=len(students),
-                        classroom=getattr(
-                            subject.classroom,
-                            "name",
-                            "",
-                        ),
-                        date=date.today(),
-                    ),
-                    link="/attendance/",
-                )
-
-                messages.success(
-                    request,
-                    _("Attendance saved successfully."),
-                )
+                    messages.success(
+                        request,
+                        _("Attendance saved successfully."),
+                    )
 
     context = {
         "subjects": subjects,
@@ -459,6 +486,15 @@ def enter_grades(request):
             teacher=teacher,
         )
 
+        if subject.classroom_id is None:
+
+            messages.error(
+                request,
+                _("This subject is not linked to a classroom."),
+            )
+
+            return redirect(request.path)
+
         student = None
 
         student_id = request.POST.get("student_id")
@@ -468,6 +504,7 @@ def enter_grades(request):
             student = Student.objects.filter(
                 id=student_id,
                 institution=subject.institution,
+                classroom=subject.classroom,
             ).first()
 
         if student is None:
@@ -532,6 +569,27 @@ def enter_grades(request):
                 f"{request.path}?subject={subject.id}"
             )
 
+        exam_date_raw = (request.POST.get("exam_date") or "").strip()
+
+        try:
+
+            exam_date = parse_date(exam_date_raw)
+
+        except ValueError:
+
+            exam_date = None
+
+        if exam_date is None:
+
+            messages.error(
+                request,
+                _("Please provide a valid exam date."),
+            )
+
+            return redirect(
+                f"{request.path}?subject={subject.id}"
+            )
+
         Grade.objects.update_or_create(
             student=student,
             subject=subject,
@@ -541,7 +599,7 @@ def enter_grades(request):
                 "score": score,
                 "max_score": max_score,
                 "note": request.POST.get("note"),
-                "exam_date": request.POST.get("exam_date"),
+                "exam_date": exam_date,
             },
         )
 

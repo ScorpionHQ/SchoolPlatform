@@ -13,6 +13,10 @@ gunicorn>=21.2
 whitenoise>=6.8
 dj-database-url>=2.3
 
+# Media storage (Neon Object Storage / any S3-compatible endpoint)
+django-storages[s3]>=1.14
+boto3>=1.35
+
 # Database (PostgreSQL in production)
 psycopg[binary]>=3.1; sys_platform != "win32"
 psycopg2-binary>=2.9; sys_platform != "win32"

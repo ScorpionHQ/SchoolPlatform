@@ -82,32 +82,41 @@ class BillingService:
         except (InvalidOperation, ValueError):
             raise BillingError(_("Invalid payment amount."))
 
-        remaining = student_fee.remaining
-
         if amount <= 0:
             raise BillingError(_("Payment amount must be greater than zero."))
 
-        if amount > remaining:
-            raise BillingError(
-                _("Payment amount cannot exceed the remaining balance.")
-            )
-
         with transaction.atomic():
 
-            student_fee.paid_amount += amount
-            student_fee.save(
+            # Lock the row so two simultaneous payments cannot both pass the
+            # balance check and overpay the same fee.
+            locked_fee = StudentFee.objects.select_for_update().get(
+                pk=student_fee.pk,
+            )
+
+            remaining = locked_fee.remaining
+
+            if amount > remaining:
+                raise BillingError(
+                    _("Payment amount cannot exceed the remaining balance.")
+                )
+
+            locked_fee.paid_amount += amount
+            locked_fee.save(
                 update_fields=["paid_amount", "updated_at"]
             )
 
             payment = Payment.objects.create(
-                institution=student_fee.institution,
-                student=student_fee.student,
-                student_fee=student_fee,
+                institution=locked_fee.institution,
+                student=locked_fee.student,
+                student_fee=locked_fee,
                 amount=amount,
                 method=method,
                 note=note or "",
                 created_by=user,
             )
+
+        # Keep the caller's instance in sync with the locked copy.
+        student_fee.paid_amount = locked_fee.paid_amount
 
         if notify:
 
@@ -140,10 +149,18 @@ class BillingService:
 
         with transaction.atomic():
 
-            fee = payment.student_fee
+            # Locking both rows keeps a double-submit or a simultaneous
+            # payment from corrupting the fee balance.
+            locked_payment = Payment.objects.select_for_update().get(
+                pk=payment.pk,
+            )
+
+            fee = StudentFee.objects.select_for_update().get(
+                pk=locked_payment.student_fee_id,
+            )
 
             fee.paid_amount = max(
-                fee.paid_amount - payment.amount,
+                fee.paid_amount - locked_payment.amount,
                 0,
             )
 
@@ -151,7 +168,7 @@ class BillingService:
                 update_fields=["paid_amount", "updated_at"]
             )
 
-            payment.delete()
+            locked_payment.delete()
 
         return fee
 
