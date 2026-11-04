@@ -13,7 +13,7 @@ Vercel يستضيف Django أصلاً (Python runtime) ويكتشف `manage.py` 
 | <https://schoolplatform-beta.vercel.app> | الرابط الذي أنشأه Vercel تلقائياً |
 
 المشروع على Vercel: `schoolplatform` (id: `prj_KUKYs6FB4vYas7Y8VbQYw5OvYnLH`).
-آخر نشر ناجح: `dpl_8jv1GkvY4xPVefi4RSGpqq5K4XLa`.
+آخر نشر ناجح: `dpl_FV5ZnFgTgzv5tXBBjwwrfcA36Q2n`.
 
 > التحديثات المستقبلية: لا يوجد ربط Git بعد، لذا بعد كل `git push` أعد تشغيل سكربت
 > النشر (`deploy_vercel_files.ps1`) أو اربط المستودع من **Project → Settings → Git**
@@ -167,10 +167,43 @@ schtasks /Create /SC WEEKLY /D SUN /TN "SchoolPlatformBackup" /TR "python E:\Des
 
 - **المراقبة:** `.github/workflows/uptime.yml` يفحص صفحة الدخول كل 30 دقيقة
   ويفشل عند أي رد غير 200 (فعّل إشعارات GitHub ليصلك بريد).
-- **النشر التلقائي:** اربط GitHub مرة واحدة من
-  <https://vercel.com/account/settings/authentication> → **Login Connections →
-  GitHub**، ثم **Project → Settings → Git → Connect Git Repository**. بعدها كل
-  `git push` إلى `main` يُنشر وحده. قبل ذلك، أعد تشغيل سكربت النشر يدوياً.
+
+### النشر
+
+المشروع **ليس مربوطاً بـ Git** على Vercel (الربط يتطلب Login Connection مع
+GitHub). لذلك يوجد مسارَان:
+
+**أ) تلقائي عبر GitHub Actions (المستخدَم حالياً)**
+
+`.github/workflows/deploy.yml` ينشر عند كل `push` إلى `main` باستخدام
+`deploy/vercel_deploy.py` وواجهة Vercel البرمجية. يلزم سر واحد فقط:
+
+1. <https://vercel.com/account/tokens> → **Create Token** (صلاحية كاملة، نطاق
+   المشروع أو الحساب).
+2. GitHub → **Settings → Secrets and variables → Actions → New repository
+   secret** بالاسم `VERCEL_TOKEN`.
+3. **Actions → Deploy → Run workflow** لتجربة أول نشر.
+
+**ب) يدوي من أي جهاز**
+
+```powershell
+$env:VERCEL_TOKEN = "..."
+python deploy\vercel_deploy.py
+```
+
+السكربت يرفع الملفات المتغيّرة فقط (بصمة SHA-1)، ويرفع بالتوازي (8 عمال)،
+ثم ينتظر حتى تصبح الحالة `READY`. يتجاوز `.git` و`media` و`staticfiles`
+و`venv` و`.env*` تلقائياً.
+
+**ج) الربط الرسمي بـ Git (الأفضل لاحقاً)**
+
+أضف Login Connection من
+<https://vercel.com/account/settings/authentication> ثم
+**Project → Settings → Git → Connect Git Repository**. بعدها يمكن حذف
+الوركفلو، لأن Vercel سينشر بنفسه.
+
+> آخر نشر: `dpl_FV5ZnFgTgzv5tXBBjwwrfcA36Q2n` — 348 ملفاً، 315 بصمة فريدة،
+> البناء `READY` على `fra1`.
 
 
 ## حدود الخطة المجانية
