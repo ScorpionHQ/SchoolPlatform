@@ -7,18 +7,20 @@ API, so a Git push can deploy from a GitHub Actions workflow.
 Required environment variables:
 
     VERCEL_TOKEN        personal token from https://vercel.com/account/tokens
-    VERCEL_PROJECT_ID   prj_... (defaults to the SchoolPlatform project)
 
 Optional:
 
+    VERCEL_PROJECT_ID   prj_... (defaults to the SchoolPlatform project)
     VERCEL_TEAM_ID      team_... when the project belongs to a team
     VERCEL_PROJECT_NAME project name, used as the deployment name
+    VERCEL_WORKERS      parallel uploads, default 8
 
 Usage:
 
     python deploy/vercel_deploy.py
 """
 
+import concurrent.futures
 import hashlib
 import json
 import os
@@ -40,6 +42,8 @@ PROJECT_ID = os.environ.get(
 TEAM_ID = os.environ.get("VERCEL_TEAM_ID", "team_KYTFCN2nSc7JVVVc1JLltrdD")
 
 PROJECT_NAME = os.environ.get("VERCEL_PROJECT_NAME", "schoolplatform")
+
+WORKERS = int(os.environ.get("VERCEL_WORKERS", "8"))
 
 SKIP_DIRS = {
     ".git",
@@ -96,8 +100,6 @@ def query(extra=""):
 
 def call(method, path, payload=None, extra="", raw=None, headers=None):
 
-    url = API + path + query(extra)
-
     data = None
 
     if raw is not None:
@@ -106,7 +108,7 @@ def call(method, path, payload=None, extra="", raw=None, headers=None):
     elif payload is not None:
         data = json.dumps(payload).encode("utf-8")
 
-    request = urllib.request.Request(url, data=data, method=method)
+    request = urllib.request.Request(API + path + query(extra), data=data, method=method)
 
     request.add_header("Authorization", f"Bearer {token()}")
 
@@ -122,7 +124,7 @@ def call(method, path, payload=None, extra="", raw=None, headers=None):
 
     try:
 
-        with urllib.request.urlopen(request, timeout=180) as response:
+        with urllib.request.urlopen(request, timeout=90) as response:
 
             body = response.read()
 
@@ -138,9 +140,14 @@ def call(method, path, payload=None, extra="", raw=None, headers=None):
 
         raise RuntimeError(f"{method} {path} -> network error: {error.reason}") from error
 
+    except OSError as error:
+
+        raise RuntimeError(f"{method} {path} -> socket error: {error}") from error
+
 
 def collect_files():
     """Every file that belongs in the deployment, with its content."""
+
     files = []
 
     for path in sorted(ROOT.rglob("*")):
@@ -167,11 +174,12 @@ def collect_files():
     return files
 
 
-def upload(relative, content):
+def upload(item):
+    """Send one file; the digest makes repeat uploads idempotent."""
 
-    digest = hashlib.sha1(content).hexdigest()
+    relative, content, digest = item
 
-    for attempt in range(1, 5):
+    for attempt in range(1, 4):
 
         try:
 
@@ -182,22 +190,20 @@ def upload(relative, content):
                 headers={"x-vercel-digest": digest},
             )
 
-            return digest
+            return relative, digest
 
         except Exception as error:
 
-            # 409 means the file already exists on the server.
+            # 409 means the server already has this content.
             if "-> 409" in str(error):
-                return digest
+                return relative, digest
 
-            if attempt == 4:
-                raise
-
-            print(f"retry {attempt} {relative}: {error}")
+            if attempt == 3:
+                raise RuntimeError(f"{relative}: {error}") from error
 
             time.sleep(2 * attempt)
 
-    return digest
+    return relative, digest
 
 
 def main():
@@ -208,25 +214,33 @@ def main():
 
     print(f"files={len(files)} totalMB={total / (1024 * 1024):.1f}")
 
-    manifest = []
-
-    uploaded = set()
+    unique = {}
 
     for relative, content in files:
 
-        digest = upload(relative, content)
+        digest = hashlib.sha1(content).hexdigest()
 
-        manifest.append(
-            {
-                "file": relative,
-                "sha": digest,
-                "size": len(content),
-            }
-        )
+        unique.setdefault(digest, (relative, content, digest))
 
-        uploaded.add(digest)
+    print(f"unique={len(unique)} workers={WORKERS}")
 
-    print(f"unique={len(uploaded)}")
+    done = 0
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=WORKERS) as pool:
+
+        for relative, digest in pool.map(upload, unique.values()):
+
+            done += 1
+
+            if done % 50 == 0:
+                print(f"uploaded={done}/{len(unique)}")
+
+    print(f"uploaded={done}")
+
+    manifest = [
+        {"file": relative, "sha": hashlib.sha1(content).hexdigest(), "size": len(content)}
+        for relative, content in files
+    ]
 
     deployment = call(
         "POST",
@@ -243,7 +257,7 @@ def main():
 
     deployment_id = deployment["id"]
 
-    print(f"deployment={deployment_id}")
+    print(f"deployment={deployment_id}", flush=True)
 
     for _ in range(POLL_LIMIT):
 
@@ -251,7 +265,7 @@ def main():
 
         state = call("GET", f"/v13/deployments/{deployment_id}")
 
-        print(f"state={state.get('readyState')}")
+        print(f"state={state.get('readyState')}", flush=True)
 
         if state.get("readyState") == "READY":
 
