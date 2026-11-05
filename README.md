@@ -235,6 +235,23 @@ curl -I https://example.com/          # يجب أن يعيد 200 أو 302
 curl -I http://example.com/           # يجب أن يعيد 301 (HTTPS)
 ```
 
+## التقرير الشامل (للعرض على المشتري)
+
+مجلد `docs/` يضم التقرير الفني والتجاري الكامل بثلاث صيغ من مصدر واحد:
+
+| الملف | الصيغة | الاستخدام |
+| --- | --- | --- |
+| `docs/PROJECT_REPORT_AR.docx` | Word قابل للتعديل | التعديل وإضافة شعار الشركة قبل الإرسال |
+| `docs/PROJECT_REPORT_AR.pdf` | PDF منسّق (17 صفحة) | الإرسال المباشر للمشتري |
+| `docs/PROJECT_REPORT_AR.md` | Markdown | مصدر التقرير، تُعدَّل منه كل الصيغ |
+
+إعادة البناء بعد أي تعديل على ملف Markdown:
+
+```powershell
+python docs/build_report_pdf.py     # يتطلب Chrome أو Edge
+python docs/build_report_docx.py    # ثم افتح Word واضغط F9 لتحديث الفهرس إن لزم
+```
+
 ## ملاحظات
 
 - المشروع مكتوب بأسلوب Django واضح وقابل للصيانة دون تعقيد غير ضروري.
